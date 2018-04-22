@@ -237,17 +237,17 @@ public class SupplierDepot {
 							
 							List<AbstractClothingType> clothingToGenerate = new ArrayList<>(ClothingType.getAllClothing());
 							clothingToGenerate.removeIf((clothing) -> !clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_NYAN));
-							
-							Main.game.getTextEndStringBuilder().append(
-									UtilText.parseFromXMLFile("places/dominion/shoppingArcade/suppliersDepot", "STORAGE_ROOM_SEARCHING")
-									+ Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), false), false)
-									+ Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), false), false)
-									+ (Math.random()>0.5?Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), false), false):"")
-									+ (Math.random()>0.5?Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), false), false):""));
+
+							Main.game.getTextEndStringBuilder().append(UtilText.parseFromXMLFile("places/dominion/shoppingArcade/suppliersDepot", "STORAGE_ROOM_SEARCHING"));
+							for (int i = Util.random.nextInt(4) + 5; i >= 0; i--) {
+								Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), false), false));
+							}
 						}
 					};
 				}
-				
+			} else if (index == 2) {
+				Main.game.getDialogueFlags().supplierStorageRoomsChecked.remove(Main.game.getPlayer().getLocation());
+				return new Response("Find More Crates", "Maybe there's more crates further inside...", SUPPLIER_DEPOT_STORAGE_ROOM);
 			} else {
 				return null;
 			}

@@ -6653,7 +6653,22 @@ public class MainControllerInitMethod {
 						ForcedTFTendency.FEMININE.getDescription());
 				MainController.addEventListener(MainController.document, id, "mouseenter", el, false);
 			}
-			
+
+			id = "FORCED_TF_TENDENCY_"+ForcedTFTendency.FEMININE_NO_GENITALS;
+			if (((EventTarget) MainController.document.getElementById(id)) != null) {
+				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
+					Main.getProperties().setForcedTFTendency(ForcedTFTendency.FEMININE_NO_GENITALS);
+					Main.saveProperties();
+					Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
+				}, false);
+
+				MainController.addEventListener(MainController.document, id, "mousemove", MainController.moveTooltipListener, false);
+				MainController.addEventListener(MainController.document, id, "mouseleave", MainController.hideTooltipListener, false);
+				TooltipInformationEventListener el = new TooltipInformationEventListener().setInformation(ForcedTFTendency.FEMININE_NO_GENITALS.getName(),
+						ForcedTFTendency.FEMININE_NO_GENITALS.getDescription());
+				MainController.addEventListener(MainController.document, id, "mouseenter", el, false);
+			}
+
 			id = "FORCED_TF_TENDENCY_"+ForcedTFTendency.FEMININE_HEAVY;
 			if (((EventTarget) MainController.document.getElementById(id)) != null) {
 				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
@@ -6683,7 +6698,22 @@ public class MainControllerInitMethod {
 						ForcedTFTendency.MASCULINE.getDescription());
 				MainController.addEventListener(MainController.document, id, "mouseenter", el, false);
 			}
-			
+
+			id = "FORCED_TF_TENDENCY_"+ForcedTFTendency.MASCULINE_NO_GENITALS;
+			if (((EventTarget) MainController.document.getElementById(id)) != null) {
+				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
+					Main.getProperties().setForcedTFTendency(ForcedTFTendency.MASCULINE_NO_GENITALS);
+					Main.saveProperties();
+					Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
+				}, false);
+
+				MainController.addEventListener(MainController.document, id, "mousemove", MainController.moveTooltipListener, false);
+				MainController.addEventListener(MainController.document, id, "mouseleave", MainController.hideTooltipListener, false);
+				TooltipInformationEventListener el = new TooltipInformationEventListener().setInformation(ForcedTFTendency.MASCULINE_NO_GENITALS.getName(),
+						ForcedTFTendency.MASCULINE_NO_GENITALS.getDescription());
+				MainController.addEventListener(MainController.document, id, "mouseenter", el, false);
+			}
+
 			id = "FORCED_TF_TENDENCY_"+ForcedTFTendency.MASCULINE_HEAVY;
 			if (((EventTarget) MainController.document.getElementById(id)) != null) {
 				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
@@ -6730,7 +6760,22 @@ public class MainControllerInitMethod {
 						ForcedFetishTendency.BOTTOM.getDescription());
 				MainController.addEventListener(MainController.document, id, "mouseenter", el, false);
 			}
-			
+
+			id = "FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.BOTTOM_ONLY;
+			if (((EventTarget) MainController.document.getElementById(id)) != null) {
+				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
+					Main.getProperties().setForcedFetishTendency(ForcedFetishTendency.BOTTOM_ONLY);
+					Main.saveProperties();
+					Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
+				}, false);
+
+				MainController.addEventListener(MainController.document, id, "mousemove", MainController.moveTooltipListener, false);
+				MainController.addEventListener(MainController.document, id, "mouseleave", MainController.hideTooltipListener, false);
+				TooltipInformationEventListener el = new TooltipInformationEventListener().setInformation(ForcedFetishTendency.BOTTOM_ONLY.getName(),
+						ForcedFetishTendency.BOTTOM_ONLY.getDescription());
+				MainController.addEventListener(MainController.document, id, "mouseenter", el, false);
+			}
+
 			id = "FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.BOTTOM_HEAVY;
 			if (((EventTarget) MainController.document.getElementById(id)) != null) {
 				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
@@ -6760,7 +6805,22 @@ public class MainControllerInitMethod {
 						ForcedFetishTendency.TOP.getDescription());
 				MainController.addEventListener(MainController.document, id, "mouseenter", el, false);
 			}
-			
+
+			id = "FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.TOP_ONLY;
+			if (((EventTarget) MainController.document.getElementById(id)) != null) {
+				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
+					Main.getProperties().setForcedFetishTendency(ForcedFetishTendency.TOP_ONLY);
+					Main.saveProperties();
+					Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
+				}, false);
+
+				MainController.addEventListener(MainController.document, id, "mousemove", MainController.moveTooltipListener, false);
+				MainController.addEventListener(MainController.document, id, "mouseleave", MainController.hideTooltipListener, false);
+				TooltipInformationEventListener el = new TooltipInformationEventListener().setInformation(ForcedFetishTendency.TOP_ONLY.getName(),
+						ForcedFetishTendency.TOP_ONLY.getDescription());
+				MainController.addEventListener(MainController.document, id, "mouseenter", el, false);
+			}
+
 			id = "FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.TOP_HEAVY;
 			if (((EventTarget) MainController.document.getElementById(id)) != null) {
 				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {

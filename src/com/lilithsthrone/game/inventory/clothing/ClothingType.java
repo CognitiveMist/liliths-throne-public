@@ -3052,7 +3052,7 @@ public class ClothingType {
 						Util.newArrayListOfValues(
 								CoverableArea.STOMACH,
 								CoverableArea.BACK),
-						Util.newArrayListOfValues(ClothingAccess.WAIST),
+						null,
 						PresetConcealmentLists.CONCEALED_STOMACH.getPresetInventorySlotList())),
 			null,
 			ColourListPresets.LINGERIE,

@@ -1009,7 +1009,7 @@ public class Util {
 		
 		slovenlySpeechReplacementMap.put("Going to", "Gonna");
 		slovenlySpeechReplacementMap.put("going to", "gonna");
-		
+
 		slovenlySpeechReplacementMap.put("To", "Ta");
 		slovenlySpeechReplacementMap.put("to", "ta");
 		slovenlySpeechReplacementMap.put("Into", "Inta");
@@ -1055,7 +1055,7 @@ public class Util {
 		
 		slovenlySpeechReplacementMap.put("Give me", "Gimme");
 		slovenlySpeechReplacementMap.put("give me", "gimme");
-		
+
 		slovenlySpeechReplacementMap.put("We're", "We's");
 		slovenlySpeechReplacementMap.put("we're", "we's");
 		

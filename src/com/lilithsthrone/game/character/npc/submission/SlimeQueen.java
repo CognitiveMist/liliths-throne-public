@@ -204,7 +204,7 @@ public class SlimeQueen extends NPC {
 		this.setSkinCovering(new Covering(BodyCoveringType.SLIME_PENIS, CoveringPattern.NONE, PresetColour.COVERING_PINK_DARK, false, PresetColour.COVERING_PINK_DARK, true), false);
 		
 		this.setHairLength(HairLength.FOUR_MID_BACK.getMaximumValue());
-		this.setHairStyle(HairStyle.HIME_CUT);
+		this.setHairStyle(HairStyle.CHIGNON);
 
 		this.setUnderarmHair(BodyHair.ZERO_NONE);
 		this.setAssHair(BodyHair.ZERO_NONE);

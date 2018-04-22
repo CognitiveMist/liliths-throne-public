@@ -374,7 +374,7 @@ public class SlaverAlleyDialogue {
 			e.printStackTrace();
 		}
 		
-		if(Math.random()<0.25f || forceTwoPartners) { // Second partner:
+		if(Math.random()<0.95f || forceTwoPartners) { // Second partner:
 			Main.game.getDialogueFlags().setFlag(DialogueFlagValue.slaverAlleyTwoPartners, true);
 			partner = new GenericSexualPartner(Gender.getGenderFromUserPreferences(false, true), WorldType.SLAVER_ALLEY, Main.game.getPlayer().getLocation(), false);
 			setupPartner(partner);

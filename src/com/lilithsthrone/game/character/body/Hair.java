@@ -187,16 +187,20 @@ public class Hair implements BodyPartInterface {
 					return "slicked back.";
 				case MESSY:
 					return "unstyled, and particularly messy.";
+				/*
 				case HIME_CUT:
 					return "straightened, and styled into a hime-cut.";
 				case CHONMAGE:
 					return "straightened, oiled, and styled into a chonmage.";
+				*/
 				case DREADLOCKS:
 					return "styled into dreadlocks.";
 				case TOPKNOT:
 					return "gathered up into a topknot.";
+				/*
 				case BIRD_CAGE:
 					return "styled into an elaborate bird cage.";
+				*/
 				case TWIN_BRAIDS:
 					return "styled into twin braids.";
 				case DRILLS:
@@ -209,6 +213,12 @@ public class Hair implements BodyPartInterface {
 					return "styled into a bun.";
 				case CHIGNON:
 					return "tied up and styled into a chignon.";
+				case FRENCH_BRAID:
+					return "woven into a long French braid.";
+				case UPDO:
+					return "styled into an elegant updo.";
+				case BEEHIVE:
+					return "styled into an elaborate beehive.";
 			}
 		sb.append("</p>");
 		return UtilText.parse(owner, sb.toString());

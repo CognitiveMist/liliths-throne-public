@@ -2339,6 +2339,13 @@ public class OptionsDialogue {
 							:"<div id='FORCED_TF_TENDENCY_"+ForcedTFTendency.FEMININE+"' class='normal-button' style='width:31%; margin:1%; text-align:center; float:right;'>"
 								+ "[style.colourDisabled("+ForcedTFTendency.FEMININE.getName()+")]"
 								+ "</div>")
+						+(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_NO_GENITALS
+							?"<div id='FORCED_TF_TENDENCY_"+ForcedTFTendency.FEMININE_NO_GENITALS+"' class='normal-button selected' style='width:31%; margin:1%; text-align:center; float:right; color:"+PresetColour.FEMININE.toWebHexString()+";'>"
+								+ ForcedTFTendency.FEMININE_NO_GENITALS.getName()
+								+ "</div>"
+							:"<div id='FORCED_TF_TENDENCY_"+ForcedTFTendency.FEMININE_NO_GENITALS+"' class='normal-button' style='width:31%; margin:1%; text-align:center; float:right;'>"
+								+ "[style.colourDisabled("+ForcedTFTendency.FEMININE_NO_GENITALS.getName()+")]"
+								+ "</div>")
 						+(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY
 							?"<div id='FORCED_TF_TENDENCY_"+ForcedTFTendency.FEMININE_HEAVY+"' class='normal-button selected' style='width:31%; margin:1%; text-align:center; float:right; color:"+PresetColour.FEMININE_PLUS.toWebHexString()+";'>"
 								+ ForcedTFTendency.FEMININE_HEAVY.getName()
@@ -2352,6 +2359,13 @@ public class OptionsDialogue {
 								+ "</div>"
 							:"<div id='FORCED_TF_TENDENCY_"+ForcedTFTendency.MASCULINE_HEAVY+"' class='normal-button' style='width:31%; margin:1%; text-align:center; float:right;'>"
 								+ "[style.colourDisabled("+ForcedTFTendency.MASCULINE_HEAVY.getName()+")]"
+								+ "</div>")
+						+(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.MASCULINE_NO_GENITALS
+							?"<div id='FORCED_TF_TENDENCY_"+ForcedTFTendency.MASCULINE_NO_GENITALS+"' class='normal-button selected' style='width:31%; margin:1%; text-align:center; float:right; color:"+PresetColour.MASCULINE.toWebHexString()+";'>"
+								+ ForcedTFTendency.MASCULINE_NO_GENITALS.getName()
+								+ "</div>"
+							:"<div id='FORCED_TF_TENDENCY_"+ForcedTFTendency.MASCULINE_NO_GENITALS+"' class='normal-button' style='width:31%; margin:1%; text-align:center; float:right;'>"
+								+ "[style.colourDisabled("+ForcedTFTendency.MASCULINE_NO_GENITALS.getName()+")]"
 								+ "</div>")
 						+(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.MASCULINE
 							?"<div id='FORCED_TF_TENDENCY_"+ForcedTFTendency.MASCULINE+"' class='normal-button selected' style='width:31%; margin:1%; text-align:center; float:right; color:"+PresetColour.MASCULINE.toWebHexString()+";'>"
@@ -2390,6 +2404,13 @@ public class OptionsDialogue {
 								:"<div id='FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.BOTTOM+"' class='normal-button' style='width:31%; margin:1%; text-align:center; float:right;'>"
 									+ "[style.colourDisabled("+ForcedFetishTendency.BOTTOM.getName()+")]"
 									+ "</div>")
+						+(Main.getProperties().getForcedFetishTendency()==ForcedFetishTendency.BOTTOM_ONLY
+								?"<div id='FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.BOTTOM_ONLY+"' class='normal-button selected' style='width:31%; margin:1%; text-align:center; float:right; color:"+PresetColour.BASE_PINK_LIGHT.toWebHexString()+";'>"
+									+ ForcedFetishTendency.BOTTOM_ONLY.getName()
+									+ "</div>"
+								:"<div id='FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.BOTTOM_ONLY+"' class='normal-button' style='width:31%; margin:1%; text-align:center; float:right;'>"
+									+ "[style.colourDisabled("+ForcedFetishTendency.BOTTOM_ONLY.getName()+")]"
+									+ "</div>")
 						+(Main.getProperties().getForcedFetishTendency()==ForcedFetishTendency.BOTTOM_HEAVY
 								?"<div id='FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.BOTTOM_HEAVY+"' class='normal-button selected' style='width:31%; margin:1%; text-align:center; float:right; color:"+PresetColour.BASE_PINK.toWebHexString()+";'>"
 									+ ForcedFetishTendency.BOTTOM_HEAVY.getName()
@@ -2403,6 +2424,13 @@ public class OptionsDialogue {
 									+ "</div>"
 								:"<div id='FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.TOP_HEAVY+"' class='normal-button' style='width:31%; margin:1%; text-align:center; float:right;'>"
 									+ "[style.colourDisabled("+ForcedFetishTendency.TOP_HEAVY.getName()+")]"
+									+ "</div>")
+						+(Main.getProperties().getForcedFetishTendency()==ForcedFetishTendency.TOP_ONLY
+								?"<div id='FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.TOP_ONLY+"' class='normal-button selected' style='width:31%; margin:1%; text-align:center; float:right; color:"+PresetColour.BASE_PURPLE_LIGHT.toWebHexString()+";'>"
+									+ ForcedFetishTendency.TOP_ONLY.getName()
+									+ "</div>"
+								:"<div id='FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.TOP_ONLY+"' class='normal-button' style='width:31%; margin:1%; text-align:center; float:right;'>"
+									+ "[style.colourDisabled("+ForcedFetishTendency.TOP_ONLY.getName()+")]"
 									+ "</div>")
 						+(Main.getProperties().getForcedFetishTendency()==ForcedFetishTendency.TOP
 								?"<div id='FORCED_FETISH_TENDENCY_"+ForcedFetishTendency.TOP+"' class='normal-button selected' style='width:31%; margin:1%; text-align:center; float:right; color:"+PresetColour.BASE_PURPLE_LIGHT.toWebHexString()+";'>"

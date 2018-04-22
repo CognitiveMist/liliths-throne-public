@@ -182,7 +182,7 @@ public class SubmissionCitadelArcanist extends NPC {
 
 		this.setHairCovering(new Covering(BodyCoveringType.HAIR_FOX_FUR, PresetColour.COVERING_BLACK), true);
 		this.setHairLength(HairLength.FOUR_MID_BACK.getMinimumValue());
-		this.setHairStyle(HairStyle.HIME_CUT);
+		this.setHairStyle(HairStyle.CHIGNON);
 		
 		this.setHairCovering(new Covering(BodyCoveringType.BODY_HAIR_HUMAN, PresetColour.COVERING_BLACK), false);
 		this.setUnderarmHair(BodyHair.FOUR_NATURAL);

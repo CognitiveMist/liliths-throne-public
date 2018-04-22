@@ -304,7 +304,7 @@ public enum Occupation {
 		historiesList = new ArrayList<>();
 
 		for(Occupation history : Occupation.values()) {
-			if(history.isAvailable(character) && (character.isPlayer()?history.isAvailableToPlayer():!history.isAvailableToPlayer())) {
+			if((character.isPlayer() || history.isAvailable(character)) && (character.isPlayer()?history.isAvailableToPlayer():!history.isAvailableToPlayer())) {
 				historiesList.add(history);
 			}
 		}
@@ -391,6 +391,7 @@ public enum Occupation {
 	}
 	
 	public boolean[] getWorkHours() {
+		return noWorkHours; /*
 		if(this.getOccupationTags().contains(OccupationTag.LOWLIFE) || this==NPC_UNEMPLOYED || this==UNEMPLOYED) {
 			return noWorkHours;
 		}
@@ -401,6 +402,7 @@ public enum Occupation {
 			return nightWorkHours;
 		}
 		return daylightWorkHours;
+		*/
 	}
 	
 	public int getWorkHourStart() {

@@ -144,8 +144,8 @@ public class CharacterModificationUtils {
 
 	private static StringBuilder contentSB = new StringBuilder();
 
-	public static final int FLUID_INCREMENT_SMALL = 5;
-	public static final int FLUID_INCREMENT_AVERAGE = 50;
+	public static final int FLUID_INCREMENT_SMALL = 1;
+	public static final int FLUID_INCREMENT_AVERAGE = 25;
 	public static final int FLUID_INCREMENT_LARGE = 500;
 
 	public static final int FLUID_REGEN_INCREMENT_SMALL = 100;

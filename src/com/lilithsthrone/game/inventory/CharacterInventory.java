@@ -2191,28 +2191,27 @@ public class CharacterInventory implements XMLSaving {
 		}
 	}
 
-	public int getClothingAverageFemininity() {
+	public int getClothingAverageFemininity(GameCharacter character) {
 		if(clothingCurrentlyEquipped.isEmpty()) {
 			return 50;
 		}
 		
-		int average = 50;
+		int sum = 50;
+		int count = 1;
 		for (AbstractClothing c : clothingCurrentlyEquipped) {
-			if (c.getClothingType().getFemininityRestriction() == Femininity.FEMININE) {
-				average += 75;
-				
-			} else if (c.getClothingType().getFemininityRestriction() == Femininity.MASCULINE) {
-				average += 25;
-				
-			} else {
-				average += 50;
-				
+			if (!getInventorySlotsConcealed(character).containsKey(c.getSlotEquippedTo())) {
+				count++;
+				if (c.getClothingType().getFemininityRestriction() == Femininity.FEMININE) {
+					sum += 75;
+				} else if (c.getClothingType().getFemininityRestriction() == Femininity.MASCULINE) {
+					sum += 25;
+				} else {
+					sum += 50;
+				}
 			}
 		}
-
-		average /= (clothingCurrentlyEquipped.size() + 1);
 		
-		return average;
+		return sum/count;
 	}
 
 	/**

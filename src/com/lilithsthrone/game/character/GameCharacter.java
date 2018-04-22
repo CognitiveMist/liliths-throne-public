@@ -3286,6 +3286,15 @@ public abstract class GameCharacter implements XMLSaving {
 			if(i==0) {
 				infoScreenSB.append(UtilText.parse(this, "[npc.NameHasFull] a well-rounded personality, with no exceptionally good nor bad traits."));
 			}
+
+			if(this instanceof NPC /*&& Main.game.getPlayer().hasTrait(Perk.OBSERVANT, true)*/) {
+				infoScreenSB.append("</br>"
+						+ "<h4>Preferences</h4>"
+						+ "<p>");
+				infoScreenSB.append("Their preferred body type is a " + ((NPC)this).getPreferredBodyDescription("b"));
+				infoScreenSB.append("</p>");
+			}
+
 			infoScreenSB.append("</p>");
 			
 			infoScreenSB.append("<h6>Appearance</h6>"
@@ -6128,8 +6137,8 @@ public abstract class GameCharacter implements XMLSaving {
 	 * @return true if non-con content is on and this character does not dislike raping.
 	 */
 	public boolean isWillingToRape() {
-		return Main.game.isNonConEnabled()
-				&& !this.getFetishDesire(Fetish.FETISH_NON_CON_DOM).isNegative();
+		return /*Main.game.isNonConEnabled()
+				&&*/ !this.getFetishDesire(Fetish.FETISH_NON_CON_DOM).isNegative();
 	}
 	
 	/**
@@ -20875,7 +20884,7 @@ public abstract class GameCharacter implements XMLSaving {
 	}
 	
 	public int getClothingAverageFemininity() {
-		return inventory.getClothingAverageFemininity();
+		return inventory.getClothingAverageFemininity(this);
 	}
 
 	public AbstractClothing getLowestZLayerCoverableArea(CoverableArea area) {

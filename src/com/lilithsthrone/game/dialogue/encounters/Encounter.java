@@ -316,9 +316,9 @@ public enum Encounter {
 		@Override
 		public Map<EncounterType, Float> getDialogues() {
 			Map<EncounterType, Float> map = Util.newHashMapOfValues(
-					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_ITEM, 3f),
-					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_CLOTHING, 2f),
-					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_WEAPON, 1f),
+					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_ITEM, 8f),
+					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_CLOTHING, 10f),
+					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_WEAPON, 2f),
 					(getSlaveWantingToUseYouInDominion()!=null && Main.game.getCurrentWeather()!=Weather.MAGIC_STORM
 						?new Value<EncounterType, Float>(EncounterType.SLAVE_USES_YOU, 5f)
 						:null),
@@ -383,7 +383,7 @@ public enum Encounter {
 				return Main.game.getActiveNPC().getEncounterDialogue();
 				
 			} else if(node == EncounterType.DOMINION_FIND_ITEM) {
-				if(!Main.game.isSillyModeEnabled() || Math.random()<0.99f) {
+				if(/*!Main.game.isSillyModeEnabled() ||*/ Math.random()<0.99f) {
 					randomItem = Main.game.getItemGen().generateItem(ItemType.getDominionAlleywayItems().get(Util.random.nextInt(ItemType.getDominionAlleywayItems().size())));
 					
 				} else {
@@ -482,9 +482,9 @@ public enum Encounter {
 		public Map<EncounterType, Float> getDialogues() {
 			return Util.newHashMapOfValues(
 					new Value<EncounterType, Float>(EncounterType.DOMINION_ALLEY_ATTACK, 10f),
-					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_ITEM, 3f),
-					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_CLOTHING, 2f),
-					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_WEAPON, 1f),
+					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_ITEM, 8f),
+					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_CLOTHING, 10f),
+					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_WEAPON, 2f),
 					Main.game.getCurrentWeather()!=Weather.MAGIC_STORM
 							&& (!Main.game.getDialogueFlags().hasSavedLong("enforcer_encounter_minutes") || Main.game.getDialogueFlags().getSavedLong("enforcer_encounter_minutes")+(4*60)<Main.game.getMinutesPassed())
 						?new Value<EncounterType, Float>(EncounterType.DOMINION_ALLEY_ENFORCERS, 2.5f)
@@ -730,7 +730,8 @@ public enum Encounter {
                     Map<EncounterType, Float> map = new HashMap<>();
 			
                     map.put(EncounterType.SUBMISSION_TUNNEL_ATTACK, 20f);
-                    map.put(EncounterType.SUBMISSION_FIND_ITEM, 10f);
+                    map.put(EncounterType.SUBMISSION_FIND_ITEM, 8f);
+					map.put(EncounterType.SUBMISSION_FIND_CLOTHING, 15f);
                     
                     return map;
                 }
@@ -955,9 +956,29 @@ public enum Encounter {
 				
 				randomItem = Main.game.getItemGen().generateItem(ItemType.getSubmissionTunnelItems().get(Util.random.nextInt(ItemType.getSubmissionTunnelItems().size())));
 				
-				Main.game.getActiveWorld().getCell(Main.game.getPlayer().getLocation()).getInventory().addItem((AbstractItem) randomItem);
+				Main.game.getPlayerCell().getInventory().addItem((AbstractItem) randomItem);
 				return SubmissionEncounterDialogue.FIND_ITEM;
 				
+			} else if (node == EncounterType.SUBMISSION_FIND_CLOTHING) {
+				List<AbstractClothingType> randomClothingList = new ArrayList<>(ClothingType.getAllClothing());
+				randomClothingList.removeIf((clothing) ->
+						(!clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_KATE)
+								&& !clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_NYAN)
+								&& !clothing.getDefaultItemTags().contains(ItemTag.DOMINION_ALLEYWAY_SPAWN))
+								|| clothing.getRarity()==Rarity.EPIC
+								|| clothing.getRarity()==Rarity.LEGENDARY);
+				
+				AbstractClothingType clothingType = randomClothingList.get(Util.random.nextInt(randomClothingList.size()));
+				
+				if (Math.random()<0.2f) {
+					randomItem = Main.game.getItemGen().generateClothingWithEnchantment(clothingType);
+				} else {
+					randomItem = Main.game.getItemGen().generateClothingWithNegativeEnchantment(clothingType);
+				}
+				
+				Main.game.getPlayerCell().getInventory().addClothing((AbstractClothing) randomItem);
+				return SubmissionEncounterDialogue.FIND_CLOTHING;
+
 			} else {
 				return null;
 			}
