@@ -7,15 +7,19 @@ package com.lilithsthrone.game.settings;
  */
 public enum ForcedFetishTendency {
 	
-	BOTTOM_HEAVY("Bottoming+", "Forced fetishes will almost always add bottoming and remove topping activities and behaviors."),
+	BOTTOM_HEAVY("Bottoming X", "Forced fetishes will almost always add bottoming and remove topping activities and behaviors."),
+
+	BOTTOM_ONLY("Bottoming+", "Similar to Bottoming, but no activities and behaviors will be removed."),
 	
 	BOTTOM("Bottoming", "While NPC tastes still matter, forced fetishes will usually add bottoming and remove topping activities and behaviors."),
 	
 	NEUTRAL("Neutral", "Forced fetishes will be determined solely by the tastes and whims of the controlling NPC, and the inherent randomness of the universe."),
 	
 	TOP ("Topping", "While NPC tastes still matter, forced fetishes will usually add topping and remove bottoming activities and behaviors."),
+
+	TOP_ONLY("Topping+", "Similar to Topping, but no activities and behaviors will be removed."),
 	
-	TOP_HEAVY("Topping+", "Forced fetishes will almost always add topping and remove bottoming activities and behaviors.");
+	TOP_HEAVY("Topping X", "Forced fetishes will almost always add topping and remove bottoming activities and behaviors.");
 
 
 	private String name;

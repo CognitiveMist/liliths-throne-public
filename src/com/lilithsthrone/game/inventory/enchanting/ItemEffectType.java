@@ -1085,7 +1085,7 @@ public class ItemEffectType {
 				fetishesToRemove.remove(Fetish.FETISH_NON_CON_SUB);
 			}
 
-			if((Math.random()>0.33f && !fetishesToAdd.isEmpty()) || fetishesToRemove.isEmpty()) {
+			if(!fetishesToAdd.isEmpty()) {
 				Fetish f = fetishesToAdd.get(Util.random.nextInt(fetishesToAdd.size()));
 				target.addFetish(f);
 				

@@ -2027,11 +2027,11 @@ public class Body implements XMLSaving {
 				case MESSY:
 					sb.append(", which "+(hair.getType().isDefaultPlural()?"are":"is")+" unstyled and very messy.");
 					break;
-				case HIME_CUT:
-					sb.append(", which "+(hair.getType().isDefaultPlural()?"have":"has")+" been straightened and styled into a hime cut.");
+				case FRENCH_BRAID:
+					sb.append(", which "+(hair.getType().isDefaultPlural()?"have":"has")+" been woven into a long French braid.");
 					break;
-				case CHONMAGE:
-					sb.append(", which "+(hair.getType().isDefaultPlural()?"have":"has")+" been straightened, oiled and styled into a chonmage topknot.");
+				case UPDO:
+					sb.append(", which "+(hair.getType().isDefaultPlural()?"have":"has")+" been styled into an elegant updo.");
 					break;
 				case TOPKNOT:
 					sb.append(", which "+(hair.getType().isDefaultPlural()?"have":"has")+" been styled into a topknot.");
@@ -2039,8 +2039,8 @@ public class Body implements XMLSaving {
 				case DREADLOCKS:
 					sb.append(", which "+(hair.getType().isDefaultPlural()?"have":"has")+" been styled into dreadlocks.");
 					break;
-				case BIRD_CAGE:
-					sb.append(", which "+(hair.getType().isDefaultPlural()?"have":"has")+" been styled into an elaborate bird cage"+UtilText.returnStringAtRandom(".",", birds not included."));
+				case BEEHIVE:
+					sb.append(", which "+(hair.getType().isDefaultPlural()?"have":"has")+" been styled into an elaborate beehive"+UtilText.returnStringAtRandom(".",", bees not included."));
 					break;
 				case TWIN_BRAIDS:
 					sb.append(", which "+(hair.getType().isDefaultPlural()?"have":"has")+" been woven into long twin braids.");

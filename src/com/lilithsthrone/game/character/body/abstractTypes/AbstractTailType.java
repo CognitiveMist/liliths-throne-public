@@ -663,7 +663,7 @@ public abstract class AbstractTailType implements BodyPartTypeInterface {
 	 * Takes into account whether player has 'Allow furry tail penetrations' turned on or off.
 	 */
 	public boolean isSuitableForPenetration() {
-		return this.isPrehensile() && (tags.contains(TailTypeTag.SUTABLE_FOR_PENETRATION) || Main.getProperties().hasValue(PropertyValue.furryTailPenetrationContent));
+		return this.isPrehensile() && (tags.contains(TailTypeTag.SUTABLE_FOR_PENETRATION) && Main.getProperties().hasValue(PropertyValue.furryTailPenetrationContent));
 	}
 	
 	public boolean isSuitableForSleepHugging() {

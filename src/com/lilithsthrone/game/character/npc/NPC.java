@@ -1489,7 +1489,12 @@ public abstract class NPC extends GameCharacter implements XMLSaving {
 			
 			skipGenitalsTF = vaginaSet && penisSet;
 		}
-		
+
+		if(Main.getProperties().getForcedTFTendency() == ForcedTFTendency.FEMININE_NO_GENITALS ||
+				Main.getProperties().getForcedTFTendency() == ForcedTFTendency.MASCULINE_NO_GENITALS ) {
+			skipGenitalsTF = true;
+		}
+
 		// Order of transformation preferences are: Sexual organs -> minor parts -> Legs & arms -> Face & skin 
 		
 		if(!skipGenitalsTF) {
@@ -1767,7 +1772,7 @@ public abstract class NPC extends GameCharacter implements XMLSaving {
 		if(target.getFemininityValue() < body.getFemininity()
 				&& Femininity.valueOf(target.getFemininityValue()) != Femininity.valueOf(body.getFemininity())) {
 			possibleEffects.add(new PossibleItemEffect(
-				new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_CORE, TFModifier.TF_MOD_FEMININITY, TFPotency.MAJOR_BOOST, 1),
+				new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_CORE, TFModifier.TF_MOD_FEMININITY, TFPotency.BOOST, 1),
 				"I'm gonna need you to be more feminine!"));
 			if(possibleEffects.size()>=numberOfTransformations) { return new TransformativePotion(itemType, possibleEffects, body); }
 			
@@ -1775,7 +1780,7 @@ public abstract class NPC extends GameCharacter implements XMLSaving {
 				&& Femininity.valueOf(target.getFemininityValue()) != Femininity.valueOf(body.getFemininity())
 				&& !Femininity.valueOf(body.getFemininity()).isFeminine()) {
 			possibleEffects.add(new PossibleItemEffect(
-				new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_CORE, TFModifier.TF_MOD_FEMININITY, TFPotency.MAJOR_DRAIN, 1),
+				new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_CORE, TFModifier.TF_MOD_FEMININITY, TFPotency.DRAIN, 1),
 				"I'm gonna need you to be more of a man!"));
 			if(possibleEffects.size()>=numberOfTransformations) { return new TransformativePotion(itemType, possibleEffects, body); }
 		}
@@ -2006,6 +2011,7 @@ public abstract class NPC extends GameCharacter implements XMLSaving {
 						// towards pushing the player feminine in neutral scenarios, but only to a small degree, so more
 						// complex but fair logic doesn't feel too required
 						Main.getProperties().getForcedTFTendency() != ForcedTFTendency.FEMININE &&
+						Main.getProperties().getForcedTFTendency() != ForcedTFTendency.FEMININE_NO_GENITALS &&
 						Main.getProperties().getForcedTFTendency() != ForcedTFTendency.FEMININE_HEAVY) {
 					desiredGenders.put(Gender.M_P_MALE, 14);
 					// maybe it would be appropriate to raise these chances for impregnators?
@@ -2048,7 +2054,8 @@ public abstract class NPC extends GameCharacter implements XMLSaving {
 				desiredGenders.put(Gender.M_V_CUNTBOY, 2);
 				
 				// both feminine .getForcedTFTendency() options add decent chances to get some feminine options despite tastes
-				if(Main.getProperties().getForcedTFTendency() == ForcedTFTendency.FEMININE || 
+				if(Main.getProperties().getForcedTFTendency() == ForcedTFTendency.FEMININE ||
+				   Main.getProperties().getForcedTFTendency() == ForcedTFTendency.FEMININE_NO_GENITALS ||
 				   Main.getProperties().getForcedTFTendency() == ForcedTFTendency.FEMININE_HEAVY) {
 					desiredGenders.put(Gender.F_P_V_B_FUTANARI, 2);
 					desiredGenders.put(Gender.F_P_B_SHEMALE, 2);
@@ -2072,7 +2079,8 @@ public abstract class NPC extends GameCharacter implements XMLSaving {
 				}
 				
 				// both masculine .getForcedTFTendency() options add decent chances to get some masculine options despite tastes
-				if(Main.getProperties().getForcedTFTendency() == ForcedTFTendency.MASCULINE || 
+				if(Main.getProperties().getForcedTFTendency() == ForcedTFTendency.MASCULINE ||
+				   Main.getProperties().getForcedTFTendency() == ForcedTFTendency.MASCULINE_NO_GENITALS ||
 				   Main.getProperties().getForcedTFTendency() == ForcedTFTendency.MASCULINE_HEAVY) {
 					desiredGenders.put(Gender.M_P_V_HERMAPHRODITE, 2);
 					desiredGenders.put(Gender.M_V_CUNTBOY, 2);
@@ -2226,6 +2234,12 @@ public abstract class NPC extends GameCharacter implements XMLSaving {
 				baseTopRemoveChance = 4;
 				baseBottomRemoveChance = -1;
 				break;
+			case BOTTOM_ONLY:
+				baseTopChance = 1;
+				baseBottomChance = 8;
+				baseTopRemoveChance = -10;
+				baseBottomRemoveChance = -10;
+				break;
 			case TOP:
 				baseTopChance = 8;
 				baseBottomChance = 1;
@@ -2237,6 +2251,12 @@ public abstract class NPC extends GameCharacter implements XMLSaving {
 				baseBottomChance = -2;
 				baseTopRemoveChance = -1;
 				baseBottomRemoveChance = 4;
+				break;
+			case TOP_ONLY:
+				baseTopChance = 8;
+				baseBottomChance = 1;
+				baseTopRemoveChance = -10;
+				baseBottomRemoveChance = -10;
 				break;
 		}
 		

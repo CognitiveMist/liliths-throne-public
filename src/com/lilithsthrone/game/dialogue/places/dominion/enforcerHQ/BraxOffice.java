@@ -55,7 +55,7 @@ public class BraxOffice {
 	}
 	
 	private static void givePlayerEnforcerUniform(StringBuilder sb) {
-		if(Main.game.getPlayer().isFeminine()) {
+		//if(Main.game.getPlayer().isFeminine()) {
 			sb.append(Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing("dsg_eep_servequipset_enfskirt", PresetColour.CLOTHING_BLACK, false), false));
 			sb.append(Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing("dsg_eep_ptrlequipset_flsldshirt", PresetColour.CLOTHING_PINK, false), false));
 			
@@ -71,7 +71,7 @@ public class BraxOffice {
 			hat.setSticker("badge", "badge_dominion");
 			sb.append(Main.game.getPlayer().addClothing(hat, false));
 			
-		} else {
+		/*} else {
 			sb.append(Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing("dsg_eep_servequipset_enfdslacks", PresetColour.CLOTHING_BLACK, false), false));
 			sb.append(Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing("dsg_eep_ptrlequipset_lsldshirt", PresetColour.CLOTHING_BLUE, false), false));
 			
@@ -86,7 +86,7 @@ public class BraxOffice {
 			AbstractClothing hat = Main.game.getItemGen().generateClothing("dsg_eep_ptrlequipset_pcap", PresetColour.CLOTHING_BLACK, false);
 			hat.setSticker("badge", "badge_dominion");
 			sb.append(Main.game.getPlayer().addClothing(hat, false));
-		}
+		}*/
 
 		TransformativePotion tfPotion = Main.game.getNpc(Brax.class).generateTransformativePotion(Main.game.getPlayer());
 		AbstractItem potion = EnchantingUtils.craftItem(

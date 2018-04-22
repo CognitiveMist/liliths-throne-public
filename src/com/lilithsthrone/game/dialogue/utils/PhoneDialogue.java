@@ -2244,14 +2244,14 @@ public class PhoneDialogue {
 			for(AbstractWeaponType weaponType : weaponsDiscoveredList) {
 				boolean discovered = Main.getProperties().isWeaponDiscovered(weaponType);
 				String entry = "<div class='inventory-item-slot unequipped' style='background-color:"+weaponType.getRarity().getBackgroundColour().toWebHexString()+"; width:78%; margin:1%; padding:0; '>"
-									+ "<div class='inventory-icon-content'>"+(discovered?weaponType.getSVGImage():"")+"</div>"
+									+ "<div class='inventory-icon-content'>"+(discovered?weaponType.getSVGImage():Util.capitaliseSentence(weaponType.getName()))+"</div>"
 									+ "<div class='overlay"+(discovered?"' id='"+weaponType.getId()+"'":" disabled-dark'")+" style='cursor:default;'></div>"
 								+ "</div>";
 				sbDamageTypes.setLength(0);
 				if(discovered) {
 					for(DamageType dt : weaponType.getAvailableDamageTypes()) {
 						sbDamageTypes.append("<div class='square-button' "+(discovered?"id='"+(weaponType.getId()+"_"+dt.toString())+"'":"")
-												+ " style='cursor:default; width:18%; margin:1%; padding:0; background-color:"+dt.getMultiplierAttribute().getColour().toWebHexString()+";'>"
+												+ " style='cursor:default; width:12%; margin:1%; padding:0; background-color:"+dt.getMultiplierAttribute().getColour().toWebHexString()+";'>"
 											+ "</div>");
 					}
 				}
@@ -2333,7 +2333,7 @@ public class PhoneDialogue {
 				}
 				boolean discovered = Main.getProperties().isClothingDiscovered(clothingType);
 				String entry = "<div class='inventory-item-slot unequipped' style='background-color:"+clothingType.getRarity().getBackgroundColour().toWebHexString()+"; width:8%;'>"
-									+ "<div class='inventory-icon-content'>"+(discovered?clothingType.getSVGImageRandomColour(true, false, false):"")+"</div>"
+									+ "<div class='inventory-icon-content'>"+(discovered?clothingType.getSVGImageRandomColour(true, false, false):Util.capitaliseSentence(clothingType.getName()))+"</div>"
 									+ "<div class='overlay"+(discovered?"' id='"+clothingType.getId()+"'":" disabled-dark'")+" style='cursor:default;'></div>"
 								+ "</div>";
 				
@@ -2414,7 +2414,7 @@ public class PhoneDialogue {
 			for(AbstractItemType itemType : itemsDiscoveredList) {
 				boolean discovered = Main.getProperties().isItemDiscovered(itemType);
 				String entry = "<div class='inventory-item-slot unequipped' style='background-color:"+itemType.getRarity().getBackgroundColour().toWebHexString()+"; width:8%;'>"
-									+ "<div class='inventory-icon-content'>"+(discovered?itemType.getSVGString():"")+"</div>"
+									+ "<div class='inventory-icon-content'>"+(discovered?itemType.getSVGString():Util.capitaliseSentence(itemType.getName(true)))+"</div>"
 									+ "<div class='overlay"+(discovered?"' id='"+itemType.getId()+"'":" disabled-dark'")+" style='cursor:default;'></div>"
 								+ "</div>";
 				

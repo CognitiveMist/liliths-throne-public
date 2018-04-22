@@ -391,6 +391,7 @@ public enum Occupation {
 	}
 	
 	public boolean[] getWorkHours() {
+		return noWorkHours; /*
 		if(this.getOccupationTags().contains(OccupationTag.LOWLIFE) || this==NPC_UNEMPLOYED || this==UNEMPLOYED) {
 			return noWorkHours;
 		}
@@ -401,6 +402,7 @@ public enum Occupation {
 			return nightWorkHours;
 		}
 		return daylightWorkHours;
+		*/
 	}
 	
 	public int getWorkHourStart() {

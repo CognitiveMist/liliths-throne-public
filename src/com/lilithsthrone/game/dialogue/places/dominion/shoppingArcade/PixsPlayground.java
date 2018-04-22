@@ -753,7 +753,34 @@ public class PixsPlayground {
 				return new Response("Decline",
 						"Tell Pix that you're too tired for this right now.",
 						GYM_PIX_ASSAULT_CONSENSUAL_DECLINED);
-				
+
+			} else if(index==5) {
+				if(Main.game.getPlayer().getAttributeValue(Attribute.MAJOR_PHYSIQUE)<Main.game.getNpc(Pix.class).getAttributeValue(Attribute.MAJOR_PHYSIQUE)) {
+					return new Response("Turn Tables",
+							"Pix is both stronger and fitter than you (her physique of "+Main.game.getNpc(Pix.class).getAttributeValue(Attribute.MAJOR_PHYSIQUE)+" is greater than your physique of "
+									+Main.game.getPlayer().getAttributeValue(Attribute.MAJOR_PHYSIQUE)+"), so you don't stand a chance of turning the tables on her in this situation.",
+							null);
+
+				} else {
+					return new ResponseSex("Turn Tables",
+							"Use the energy that you've saved by holding back during your exercise to break free from Pix, and then turn the tables on her...",
+							false, false,
+							new SMAgainstWall(
+									Util.newHashMapOfValues(new Value<>(Main.game.getPlayer(), SexSlotAgainstWall.STANDING_WALL)),
+									Util.newHashMapOfValues(new Value<>(Main.game.getNpc(Pix.class), SexSlotAgainstWall.FACE_TO_WALL))) {
+								@Override
+								public boolean isCharacterStartNaked(GameCharacter character) {
+									return true;
+								}
+								@Override
+								public List<AbstractSexPosition> getAllowedSexPositions() {
+									return Util.newArrayListOfValues(
+											SexPosition.AGAINST_WALL);
+								}
+							},
+							null,
+							null, PIX_POST_SEX_TABLES_TURNED, UtilText.parseFromXMLFile("places/dominion/shoppingArcade/pixsPlayground", "GYM_PIX_ASSAULT_TURN_TABLES"));
+				}
 			} else {
 				return null;
 			}
