@@ -284,6 +284,7 @@ public abstract class AbstractBodyCoveringType {
 						}
 					}
 				}
+				// TODO COG assert valid weighted map for naturalPatterns and dyePatterns OR filter out zeroes
 				
 
 				Function< Element, List<Colour> > getColoursFromElement = (colorsElement) -> { //Helper function to get the colors depending on if it's a specified group or a list of individual colors

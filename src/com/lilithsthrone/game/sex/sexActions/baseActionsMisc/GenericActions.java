@@ -1220,6 +1220,15 @@ public class GenericActions {
 			
 			return sb.toString();
 		}
+		
+		@Override
+		public List<AbstractFetish> getFetishes(GameCharacter character) {
+			if(character.equals(Main.sex.getCharacterTargetedForSexAction(this))) {
+				return Util.newArrayListOfValues(Fetish.FETISH_PENIS_GIVING);
+			} else {
+				return Util.newArrayListOfValues(Fetish.FETISH_PENIS_RECEIVING);
+			}
+		}
 	};
 
 	

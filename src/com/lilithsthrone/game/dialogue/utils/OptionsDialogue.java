@@ -2715,8 +2715,10 @@ public class OptionsDialogue {
 			UtilText.nodeContentSB.append(getCustomContentPreferenceDivStart(PresetColour.BASE_GREEN, "Forced TF Gender Tendency", "This allows you to override NPC tastes when a forced transformation will alter your gender presentation."));
 			for (ForcedTFTendency ftt : Util.newArrayListOfValues(ForcedTFTendency.NEUTRAL,
 					ForcedTFTendency.FEMININE,
+					ForcedTFTendency.FEMININE_NO_GENITALS,
 					ForcedTFTendency.FEMININE_HEAVY,
 					ForcedTFTendency.MASCULINE_HEAVY,
+					ForcedTFTendency.MASCULINE_NO_GENITALS,
 					ForcedTFTendency.MASCULINE)) {
 				if (Main.getProperties().getForcedTFTendency() == ftt) {
 					UtilText.nodeContentSB.append("<div id='FORCED_TF_TENDENCY_"+ftt
@@ -2745,8 +2747,10 @@ public class OptionsDialogue {
 					"This allows you to override NPC tastes and control the tendency for forced fetishes to be for topping or bottoming."));
 			for (ForcedFetishTendency fft : Util.newArrayListOfValues(ForcedFetishTendency.NEUTRAL,
 					ForcedFetishTendency.BOTTOM,
+					ForcedFetishTendency.BOTTOM_ONLY,
 					ForcedFetishTendency.BOTTOM_HEAVY,
 					ForcedFetishTendency.TOP_HEAVY,
+					ForcedFetishTendency.TOP_ONLY,
 					ForcedFetishTendency.TOP)) {
 				if (Main.getProperties().getForcedFetishTendency() == fft) {
 					UtilText.nodeContentSB.append("<div id='FORCED_FETISH_TENDENCY_"+fft

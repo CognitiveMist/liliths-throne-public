@@ -260,7 +260,7 @@ public class TunnelImpsDialogue {
 					CorruptionLevel applicableCorruptionLevel = Fetish.FETISH_TRANSFORMATION_RECEIVING.getAssociatedCorruptionLevel();
 
 					return new Response("Swallow",
-							(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY)
+							(Main.getProperties().getForcedTFTendency().isFeminine())
 								?"Swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina, as well as becoming feminine and growing breasts..."
 								:"Swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina...",
 							AFTER_COMBAT_TRANSFORMATION_SOLO,
@@ -274,7 +274,7 @@ public class TunnelImpsDialogue {
 							for(GameCharacter imp : getImpGroup()) {
 								imp.setKnowsCharacterArea(CoverableArea.VAGINA, Main.game.getPlayer(), true);
 								imp.setKnowsCharacterArea(CoverableArea.PENIS, Main.game.getPlayer(), true);
-								if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+								if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 									imp.setKnowsCharacterArea(CoverableArea.BREASTS, Main.game.getPlayer(), true);
 								}
 							}
@@ -329,7 +329,7 @@ public class TunnelImpsDialogue {
 								for(GameCharacter imp : getImpGroup()) {
 									imp.setKnowsCharacterArea(CoverableArea.VAGINA, getMainCompanion(), true);
 									imp.setKnowsCharacterArea(CoverableArea.PENIS, getMainCompanion(), true);
-									if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+									if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 										imp.setKnowsCharacterArea(CoverableArea.BREASTS, getMainCompanion(), true);
 									}
 								}
@@ -350,7 +350,7 @@ public class TunnelImpsDialogue {
 	
 						return new Response("Order swallow",
 								UtilText.parse(getMainCompanion(),
-									((Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY)
+									((Main.getProperties().getForcedTFTendency().isFeminine())
 										?"Tell [npc.name] to swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina, as well as becoming feminine and growing breasts."
 										:"Tell [npc.name] to swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina.")
 									+(getMainCompanion().getFetishDesire(Fetish.FETISH_TRANSFORMATION_RECEIVING).isNegative()
@@ -368,7 +368,7 @@ public class TunnelImpsDialogue {
 									for(GameCharacter imp : getImpGroup()) {
 										imp.setKnowsCharacterArea(CoverableArea.VAGINA, getMainCompanion(), true);
 										imp.setKnowsCharacterArea(CoverableArea.PENIS, getMainCompanion(), true);
-										if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+										if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 											imp.setKnowsCharacterArea(CoverableArea.BREASTS, getMainCompanion(), true);
 										}
 									}
@@ -435,7 +435,7 @@ public class TunnelImpsDialogue {
 									for(GameCharacter imp : getImpGroup()) {
 										imp.setKnowsCharacterArea(CoverableArea.VAGINA, getMainCompanion(), true);
 										imp.setKnowsCharacterArea(CoverableArea.PENIS, getMainCompanion(), true);
-										if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+										if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 											imp.setKnowsCharacterArea(CoverableArea.BREASTS, getMainCompanion(), true);
 										}
 									}
@@ -457,7 +457,7 @@ public class TunnelImpsDialogue {
 					
 					return new Response("Swallow",
 							UtilText.parse(getMainCompanion(),
-								((Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY)
+								((Main.getProperties().getForcedTFTendency().isFeminine())
 									?"Swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina, as well as becoming feminine and growing breasts..."
 									:"Swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina...")
 								+ " ([npc.Name] will decide whether to spit or swallow [npc.her] own potion [npc.herself].)"),
@@ -472,7 +472,7 @@ public class TunnelImpsDialogue {
 							for(GameCharacter imp : getImpGroup()) {
 								imp.setKnowsCharacterArea(CoverableArea.VAGINA, Main.game.getPlayer(), true);
 								imp.setKnowsCharacterArea(CoverableArea.PENIS, Main.game.getPlayer(), true);
-								if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+								if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 									imp.setKnowsCharacterArea(CoverableArea.BREASTS, Main.game.getPlayer(), true);
 								}
 							}
@@ -480,7 +480,7 @@ public class TunnelImpsDialogue {
 								for(GameCharacter imp : getImpGroup()) {
 									imp.setKnowsCharacterArea(CoverableArea.VAGINA, getMainCompanion(), true);
 									imp.setKnowsCharacterArea(CoverableArea.PENIS, getMainCompanion(), true);
-									if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+									if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 										imp.setKnowsCharacterArea(CoverableArea.BREASTS, getMainCompanion(), true);
 									}
 								}
@@ -527,7 +527,7 @@ public class TunnelImpsDialogue {
 									for(GameCharacter imp : getImpGroup()) {
 										imp.setKnowsCharacterArea(CoverableArea.VAGINA, getMainCompanion(), true);
 										imp.setKnowsCharacterArea(CoverableArea.PENIS, getMainCompanion(), true);
-										if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+										if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 											imp.setKnowsCharacterArea(CoverableArea.BREASTS, getMainCompanion(), true);
 										}
 									}
@@ -551,7 +551,7 @@ public class TunnelImpsDialogue {
 
 						return new Response("Swallow (both)",
 								UtilText.parse(getMainCompanion(),
-									((Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY)
+									((Main.getProperties().getForcedTFTendency().isFeminine())
 										?"Swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina, as well as becoming feminine and growing breasts."
 										:"Swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina.")
 									+(getMainCompanion().getFetishDesire(Fetish.FETISH_TRANSFORMATION_RECEIVING).isNegative()
@@ -568,7 +568,7 @@ public class TunnelImpsDialogue {
 								for(GameCharacter imp : getImpGroup()) {
 									imp.setKnowsCharacterArea(CoverableArea.VAGINA, Main.game.getPlayer(), true);
 									imp.setKnowsCharacterArea(CoverableArea.PENIS, Main.game.getPlayer(), true);
-									if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+									if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 										imp.setKnowsCharacterArea(CoverableArea.BREASTS, Main.game.getPlayer(), true);
 									}
 								}
@@ -576,7 +576,7 @@ public class TunnelImpsDialogue {
 									for(GameCharacter imp : getImpGroup()) {
 										imp.setKnowsCharacterArea(CoverableArea.VAGINA, getMainCompanion(), true);
 										imp.setKnowsCharacterArea(CoverableArea.PENIS, getMainCompanion(), true);
-										if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+										if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 											imp.setKnowsCharacterArea(CoverableArea.BREASTS, getMainCompanion(), true);
 										}
 									}
@@ -628,7 +628,7 @@ public class TunnelImpsDialogue {
 					CorruptionLevel applicableCorruptionLevel = Fetish.FETISH_TRANSFORMATION_RECEIVING.getAssociatedCorruptionLevel();
 					
 					return new Response("Swallow",
-							(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY)
+							(Main.getProperties().getForcedTFTendency().isFeminine())
 								?"Swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina, as well as becoming feminine and growing breasts..."
 								:"Swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina...",
 							AFTER_COMBAT_TRANSFORMATION,
@@ -642,7 +642,7 @@ public class TunnelImpsDialogue {
 							for(GameCharacter imp : getImpGroup()) {
 								imp.setKnowsCharacterArea(CoverableArea.VAGINA, Main.game.getPlayer(), true);
 								imp.setKnowsCharacterArea(CoverableArea.PENIS, Main.game.getPlayer(), true);
-								if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+								if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 									imp.setKnowsCharacterArea(CoverableArea.BREASTS, Main.game.getPlayer(), true);
 								}
 							}
@@ -690,7 +690,7 @@ public class TunnelImpsDialogue {
 								for(GameCharacter imp : getImpGroup()) {
 									imp.setKnowsCharacterArea(CoverableArea.VAGINA, getMainCompanion(), true);
 									imp.setKnowsCharacterArea(CoverableArea.PENIS, getMainCompanion(), true);
-									if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+									if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 										imp.setKnowsCharacterArea(CoverableArea.BREASTS, getMainCompanion(), true);
 									}
 								}
@@ -710,7 +710,7 @@ public class TunnelImpsDialogue {
 	
 						return new Response("Order swallow",
 								UtilText.parse(getMainCompanion(),
-									((Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY)
+									((Main.getProperties().getForcedTFTendency().isFeminine())
 										?"Tell [npc.name] to swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina, as well as becoming feminine and growing breasts."
 										:"Tell [npc.name] to swallow the potion, which, if the imps are to be believed, causes the drinker to grow both a penis and vagina.")
 									+(getMainCompanion().getFetishDesire(Fetish.FETISH_TRANSFORMATION_RECEIVING).isNegative()
@@ -728,7 +728,7 @@ public class TunnelImpsDialogue {
 									for(GameCharacter imp : getImpGroup()) {
 										imp.setKnowsCharacterArea(CoverableArea.VAGINA, getMainCompanion(), true);
 										imp.setKnowsCharacterArea(CoverableArea.PENIS, getMainCompanion(), true);
-										if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE || Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+										if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 											imp.setKnowsCharacterArea(CoverableArea.BREASTS, getMainCompanion(), true);
 										}
 									}

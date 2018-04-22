@@ -833,7 +833,7 @@ public class EnforcerAlleywayDialogue {
 			} else {
 				boolean foughtBefore = ((NPC)getEnforcerLeader()).getFoughtPlayerCount()>0;
 				boolean wantsToSearch = !isThinksPlayerEnforcer()
-						&& (Main.game.getPlayer().getRace()==Race.HUMAN || !Main.game.isDayTime())
+						/*&& (Main.game.getPlayer().getRace()==Race.HUMAN || !Main.game.isDayTime())*/
 						&& !isDemonRevealed()
 						&& !searched
 						&& !hadSex

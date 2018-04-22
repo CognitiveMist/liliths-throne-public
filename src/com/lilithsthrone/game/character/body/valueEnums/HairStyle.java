@@ -49,7 +49,7 @@ public enum HairStyle {
 	PIXIE("pixie-cut", Femininity.FEMININE, HairLength.TWO_SHORT),
 	BUN("bun", Femininity.FEMININE, HairLength.THREE_SHOULDER_LENGTH),
 	BOB_CUT("bob-cut", Femininity.FEMININE, HairLength.THREE_SHOULDER_LENGTH),
-	CHONMAGE("chonmage", Femininity.FEMININE, HairLength.THREE_SHOULDER_LENGTH),
+	UPDO("updo", Femininity.FEMININE, HairLength.THREE_SHOULDER_LENGTH),
 	WAVY("wavy", Femininity.FEMININE, HairLength.THREE_SHOULDER_LENGTH),
 	PONYTAIL("ponytail", Femininity.FEMININE, HairLength.THREE_SHOULDER_LENGTH),
 	LOW_PONYTAIL("low ponytail", Femininity.FEMININE, HairLength.THREE_SHOULDER_LENGTH),
@@ -60,8 +60,8 @@ public enum HairStyle {
 	TWIN_BRAIDS("twin braids", Femininity.FEMININE, HairLength.FOUR_MID_BACK),
 	CROWN_BRAID("crown braid", Femininity.FEMININE, HairLength.FOUR_MID_BACK),
 	DRILLS("ojou ringlets", Femininity.FEMININE, HairLength.FOUR_MID_BACK),
-	HIME_CUT("hime-cut", Femininity.FEMININE, HairLength.FOUR_MID_BACK),
-	BIRD_CAGE("bird cage", Femininity.FEMININE, HairLength.SEVEN_TO_FLOOR);
+	FRENCH_BRAID("french braid", Femininity.FEMININE, HairLength.FOUR_MID_BACK),
+	BEEHIVE("beehive", Femininity.FEMININE, HairLength.FIVE_ABOVE_ASS);
 	
 	private String descriptor;
 	private Femininity femininity;
@@ -110,10 +110,8 @@ public enum HairStyle {
 			availableStyles.remove(HairStyle.AFRO);
 			availableStyles.remove(HairStyle.SIDECUT);
 			availableStyles.remove(HairStyle.MOHAWK);
-			availableStyles.remove(HairStyle.HIME_CUT);
-			availableStyles.remove(HairStyle.CHONMAGE);
 			availableStyles.remove(HairStyle.DREADLOCKS);
-			availableStyles.remove(HairStyle.BIRD_CAGE);
+			availableStyles.remove(HairStyle.BEEHIVE);
 			availableStyles.remove(HairStyle.DRILLS);
 		}
 		

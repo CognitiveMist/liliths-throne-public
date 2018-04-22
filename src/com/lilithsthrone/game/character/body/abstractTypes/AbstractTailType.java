@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lilithsthrone.game.PropertyValue;
 import org.w3c.dom.Document;
 
 import com.lilithsthrone.controller.xmlParsing.Element;
@@ -943,6 +944,13 @@ public abstract class AbstractTailType implements BodyPartTypeInterface {
 	
 	public boolean isPrehensile() {
 		return tags.contains(BodyPartTag.TAIL_PREHENSILE);
+	}
+
+	/**
+	 * Takes into account whether player has 'Allow furry tail penetrations' turned on or off.
+	 */
+	public boolean isSuitableForPenetration() {
+		return this.isPrehensile() && (tags.contains(BodyPartTag.TAIL_SUITABLE_FOR_PENETRATION) || Main.getProperties().hasValue(PropertyValue.furryTailPenetrationContent));
 	}
 	
 	public boolean isSuitableForSleepHugging() {

@@ -3199,7 +3199,7 @@ public class PhoneDialogue {
 			for(AbstractWeaponType weaponType : weaponsDiscoveredList) {
 				boolean discovered = Main.getProperties().isWeaponDiscovered(weaponType);
 				String entry = "<div class='inventory-item-slot unequipped' style='background-color:"+weaponType.getRarity().getBackgroundColour().toWebHexString()+"; width:78%; margin:1%; padding:0; '>"
-									+ "<div class='inventory-icon-content'>"+(discovered?weaponType.getSVGImage():"")+"</div>"
+									+ "<div class='inventory-icon-content'>"+(discovered?weaponType.getSVGImage():Util.capitaliseSentence(weaponType.getName()))+"</div>"
 									+ "<div class='overlay"+(discovered?"' id='"+weaponType.getId()+"'":" disabled-dark'")+" style='cursor:default;'></div>"
 								+ "</div>";
 				sbDamageTypes.setLength(0);
@@ -3292,7 +3292,7 @@ public class PhoneDialogue {
 				for(InventorySlot slot : clothingType.getEquipSlots()) {
 					if(slots.contains(slot)) {
 						String entry = "<div class='inventory-item-slot unequipped' style='background-color:"+clothingType.getRarity().getBackgroundColour().toWebHexString()+"; width:8%;'>"
-								+ "<div class='inventory-icon-content'>"+(discovered?clothingType.getSVGImageRandomColour(slot, true, false, false):"")+"</div>"
+								+ "<div class='inventory-icon-content'>"+(discovered?clothingType.getSVGImageRandomColour(slot, true, false, false):Util.capitaliseSentence(clothingType.getName()))+"</div>"
 								+ "<div class='overlay"+(discovered?"' id='"+clothingType.getId()+"_"+slot.toString()+"'":" disabled-dark'")+" style='cursor:default;'></div>"
 							+ "</div>";
 						sbMap.get(slot).append(entry);
@@ -3370,7 +3370,7 @@ public class PhoneDialogue {
 			for(AbstractItemType itemType : itemsDiscoveredList) {
 				boolean discovered = Main.getProperties().isItemDiscovered(itemType);
 				String entry = "<div class='inventory-item-slot unequipped' style='background-color:"+itemType.getRarity().getBackgroundColour().toWebHexString()+"; width:8%;'>"
-									+ "<div class='inventory-icon-content'>"+(discovered?itemType.getSVGString():"")+"</div>"
+									+ "<div class='inventory-icon-content'>"+(discovered?itemType.getSVGString():Util.capitaliseSentence(itemType.getName(true)))+"</div>"
 									+ "<div class='overlay"+(discovered?"' id='"+itemType.getId()+"'":" disabled-dark'")+" style='cursor:default;'></div>"
 								+ "</div>";
 				

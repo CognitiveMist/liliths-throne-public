@@ -32,7 +32,7 @@
 		<cond3 constant="true"><![CDATA[RND.nextInt(100)<=25]]></cond3> <!-- hand wraps -->
 		<cond4 constant="true"><![CDATA[RND.nextInt(100)<=25]]></cond4> <!-- For legwear femininity -->
 		<cond5 constant="true"><![CDATA[npc.getLegConfiguration()==LEG_CONFIGURATION_BIPEDAL && npc.getFootStructure()==FOOT_STRUCTURE_PLANTIGRADE]]></cond5> <!-- is bipedal -->
-		<cond7 constant="true"><![CDATA[RND.nextInt(100)<=50]]></cond7> <!-- face covering -->
+		<cond7 constant="true"><![CDATA[RND.nextInt(100)<=5]]></cond7> <!-- face covering -->
 		<cond8 constant="true"><![CDATA[RND.nextInt(100)<=50]]></cond8> <!-- balaclava -->
 		<cond9 constant="true"><![CDATA[RND.nextInt(100)<=50]]></cond9> <!-- beanie -->
 		

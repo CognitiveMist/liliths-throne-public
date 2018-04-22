@@ -227,8 +227,14 @@ public class SvgUtil {
 		int defEndIndex;
 		if (defIndex > 0) {
 			// Replace defs
-			defEndIndex = s.indexOf("</defs>");
-			returnable = s.substring(0, defEndIndex) + newClipMask;
+			defEndIndex = s.indexOf("</defs>", defIndex);
+			if (defEndIndex < 0) {
+				// Must be self-closing
+				defEndIndex = s.indexOf("/>", defIndex);
+				returnable = s.substring(0, defEndIndex) + ">" + newClipMask + "</defs>";
+			} else {
+				returnable = s.substring(0, defEndIndex) + newClipMask;
+			}
 		} else {
 			// Insert defs
 			defEndIndex = s.indexOf('>') + 1;

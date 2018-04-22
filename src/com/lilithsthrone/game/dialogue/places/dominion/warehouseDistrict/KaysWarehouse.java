@@ -540,15 +540,16 @@ public class KaysWarehouse {
 							List<AbstractClothingType> clothingToGenerate = new ArrayList<>(ClothingType.getAllClothing());
 							clothingToGenerate.removeIf((clothing) -> clothing.getRarity()!=Rarity.COMMON || !clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_NYAN) || clothing.getDefaultItemTags().contains(ItemTag.NO_RANDOM_SPAWN));
 							
-							Main.game.getTextEndStringBuilder().append(
-									Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), false), false)
-									+ Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), true), false)
-									+ (Math.random()>0.5?Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), true), false):"")
-									+ (Math.random()>0.5?Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), true), false):"")
-							        + UtilText.parseFromXMLFile("places/dominion/warehouseDistrict/kaysTextiles", "STORAGE_AREA_SEARCHED"));
+							for (int i = Util.random.nextInt(4) + 5; i >= 0; i--) {
+								Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing(Util.randomItemFrom(clothingToGenerate), false), false));
+							}
+							Main.game.getTextEndStringBuilder().append(UtilText.parseFromXMLFile("places/dominion/warehouseDistrict/kaysTextiles", "STORAGE_AREA_SEARCHED"));
 						}
 					};
 				}
+			} else if (index == 2) {
+				Main.game.getDialogueFlags().setFlag(DialogueFlagValue.kayCratesSearched, false);
+				return new Response("Find More Crates", "Maybe there's more crates further inside...", STORAGE_AREA);
 			}
 			return null;
 		}

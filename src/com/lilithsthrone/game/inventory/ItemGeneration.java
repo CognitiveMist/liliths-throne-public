@@ -152,6 +152,10 @@ public class ItemGeneration {
 	}
 	
 	public AbstractClothing generateClothing(AbstractClothingType clothingType, Colour primaryColour, Colour secondaryColour, Colour tertiaryColour, boolean allowRandomEnchantment) {
+		return this.generateClothing(clothingType, primaryColour, secondaryColour, tertiaryColour, allowRandomEnchantment, 80);
+	}
+	
+	public AbstractClothing generateClothing(AbstractClothingType clothingType, Colour primaryColour, Colour secondaryColour, Colour tertiaryColour, boolean allowRandomEnchantment, int randomEnchantmentBenevolence) {
 		List<Colour> colours = Util.newArrayListOfValues(primaryColour, secondaryColour, tertiaryColour);
 		
 		if(Main.DEBUG) {
@@ -185,7 +189,7 @@ public class ItemGeneration {
 			colours.add(entry.getKey(), replacement);
 		}
 		
-		return new AbstractClothing(clothingType, colours, allowRandomEnchantment) {};
+		return new AbstractClothing(clothingType, colours, allowRandomEnchantment, randomEnchantmentBenevolence) {};
 	}
 
 	public AbstractClothing generateClothing(AbstractClothingType clothingType, Colour colourShade, boolean allowRandomEnchantment) {

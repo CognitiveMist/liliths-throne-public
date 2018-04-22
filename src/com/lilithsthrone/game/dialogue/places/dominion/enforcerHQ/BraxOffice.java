@@ -60,6 +60,7 @@ public class BraxOffice {
 		if(sb==null) {
 			sb = new StringBuilder();
 		}
+		outfitFem = -1;
 		if(outfitFem==1) {
 			sb.append(Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing("dsg_eep_servequipset_enfskirt", PresetColour.CLOTHING_BLACK, false), false));
 			sb.append(Main.game.getPlayer().addClothing(Main.game.getItemGen().generateClothing("dsg_eep_ptrlequipset_flsldshirt", PresetColour.CLOTHING_PINK, false), false));
@@ -147,7 +148,7 @@ public class BraxOffice {
 			} else if (index == 2) {
 				return new Response("Lie", "You notice that all of the models in the posters are wolf-girls. Perhaps you could pretend that Arthur is a patron of an exclusive wolf-girl themed brothel that you so happen to own...",
 						INTERIOR_BRAX_LIE,
-						null, null, Util.newArrayListOfValues(Perk.OBSERVANT), null, null) {
+						null, null, null, null, null) {
 					@Override
 					public void effects() {
 						Main.game.getDialogueFlags().setFlag(DialogueFlagValue.braxEncountered, true);
@@ -306,6 +307,15 @@ public class BraxOffice {
 						setBraxsPostQuestStatus(true);
 					}
 				};
+				
+			} else if (index == 3) {
+				return new Response("Both uniforms", "Take both uniforms and leave the Enforcer HQ.", PlaceType.DOMINION_ENFORCER_HQ.getDialogue(false)) {
+					@Override
+					public void effects() {
+						givePlayerEnforcerUniform(Main.game.getTextEndStringBuilder(), -1);
+						setBraxsPostQuestStatus(true);
+					}
+				};
 			} else {
 				return null;
 			}
@@ -427,8 +437,16 @@ public class BraxOffice {
 						setBraxsPostQuestStatus(true);
 					}
 				};
-			} 
-			else {
+				
+			} else if (index == 3) {
+				return new Response("Both uniforms", "You take both uniforms and leave the Enforcer HQ.", PlaceType.DOMINION_ENFORCER_HQ.getDialogue(false)) {
+					@Override
+					public void effects() {
+						givePlayerEnforcerUniform(Main.game.getTextEndStringBuilder(), -1);
+						setBraxsPostQuestStatus(true);
+					}
+				};
+			} else {
 				return null;
 			}
 		};
@@ -511,6 +529,15 @@ public class BraxOffice {
 					@Override
 					public void effects() {
 						givePlayerEnforcerUniform(Main.game.getTextEndStringBuilder(),0);
+						setBraxsPostQuestStatus(true);
+					}
+				};
+				
+			} else if (index == 3) {
+				return new Response("Both uniforms", "You take both uniforms and find yourself outside once more, but this time, with new knowledge of Arthur's location.", PlaceType.DOMINION_ENFORCER_HQ.getDialogue(false)) {
+					@Override
+					public void effects() {
+						givePlayerEnforcerUniform(Main.game.getTextEndStringBuilder(), -1);
 						setBraxsPostQuestStatus(true);
 					}
 				};
@@ -669,6 +696,15 @@ public class BraxOffice {
 							setBraxsPostQuestStatus(true);
 						}
 					};
+					
+				} else if (index == 3) {
+					return new Response("Both uniforms", "You take both uniforms and continue on your way.", PlaceType.DOMINION_ENFORCER_HQ.getDialogue(false)) {
+						@Override
+						public void effects() {
+							givePlayerEnforcerUniform(Main.game.getTextEndStringBuilder(), -1);
+							setBraxsPostQuestStatus(true);
+						}
+					};
 				}
 				
 			} else {
@@ -707,6 +743,15 @@ public class BraxOffice {
 					@Override
 					public void effects() {
 						givePlayerEnforcerUniform(Main.game.getTextEndStringBuilder(), 0);
+						setBraxsPostQuestStatus(true);
+					}
+				};
+				
+			} else if (index == 3) {
+				return new Response("Both uniforms", "You take both uniforms and find yourself back outside once more, but this time, with new knowledge of Arthur's location.", PlaceType.DOMINION_ENFORCER_HQ.getDialogue(false)) {
+					@Override
+					public void effects() {
+						givePlayerEnforcerUniform(Main.game.getTextEndStringBuilder(), -1);
 						setBraxsPostQuestStatus(true);
 					}
 				};

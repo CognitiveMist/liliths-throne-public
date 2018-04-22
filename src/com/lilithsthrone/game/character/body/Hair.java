@@ -215,21 +215,25 @@ public class Hair implements BodyPartInterface {
 				case MESSY:
 					sb.append("unstyled, and particularly messy.");
 					break;
+				/*
 				case HIME_CUT:
 					sb.append("straightened, and styled into a hime-cut.");
 					break;
 				case CHONMAGE:
 					sb.append("straightened, oiled, and styled into a chonmage.");
 					break;
+				*/
 				case DREADLOCKS:
 					sb.append("styled into dreadlocks.");
 					break;
 				case TOPKNOT:
 					sb.append("gathered up into a topknot.");
 					break;
+				/*
 				case BIRD_CAGE:
 					sb.append("styled into an elaborate bird cage.");
 					break;
+				*/
 				case TWIN_BRAIDS:
 					sb.append("styled into twin braids.");
 					break;
@@ -254,6 +258,12 @@ public class Hair implements BodyPartInterface {
 				case SIDE_PARTED:
 					sb.append("styled into a side parting.");
 					break;
+				case FRENCH_BRAID:
+					return "woven into a long French braid.";
+				case UPDO:
+					return "styled into an elegant updo.";
+				case BEEHIVE:
+					return "styled into an elaborate beehive.";
 			}
 		sb.append("</p>");
 		return UtilText.parse(owner, sb.toString());

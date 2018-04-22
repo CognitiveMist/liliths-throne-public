@@ -537,18 +537,22 @@ public abstract class AbstractWeapon extends AbstractCoreItem implements XMLSavi
 
 	@Override
 	public Rarity getRarity() {
-		if(rarity==Rarity.COMMON) {
-			if(this.getWeaponType().getClothingSet()!=null) {
-				return Rarity.EPIC;
-			}
-			if(this.getEffects().size()>1) {
-				return Rarity.RARE;
-			}
-			if(!this.getEffects().isEmpty()) {
-				return Rarity.UNCOMMON;
-			}
+		if(rarity==Rarity.QUEST) {
+			return rarity;
 		}
-		return rarity;
+		if(this.getEffects().size()>10 || this.getEnchantmentCapacityCost()>50) {
+			return Rarity.LEGENDARY;
+		}
+		if(this.getEffects().size()>4 || this.getEnchantmentCapacityCost()>20 || this.getWeaponType().getClothingSet()!=null) {
+			return Rarity.EPIC;
+		}
+		if(this.getEffects().size()>1 || this.getEnchantmentCapacityCost()>8) {
+			return Rarity.RARE;
+		}
+		if(!this.getEffects().isEmpty()) {
+			return Rarity.UNCOMMON;
+		}
+		return Rarity.COMMON;
 	}
 	
 	@Override

@@ -1958,7 +1958,8 @@ public enum RenderingEngine {
 					?getDangerousBackground(placeType)
 					:discovered
 						?"background-color:"+placeType.getBackgroundColour().toRGBA(alpha)+";"
-						:"background-color:"+PresetColour.MAP_BACKGROUND_UNEXPLORED.toRGBA(alpha)+";";
+						:"background:transparent;";
+						//:"background-color:"+PresetColour.MAP_BACKGROUND_UNEXPLORED.toRGBA(alpha)+";";
 		}
 	}
 	
@@ -2432,8 +2433,12 @@ public enum RenderingEngine {
 
 						}
 						
-					} else if(cellFocused.getPlace().getPlaceType()!=PlaceType.GENERIC_IMPASSABLE) {
+					} else if(cellFocused.getPlace().getPlaceType()!=PlaceType.GENERIC_IMPASSABLE && Main.game.getActiveWorld().getCell(x, y).isDiscovered()) {
 						mapSB.append("<div class='map-tile' style='background-color:"+PresetColour.MAP_BACKGROUND_UNEXPLORED.toWebHexString()+"; "+tileWidthStyle+"'></div>");
+						
+					} else if(cellFocused.getPlace().getPlaceType()!=PlaceType.GENERIC_IMPASSABLE) {
+						//mapSB.append("<div class='map-tile' style='background-color:"+PresetColour.MAP_BACKGROUND_UNEXPLORED.toWebHexString()+"; "+tileWidthStyle+";opacity:0.4'></div>");
+						mapSB.append("<div class='map-tile blank' style='"+tileWidthStyle+"'></div>");
 
 					} else {
 						mapSB.append("<div class='map-tile blank' style='"+tileWidthStyle+"'></div>");
@@ -2508,7 +2513,7 @@ public enum RenderingEngine {
 	
 	private void appendNotVisitedLayer(World world, int x, int y) {
 		if(!world.getCell(x, y).isTravelledTo()) {
-			mapSB.append("<div style='position:absolute;width:100%;height:100%;top:0;left:0;background-color:rgba(0,0,0,0.5);'></div>");
+			mapSB.append("<div style='position:absolute;width:100%;height:100%;top:0;left:0;background-color:rgba(0,0,0,0.5);border-radius:5px;'></div>");
 		}
 	}
 

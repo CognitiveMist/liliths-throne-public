@@ -359,13 +359,12 @@ public class ImpAttacker extends NPC {
 //		int numberOfTransformations = (2+Util.random.nextInt(4)) * (target.hasFetish(Fetish.FETISH_TRANSFORMATION_RECEIVING)?2:1);
 		
 		if(target.getLocationPlace().getPlaceType().equals(PlaceType.SUBMISSION_IMP_TUNNELS_ALPHA)) {
-			if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE
-					|| Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+			if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 				effects.addAll(getFeminineEffects(target, itemType));
 			}
 			
 			// Add wet vagina:
-			if(!target.hasVagina()) {
+			if(!target.hasVagina() && !Main.getProperties().getForcedTFTendency().noGenitals()) {
 				effects.add(new PossibleItemEffect(
 					new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_VAGINA, TFModifier.NONE, TFPotency.MINOR_BOOST, 1),
 					"Let's give yer a nice new cunt!"));
@@ -383,7 +382,7 @@ public class ImpAttacker extends NPC {
 			}
 			
 			// Add penis:
-			if(!target.hasPenisIgnoreDildo()) {
+			if(!target.hasPenisIgnoreDildo() && !Main.getProperties().getForcedTFTendency().noGenitals()) {
 				effects.add(new PossibleItemEffect(
 					new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_PENIS, TFModifier.NONE, TFPotency.MINOR_BOOST, 1),
 					"Yer gonna need a cock to satisfy us!"));
@@ -403,15 +402,14 @@ public class ImpAttacker extends NPC {
 			}
 			
 		} else if(target.getLocationPlace().getPlaceType().equals(PlaceType.SUBMISSION_IMP_TUNNELS_DEMON)) {
-			if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.MASCULINE
-					|| Main.getProperties().getForcedTFTendency()==ForcedTFTendency.MASCULINE_HEAVY) {
+			if(Main.getProperties().getForcedTFTendency().isMasculine()) {
 				effects.addAll(getMasculineEffects(target, itemType));
 			} else {
 				effects.addAll(getFeminineEffects(target, itemType));
 			}
 
 			// Add penis:
-			if(!target.hasPenisIgnoreDildo()) {
+			if(!target.hasPenisIgnoreDildo() && !Main.getProperties().getForcedTFTendency().noGenitals()) {
 				effects.add(new PossibleItemEffect(
 					new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_PENIS, TFModifier.NONE, TFPotency.MINOR_BOOST, 1),
 					"Yer gonna need a cock to satisfy us!"));
@@ -439,7 +437,7 @@ public class ImpAttacker extends NPC {
 			}
 			
 			// Add wet vagina:
-			if(!target.hasVagina()) {
+			if(!target.hasVagina() && !Main.getProperties().getForcedTFTendency().noGenitals()) {
 				effects.add(new PossibleItemEffect(
 					new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_VAGINA, TFModifier.NONE, TFPotency.MINOR_BOOST, 1),
 					"Let's give yer a nice new cunt!"));
@@ -457,13 +455,12 @@ public class ImpAttacker extends NPC {
 			}
 			
 		} else if(target.getLocationPlace().getPlaceType().equals(PlaceType.SUBMISSION_IMP_TUNNELS_FEMALES)) {
-			if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.MASCULINE
-					|| Main.getProperties().getForcedTFTendency()==ForcedTFTendency.MASCULINE_HEAVY) {
+			if(Main.getProperties().getForcedTFTendency().isMasculine()) {
 				effects.addAll(getMasculineEffects(target, itemType));
 			}
 			
 			// Add penis:
-			if(!target.hasPenisIgnoreDildo()) {
+			if(!target.hasPenisIgnoreDildo() && !Main.getProperties().getForcedTFTendency().noGenitals()) {
 				effects.add(new PossibleItemEffect(
 					new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_PENIS, TFModifier.NONE, TFPotency.MINOR_BOOST, 1),
 					"Yer gonna need a cock to satisfy us!"));
@@ -510,13 +507,12 @@ public class ImpAttacker extends NPC {
 			}
 			
 		} else if(target.getLocationPlace().getPlaceType().equals(PlaceType.SUBMISSION_IMP_TUNNELS_MALES)) {
-			if(Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE
-					|| Main.getProperties().getForcedTFTendency()==ForcedTFTendency.FEMININE_HEAVY) {
+			if(Main.getProperties().getForcedTFTendency().isFeminine()) {
 				effects.addAll(getFeminineEffects(target, itemType));
 			}
 			
 			// Add wet vagina:
-			if(!target.hasVagina()) {
+			if(!target.hasVagina() && !Main.getProperties().getForcedTFTendency().noGenitals()) {
 				effects.add(new PossibleItemEffect(
 					new ItemEffect(itemType.getEnchantmentEffect(), TFModifier.TF_VAGINA, TFModifier.NONE, TFPotency.MINOR_BOOST, 1),
 					"Let's give yer a cunt ta fuck!"));

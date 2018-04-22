@@ -510,7 +510,7 @@ public class UtilText {
 			
 		} else {
 			if(includePersonalityEffects) {
-				if(target.hasFetish(Fetish.FETISH_BIMBO)) {
+				if(target.hasFetish(Fetish.FETISH_BIMBO) && target != Main.game.getPlayer()) {
 					if(target.isFeminine()) {
 						modifiedSentence = Util.addBimbo(modifiedSentence, 6);
 					} else {

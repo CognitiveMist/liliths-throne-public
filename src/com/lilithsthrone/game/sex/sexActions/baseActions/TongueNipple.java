@@ -104,7 +104,7 @@ public class TongueNipple {
 							"[npc.Name] "+desc[0]+" [npc.verb(lean)] in towards [npc2.namePos] [npc2.breasts+], before pressing [npc.her] [npc.lips+] against [npc2.her] lipples and "+desc[1]+" starting to make out with them.",
 							Util.capitaliseSentence(desc[0])+" pressing [npc.her] [npc.lips+] against ones of [npc2.namePos] [npc2.breasts+], [npc.name] [npc.verb(start)] "+desc[1]+" to making out with [npc2.her] lipples."));
 					
-					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration()) {
+					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration() && Main.game.isNipplePenEnabled()) {
 						UtilText.nodeContentSB.append(" Just like a real mouth, [npc2.namePos] lip-like nipples part to reveal a throat-like orifice, allowing [npc.name] to thrust [npc.her] tongue into [npc2.her] [npc2.breast(true)].");
 					}
 					break;
@@ -114,7 +114,7 @@ public class TongueNipple {
 							"[npc.Name] "+desc[0]+" [npc.verb(press)] [npc.her] [npc.lips+] against one of [npc2.namePos] [npc2.breasts+], before starting to "+desc[1]+" suck and kiss [npc2.her] [npc2.nipple+].",
 							Util.capitaliseSentence(desc[0])+" pressing [npc.her] [npc.lips+] against [npc2.namePos] [npc2.breast(true)], [npc.name] [npc.verb(start)] "+desc[1]+" sucking and kissing [npc2.her] [npc2.nipple+]."));
 
-					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration()) {
+					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration() && Main.game.isNipplePenEnabled()) {
 						UtilText.nodeContentSB.append(" [npc.Name] [npc.verb(feel)] that the centre of [npc2.namePos] nipple opens up to reveal an orifice, allowing [npc.herHim] to thrust [npc.her] tongue into [npc2.her] [npc2.breast(true)].");
 					}
 					break;
@@ -123,7 +123,7 @@ public class TongueNipple {
 							"[npc.Name] "+desc[0]+" [npc.verb(lean)] in towards [npc2.namePos] [npc2.breasts+], before pressing [npc.her] [npc.lips+] against one of [npc2.her] pussy-like nipples and "+desc[1]+" starting to kiss and lick it.",
 							Util.capitaliseSentence(desc[0])+" pressing [npc.her] [npc.lips+] against one of [npc2.namePos] [npc2.breasts], [npc.name] [npc.verb(start)] "+desc[1]+" sucking and kissing [npc2.her] pussy-like nipple."));
 					
-					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration()) {
+					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration() && Main.game.isNipplePenEnabled()) {
 						UtilText.nodeContentSB.append(" Just like a real vagina, the centre of [npc2.namePos] cunt-like nipple houses an orifice, allowing [npc.name] to thrust [npc.her] tongue into [npc2.her] [npc2.breast(true)].");
 					}
 					break;
@@ -1206,7 +1206,7 @@ public class TongueNipple {
 									+ " before "+desc[1]+" getting [npc2.herHim] to kiss and make out with [npc.her] lipple.",
 							"Taking hold of [npc2.namePos] head, [npc.name] "+desc[0]+" [npc.verb(pull)] [npc2.herHim] into [npc.her] [npc.breasts+], before "+desc[1]+" getting [npc2.herHim] to kiss [npc.her] mouth-like lipple."));
 					
-					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration()) {
+					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration() && Main.game.isNipplePenEnabled()) {
 						UtilText.nodeContentSB.append(" Just like a real mouth, [npc.namePos] lip-like nipples part to reveal a throat-like orifice, allowing [npc2.name] to thrust [npc2.her] tongue into [npc.her] [npc.breast(true)].");
 					}
 					break;
@@ -1216,7 +1216,7 @@ public class TongueNipple {
 							"Taking hold of [npc2.namePos] head, [npc.name] "+desc[0]+" [npc.verb(guide)] [npc2.her] [npc2.lips+] up to one of [npc.her] [npc.breasts+], before "+desc[1]+" getting [npc2.herHim] to suck and kiss [npc.her] [npc.nipple+].",
 							"Taking hold of [npc2.namePos] head, [npc.name] "+desc[0]+" [npc.verb(pull)] [npc2.herHim] into [npc.her] [npc.breasts+], before "+desc[1]+" getting [npc2.herHim] to suck and kiss [npc.her] [npc.nipple+]."));
 
-					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration()) {
+					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration() && Main.game.isNipplePenEnabled()) {
 						UtilText.nodeContentSB.append(" [npc2.Name] [npc2.verb(feel)] that the centre of [npc.namePos] nipple opens up to reveal an orifice, allowing [npc2.herHim] to thrust [npc2.her] tongue into [npc.her] [npc.breast(true)].");
 					}
 					break;
@@ -1225,7 +1225,7 @@ public class TongueNipple {
 							"Taking hold of [npc2.namePos] head, [npc.name] "+desc[0]+" [npc.verb(guide)] [npc2.her] [npc2.lips+] up to one of [npc.her] [npc.breasts+], before "+desc[1]+" getting [npc2.herHim] to lick and kiss [npc.her] nipple-cunt.",
 							"Taking hold of [npc2.namePos] head, [npc.name] "+desc[0]+" [npc.verb(pull)] [npc2.herHim] into [npc.her] [npc.breasts+], before "+desc[1]+" getting [npc2.herHim] to lick and kiss [npc.her] nipple-cunt."));
 					
-					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration()) {
+					if(Main.sex.getCharacterTargetedForSexAction(this).isBreastFuckableNipplePenetration() && Main.game.isNipplePenEnabled()) {
 						UtilText.nodeContentSB.append(" Just like a real vagina, the centre of [npc.namePos] pussy-like nipple houses an orifice, allowing [npc2.name] to thrust [npc2.her] tongue into [npc.her] [npc.breast(true)].");
 					}
 					break;

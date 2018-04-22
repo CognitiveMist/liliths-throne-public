@@ -377,6 +377,10 @@ public abstract class AbstractPenisType implements BodyPartTypeInterface {
 		return race;
 	}
 
+	public String getRawBodyDescription() {
+		return bodyDescription;
+	}
+
 //	@Override
 	public String getBodyDescription(GameCharacter owner) {
 		return UtilText.parse(owner, bodyDescription);

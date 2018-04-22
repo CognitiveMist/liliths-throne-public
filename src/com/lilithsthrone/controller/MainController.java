@@ -1844,6 +1844,8 @@ public class MainController implements Initializable {
 		} else if (currentNode.equals(SuccubisSecrets.SHOP_BEAUTY_SALON_HAIR)) {
 			CoveringController.initHairLengthListeners();
 			CoveringController.initHairStyleListeners();
+		} else if (currentNode.equals(RoomPlayer.AUNT_HOME_PLAYERS_ROOM_MAKEUP)) {
+			CoveringController.initHairStyleListeners();
 		}
 		setResponseEventListeners();
 	}

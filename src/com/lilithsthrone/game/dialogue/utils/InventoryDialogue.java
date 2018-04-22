@@ -63,8 +63,8 @@ import com.lilithsthrone.utils.comparators.ClothingZLayerComparator;
  */
 public class InventoryDialogue {
 	
-	private static final int IDENTIFICATION_PRICE = 1000;
-	private static final int IDENTIFICATION_ESSENCE_PRICE = 15;
+	private static final int IDENTIFICATION_PRICE = 4000;
+	private static final int IDENTIFICATION_ESSENCE_PRICE = 40;
 	
 	private static AbstractItem item;
 	private static AbstractClothing clothing;

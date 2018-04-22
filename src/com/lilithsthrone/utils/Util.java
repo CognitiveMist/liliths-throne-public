@@ -159,7 +159,19 @@ public class Util {
 	public static Color newColour(int hex) {
 		return newColour((hex & 0xFF0000) >> 16, (hex & 0xFF00) >> 8, (hex & 0xFF));
 	}
-	
+
+	/**
+	 * Rounds down to the nearest power of 10
+	 * @param input
+	 * @return the largest power of 10 less than input
+	 */
+	public static long getRoundedFlamesTransferAmount(double input) {
+		double magnitude = Math.floor(Math.log10(input));
+		long output = (long)Math.pow(10, magnitude);
+		//System.out.println(input + " -> " + magnitude + " -> " + output);
+		return output;
+	}
+
 	/**
 	 * Takes an input, and a maximum value, and returns LT's universal "dropoff" formula to it.
 	 * @param input
@@ -1561,7 +1573,7 @@ public class Util {
 		
 		slovenlySpeechReplacementMap.put("Going to", "Gonna");
 		slovenlySpeechReplacementMap.put("going to", "gonna");
-		
+
 		slovenlySpeechReplacementMap.put("To", "Ta");
 		slovenlySpeechReplacementMap.put("to", "ta");
 		slovenlySpeechReplacementMap.put("Into", "Inta");
@@ -1610,7 +1622,7 @@ public class Util {
 		
 		slovenlySpeechReplacementMap.put("Give me", "Gimme");
 		slovenlySpeechReplacementMap.put("give me", "gimme");
-		
+
 		slovenlySpeechReplacementMap.put("We're", "We's");
 		slovenlySpeechReplacementMap.put("we're", "we's");
 		
@@ -1921,6 +1933,9 @@ public class Util {
 		}
 		if(stringMatchDistance>maxDistance) {
 			System.err.println("Warning: getClosestStringMatch() did not find a close enough match for '"+input+"'; returning null. (Closest match was '"+closestString+"' at distance: "+stringMatchDistance+")");
+			if(Main.DEBUG) {
+				new IllegalArgumentException().printStackTrace(System.err);
+			}
 			return null;
 		}
 		if(stringMatchDistance>0) { // Only show error message if difference is more than just capitalisation differences

@@ -87,6 +87,10 @@ public abstract class AbstractClothing extends AbstractCoreItem implements XMLSa
 	private List<DisplacementType> displacedList;
 	
 	public AbstractClothing(AbstractClothingType clothingType, List<Colour> colours, boolean allowRandomEnchantment) {
+		this(clothingType, colours, allowRandomEnchantment, 80);
+	}
+	
+	public AbstractClothing(AbstractClothingType clothingType, List<Colour> colours, boolean allowRandomEnchantment, int randomEnchantmentBenevolence) {
 		super(clothingType.getName(),
 				clothingType.getNamePlural(),
 				clothingType.getPathName(),
@@ -1237,28 +1241,27 @@ public abstract class AbstractClothing extends AbstractCoreItem implements XMLSa
 			}
 		}
 		
-		if(rarity==Rarity.LEGENDARY || rarity==Rarity.QUEST) {
+		if(rarity==Rarity.QUEST) {
 			return rarity;
-		}
-		if(this.getClothingType().getClothingSet()!=null || rarity==Rarity.EPIC) {
-			return Rarity.EPIC;
 		}
 		
 		if(this.isSealed() || this.isBadEnchantment()) {
 			return Rarity.JINXED;
 		}
-		if(rarity==Rarity.COMMON) {
-			if(this.getEffects().size()>1) {
-				return Rarity.RARE;
-			}
-			if(!this.getEffects().isEmpty()) {
-				return Rarity.UNCOMMON;
-			}
-			
-			return Rarity.COMMON;
-		}
 		
-		return rarity;
+		if(this.getEffects().size()>10 || this.getEnchantmentCapacityCost()>50) {
+			return Rarity.LEGENDARY;
+		}
+		if(this.getEffects().size()>4 || this.getEnchantmentCapacityCost()>20 || this.getClothingType().getClothingSet()!=null) {
+			return Rarity.EPIC;
+		}
+		if(this.getEffects().size()>1 || this.getEnchantmentCapacityCost()>8) {
+			return Rarity.RARE;
+		}
+		if(!this.getEffects().isEmpty()) {
+			return Rarity.UNCOMMON;
+		}
+		return Rarity.COMMON;
 	}
 	
 	@Override
@@ -2287,7 +2290,7 @@ public abstract class AbstractClothing extends AbstractCoreItem implements XMLSa
 			cost = ItemEffect.SEALED_COST_MINOR_BOOST;
 		}
 		if(remover.hasFetish(Fetish.FETISH_BONDAGE_VICTIM) && selfUnseal) {
-			cost *= 5;
+			cost *= 2;
 		}
 		return cost;
 	}

@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.lilithsthrone.game.character.body.valueEnums.NippleSize;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -2546,21 +2547,25 @@ public class Body implements XMLSaving {
 				case MESSY:
 					sb.append((hair.getType().isDefaultPlural(owner)?"are":"is")+" unstyled and very messy.");
 					break;
+				/*
 				case HIME_CUT:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been straightened and styled into a hime cut.");
 					break;
 				case CHONMAGE:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been straightened, oiled and styled into a chonmage topknot.");
 					break;
+				 */
 				case TOPKNOT:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into a topknot.");
 					break;
 				case DREADLOCKS:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into dreadlocks.");
 					break;
+				/*
 				case BIRD_CAGE:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into an elaborate bird cage"+UtilText.returnStringAtRandom(".",", birds not included."));
 					break;
+				 */
 				case TWIN_BRAIDS:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been woven into long twin braids.");
 					break;
@@ -2578,6 +2583,15 @@ public class Body implements XMLSaving {
 					break;
 				case CHIGNON:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been tied up into a chignon.");
+					break;
+				case FRENCH_BRAID:
+					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been woven into a long French braid.");
+					break;
+				case UPDO:
+					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into an elegant updo.");
+					break;
+				case BEEHIVE:
+					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into an elaborate beehive"+UtilText.returnStringAtRandom(".",", bees not included."));
 					break;
 				case SIDE_BRAIDS:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been woven into braids that hang down on either side of [npc.her] face.");
@@ -2920,10 +2934,10 @@ public class Body implements XMLSaving {
 			if(Main.game.getPlayer().hasIngestedPsychoactiveFluidType(FluidTypeBase.MILK)) {
 				viewedBreast = new Breast(breast.getType(),
 						breast.getShape(),
-						(int)(breast.getRawSizeValue()*(1.75f)),
-						(int)((breast.getRawMilkStorageValue()+100)*(2.25f)),
+						(int)(breast.getRawSizeValue()*(3.75f)),
+						(int)((breast.getRawMilkStorageValue()+100)*(22.5f)),
 						breast.getRows(),
-						breast.getNipples().getNippleSizeValue(),
+						NippleSize.FOUR_MASSIVE.getValue(), 
 						breast.getNipples().getNippleShape(),
 						breast.getNipples().getAreolaeSizeValue(),
 						breast.getNipples().getAreolaeShape(),
@@ -4866,11 +4880,11 @@ public class Body implements XMLSaving {
 		
 		if(Main.game.getPlayer().hasIngestedPsychoactiveFluidType(FluidTypeBase.CUM)) {
 			viewedPenis = new Penis(penis.getType(),
-					(int) (penis.getRawLengthValue() * 2.25f),
+					(int) (penis.getRawLengthValue() * 3.75f),
 					false,
 					PenetrationGirth.FIVE_THICK.getValue(),
 					penis.getTesticle().getTesticleSize().getValue()*2,
-					(int) ((penis.getTesticle().getRawCumStorageValue()+100) * 3.25f),
+					(int) ((penis.getTesticle().getRawCumStorageValue()+100) * 32.5f),
 					penis.getTesticle().getTesticleCount());
 			descriptionSB.append("<i style='color:"+PresetColour.PSYCHOACTIVE.toWebHexString()+";'>The psychoactive cum you recently ingested is causing your view of "+(owner.isPlayer()?"your":"[npc.namePos]")+" cock to be distorted!</i> ");
 		}
@@ -4886,7 +4900,7 @@ public class Body implements XMLSaving {
 			break;
 		}
 		
-		String penisAppearance = owner.getPenisType().getBodyDescription(owner);
+		String penisAppearance = owner.getPenisType().getRawBodyDescription();
 		if(Main.game.getPlayer().hasIngestedPsychoactiveFluidType(FluidTypeBase.CUM)) {
 			penisAppearance = penisAppearance.replaceAll("\\[npc\\.a_cockGirth\\]", UtilText.generateSingularDeterminer(viewedPenis.getGirth().getName())+" "+viewedPenis.getGirth().getName());
 			penisAppearance = penisAppearance.replaceAll("\\[npc\\.cockLengthValue\\]", Units.size(viewedPenis.getRawLengthValue(), Units.UnitType.LONG_SINGULAR));
@@ -5265,11 +5279,11 @@ public class Body implements XMLSaving {
 		boolean hallucinating = false;
 		if(Main.game.getPlayer().hasIngestedPsychoactiveFluidType(FluidTypeBase.GIRLCUM)) {
 			viewedVagina = new Vagina(vagina.getType(),
-					vagina.getRawLabiaSizeValue(),
-					vagina.getClitoris().getRawClitorisSizeValue(),
-					vagina.getClitoris().getRawGirthValue(),
+					vagina.getRawLabiaSizeValue()*2,
+					vagina.getClitoris().getRawClitorisSizeValue()*2,
+					vagina.getClitoris().getRawGirthValue()*2,
 					Wetness.SEVEN_DROOLING.getValue(),
-					vagina.getOrificeVagina().getRawCapacityValue() *3,
+					vagina.getOrificeVagina().getRawCapacityValue() *4,
 					vagina.getOrificeVagina().getDepth(null).getValue(),
 					vagina.getOrificeVagina().getElasticity().getValue(),
 					vagina.getOrificeVagina().getPlasticity().getValue(),

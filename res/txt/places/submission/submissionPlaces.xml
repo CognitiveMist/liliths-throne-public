@@ -11,6 +11,26 @@
 	]]>
 	</htmlContent>
 	
+	<htmlContent tag="FIND_ITEM_EQUIPPED"><![CDATA[
+	<p>
+		As you walk through the gloomy tunnels of Submission, keeping an eye out for any sign of danger, you suddenly spot what appears to be an unopened cardboard box, dropped to one side of a rubbish pile. Stepping over towards it, curious as to what could be inside, you tear off the sealing tape and open the lid.
+	</p>
+	<p>
+		Unfortunately, your curiosity has gotten the better of you, since this box has been trapped! In a blur, an item of clothing leaps out of the box, and toward your body! You hear a giggle in the distance, but are unable to pinpoint its source. Looking over your body, you discover...
+	</p>
+	]]>
+	</htmlContent>
+	
+	<htmlContent tag="FIND_ITEM_EQUIPPED_FAILED"><![CDATA[
+	<p>
+		As you walk through the gloomy tunnels of Submission, keeping an eye out for any sign of danger, you suddenly spot what appears to be an unopened cardboard box, dropped to one side of a rubbish pile. Stepping over towards it, curious as to what could be inside, you tear off the sealing tape and open the lid.
+	</p>
+	<p>
+		Unfortunately, your curiosity has gotten the better of you, since this box has been trapped! In a blur, an item of clothing leaps out of the box, and toward your body! Whether due to good fortune, or a competing enchantment, the trapped item bounces harmlessly off your body. You hear a curse in the distance, but are unable to pinpoint its source. Looking down, you discover that the trapped clothing was... 
+	</p>
+	]]>
+	</htmlContent>
+	
 	<htmlContent tag="SEWER_ENTRANCE"><![CDATA[
 	<p>
 		A large stone building, spanning the entire width of the tunnel, has been erected here. A sign reading 'Official Enforcer Post' is clearly displayed beside the main entrance, and within, a dozen or so Enforcers are manning desks or standing guard beside internal doorways. None of them seem to pay you much attention, allowing you to come and go as you please.

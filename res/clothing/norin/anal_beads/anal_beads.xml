@@ -55,6 +55,15 @@
 		  <tag>TRANSPARENT</tag>
 		</itemTags>
 	</coreAttributes>
+	
+	<sexAttributesSelf>
+		<penetration>
+			<length>20</length>
+			<girth>5</girth>
+			<modifiers/>
+		</penetration>
+		<orifice/>
+	</sexAttributesSelf>
 
 	<replacementText type="REMOVE_OR_EQUIP">
 		<self>

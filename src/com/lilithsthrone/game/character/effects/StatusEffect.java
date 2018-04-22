@@ -52,6 +52,7 @@ import com.lilithsthrone.game.character.race.Race;
 import com.lilithsthrone.game.character.race.RaceStage;
 import com.lilithsthrone.game.character.race.Subspecies;
 import com.lilithsthrone.game.combat.DamageType;
+import com.lilithsthrone.game.combat.moves.AbstractCombatMove;
 import com.lilithsthrone.game.combat.spells.Spell;
 import com.lilithsthrone.game.combat.spells.SpellSchool;
 import com.lilithsthrone.game.combat.spells.SpellUpgrade;
@@ -4102,6 +4103,61 @@ public class StatusEffect {
 				}
 			}
 			return false;
+		}
+	};
+	
+	public static AbstractStatusEffect WITHDRAWAL_SURVIVED = new AbstractStatusEffect(80,
+			"Survived Withdrawal",
+			null,
+			PresetColour.CORRUPTION_STAGE_ZERO,
+			true,
+			null,
+			null) {
+		@Override
+		public boolean isSexEffect() {
+			return true;
+		}
+		@Override
+		public boolean isConditionsMet(GameCharacter target) {
+			// TODO return false to disable "surviving" addictions
+			// Time without getting fluid:
+			for(Addiction addiction : target.getAddictions()) {
+				long sixDaysLater = addiction.getLastTimeSatisfied() + (24 * 60 * 6);
+				long now = Main.game.getMinutesPassed();
+				
+				if (sixDaysLater <= now) {
+					return true;
+				}
+			}
+			return false;
+		}
+		@Override
+		public String applyAdditionEffect(GameCharacter target) {
+			List<Addiction> survived = new ArrayList<>();
+			StringBuilder sb = new StringBuilder();
+			
+			if(target.isPlayer()) {
+				sb.append("You have recovered from your addiction to:");
+			}
+			
+			for(Addiction addiction : target.getAddictions()) {
+				long sixDaysLater = addiction.getLastTimeSatisfied() + (24 * 60 * 6);
+				long now = Main.game.getMinutesPassed();
+				
+				if (sixDaysLater <= now) {
+					survived.add(addiction);
+				}
+			}
+			
+			for(Addiction addiction : survived) {
+				AbstractRace fluidRace = addiction.getFluid().getRace();
+				sb.append("<br/>"
+						+ "[style.boldArcane(Addictive)]"
+						+ " <b style='color:"+fluidRace.getColour().toWebHexString()+";'>"+Util.capitaliseSentence(fluidRace.getName(fluidRace!=Race.DEMON))+" "+addiction.getFluid().getBaseType().getNames().get(0)+"</b>.");
+				
+				target.removeAddiction(addiction);
+			}
+			return sb.toString();
 		}
 	};
 
@@ -11821,7 +11877,8 @@ public class StatusEffect {
 			for(GameCharacter combatant : affectedCombatants) {
 				Value<String, Integer> damageValue = DamageType.LUST.damageTarget(null, combatant, 15);
 				
-				sb.append(UtilText.parse(combatant, "<br/>[npc.Name] [npc.verb(take)] <b>" + damageValue.getValue() + "</b> [style.boldLust(lust damage)]!")+damageValue.getKey());
+				//sb.append(UtilText.parse(combatant, "<br/>[npc.Name] [npc.verb(take)] <b>" + damageValue.getValue() + "</b> [style.boldLust(lust damage)]!")+damageValue.getKey());
+				sb.append(UtilText.parse(combatant, "<br/>[npc.Name] [npc.verb(take)] " + AbstractCombatMove.getFormattedDamage(DamageType.LUST, damageValue.getValue(), combatant, false, AbstractCombatMove.isTargetAtMaximumLust(combatant)))+damageValue.getKey());
 			}
 			
 			return sb.toString();
