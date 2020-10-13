@@ -215,7 +215,7 @@ public class Testicle implements BodyPartInterface {
 	}
 
 	public int getRawCumStorageValue() {
-		return cumStorage;
+		return cumStorage * (this.testicleSize + 1) * 200;
 	}
 
 	/**
@@ -299,7 +299,7 @@ public class Testicle implements BodyPartInterface {
 	}
 
 	public int getRawCumProductionRegenerationValue() {
-		return cumRegeneration;
+		return cumRegeneration * (this.testicleSize + 1) * 2000;
 	}
 
 	/**

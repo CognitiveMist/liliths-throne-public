@@ -252,7 +252,7 @@ public class Breast implements BodyPartInterface {
 	}
 
 	public int getRawMilkStorageValue() {
-		return milkStorage;
+		return milkStorage * getRawSizeValue();
 	}
 
 	/**

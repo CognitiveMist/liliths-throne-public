@@ -6500,7 +6500,7 @@ public class MainControllerInitMethod {
 			id = "PENIS_SIZE_PREFERENCE_ON";
 			if (((EventTarget) MainController.document.getElementById(id)) != null) {
 				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
-					Main.getProperties().penisSizePreference = Math.min(20, Main.getProperties().penisSizePreference+1);
+					Main.getProperties().penisSizePreference = Math.min(100, Main.getProperties().penisSizePreference+1);
 					Main.saveProperties();
 					Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
 				}, false);

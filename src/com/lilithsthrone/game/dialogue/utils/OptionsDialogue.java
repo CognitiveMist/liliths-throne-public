@@ -2518,7 +2518,7 @@ public class OptionsDialogue {
 								(Main.getProperties().penisSizePreference>=0?"+":"") + Units.size(Main.getProperties().penisSizePreference, ValueType.PRECISE, UnitType.SHORT),
 								Main.getProperties().penisSizePreference,
 								-20,
-								20));
+								100));
 
 				UtilText.nodeContentSB.append(getContentPreferenceVariableDiv(
 								"TRAP_PENIS_SIZE_PREFERENCE",

@@ -23,19 +23,19 @@ public enum OrificeDepth {
 	TWO_AVERAGE("average-depth", 2, 1f, PresetColour.GENERIC_SIZE_THREE),
 
 	/** 150% of normal depth. */
-	THREE_SPACIOUS("spacious", 3, 1.5f, PresetColour.GENERIC_SIZE_FOUR),
+	THREE_SPACIOUS("spacious", 3, 2f, PresetColour.GENERIC_SIZE_FOUR),
 
 	/** 200% of normal depth. */
-	FOUR_DEEP("deep", 4, 2f, PresetColour.GENERIC_SIZE_FIVE),
+	FOUR_DEEP("deep", 4, 3f, PresetColour.GENERIC_SIZE_FIVE),
 
 	/** 250% of normal depth. */
-	FIVE_VERY_DEEP("very deep", 5, 2.5f, PresetColour.GENERIC_SIZE_SIX),
+	FIVE_VERY_DEEP("very deep", 5, 5f, PresetColour.GENERIC_SIZE_SIX),
 
 	/** 300% of normal depth. */
-	SIX_CAVERNOUS("cavernous", 6, 3f, PresetColour.GENERIC_SIZE_SEVEN),
+	SIX_CAVERNOUS("cavernous", 6, 8f, PresetColour.GENERIC_SIZE_SEVEN),
 
 	/** 400% of normal depth. */
-	SEVEN_FATHOMLESS("fathomless", 7, 4f, PresetColour.GENERIC_SIZE_EIGHT);
+	SEVEN_FATHOMLESS("fathomless", 7, 12f, PresetColour.GENERIC_SIZE_EIGHT);
 
 	
 	private String descriptor;

@@ -1956,7 +1956,7 @@ public class CharacterUtils {
 			boolean trapPenis = character.getGender()==Gender.F_P_TRAP || character.getGender()==Gender.N_P_TRAP;
 			trapPenis ^= Math.random()<0.15f;
 			if(trapPenis) {
-				float sizeAlteration = (100+Main.getProperties().trapPenisSizePreference)/100f;
+				float sizeAlteration = (100+Main.getProperties().trapPenisSizePreference)/1000f;
 
 				character.setPenisSize(character.getPenisSize().getMinimumValue() + Util.random.nextInt(character.getPenisSize().getMaximumValue() - character.getPenisSize().getMinimumValue()) +1);
 				character.setPenisSize(Math.max(1, (int)(character.getPenisRawSizeValue()*sizeAlteration)));

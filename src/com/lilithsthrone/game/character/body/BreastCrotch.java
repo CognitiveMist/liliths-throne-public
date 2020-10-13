@@ -290,7 +290,7 @@ public class BreastCrotch implements BodyPartInterface {
 	}
 
 	public int getRawMilkStorageValue() {
-		return milkStorage;
+		return milkStorage * getRawSizeValue();
 	}
 
 	/**
