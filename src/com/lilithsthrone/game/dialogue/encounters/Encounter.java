@@ -970,7 +970,7 @@ public enum Encounter {
 				
 				AbstractClothingType clothingType = randomClothingList.get(Util.random.nextInt(randomClothingList.size()));
 				
-				if (Math.random()<0.5f) {
+				if (Math.random()<0.2f) {
 					randomItem = Main.game.getItemGen().generateClothingWithEnchantment(clothingType);
 				} else {
 					randomItem = Main.game.getItemGen().generateClothingWithNegativeEnchantment(clothingType);

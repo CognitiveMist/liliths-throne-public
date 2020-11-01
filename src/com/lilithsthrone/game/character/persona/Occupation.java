@@ -304,7 +304,7 @@ public enum Occupation {
 		historiesList = new ArrayList<>();
 
 		for(Occupation history : Occupation.values()) {
-			if(history.isAvailable(character) && (character.isPlayer()?history.isAvailableToPlayer():!history.isAvailableToPlayer())) {
+			if((character.isPlayer() || history.isAvailable(character)) && (character.isPlayer()?history.isAvailableToPlayer():!history.isAvailableToPlayer())) {
 				historiesList.add(history);
 			}
 		}
