@@ -46,7 +46,7 @@ public class Penis implements BodyPartInterface {
 		if(usePenisSizePreference) {
 			int min = Math.min(2*Main.getProperties().penisSizePreference,0);
 			int max = Math.max(2*Main.getProperties().penisSizePreference,0);
-			int adjustment = Util.random.nextInt(max-min)+min;
+			int adjustment = Util.random.nextInt(max-min+1)+min;
 			this.length = Math.max(1, Math.min(PenisLength.SEVEN_STALLION.getMaximumValue(), length)+adjustment);
 		} else {
 			this.length = Math.min(PenisLength.SEVEN_STALLION.getMaximumValue(), length);
