@@ -5,7 +5,8 @@ import java.util.List;
 import com.lilithsthrone.game.PropertyValue;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.body.abstractTypes.AbstractFaceType;
-import com.lilithsthrone.game.character.body.tags.FaceTypeTag;
+import com.lilithsthrone.game.character.body.coverings.Covering;
+import com.lilithsthrone.game.character.body.tags.BodyPartTag;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
 import com.lilithsthrone.game.character.body.valueEnums.Capacity;
 import com.lilithsthrone.game.character.body.valueEnums.Femininity;
@@ -62,7 +63,7 @@ public class Face implements BodyPartInterface {
 		return type;
 	}
 
-	public List<FaceTypeTag> getTypeTags() {
+	public List<BodyPartTag> getTypeTags() {
 		return type.getTags();
 	}
 	
@@ -186,6 +187,10 @@ public class Face implements BodyPartInterface {
 			this.facialHair = facialHair;
 			return "";
 		}
+
+		if(!this.getType().isFacialHairAllowed()) {
+			return UtilText.parse(owner, "<p style='text-align:center;'>[style.colourDisabled(As [npc.namePos] face type prevents [npc.herHim] from growing a beard, nothing happens...)]</p>");
+		}
 		
 		if(owner.getFemininityValue()>=Femininity.ANDROGYNOUS.getMinimumFemininity() && facialHair!=BodyHair.ZERO_NONE && !Main.getProperties().hasValue(PropertyValue.feminineBeardsContent)) {
 			if(owner.isPlayer()) {
@@ -234,32 +239,33 @@ public class Face implements BodyPartInterface {
 	}
 
 	@Override
-	public boolean isBestial(GameCharacter owner) {
+	public boolean isFeral(GameCharacter owner) {
 		if(owner==null) {
 			return false;
 		}
-		return owner.getLegConfiguration().getBestialParts().contains(Face.class) && getType().getRace().isBestialPartsAvailable();
+		return owner.isFeral() || (owner.getLegConfiguration().getFeralParts().contains(Face.class) && getType().getRace().isFeralPartsAvailable());
 	}
 
 	public boolean isBaldnessNatural() {
-		return this.getTypeTags().contains(FaceTypeTag.NATURAL_BALDNESS_AVIAN)
-				|| this.getTypeTags().contains(FaceTypeTag.NATURAL_BALDNESS_FURRY)
-				|| this.getTypeTags().contains(FaceTypeTag.NATURAL_BALDNESS_SCALY);
+		return this.getTypeTags().contains(BodyPartTag.FACE_NATURAL_BALDNESS_AVIAN)
+				|| this.getTypeTags().contains(BodyPartTag.FACE_NATURAL_BALDNESS_FURRY)
+				|| this.getTypeTags().contains(BodyPartTag.FACE_NATURAL_BALDNESS_SCALY)
+				|| this.getTypeTags().contains(BodyPartTag.FACE_NATURAL_BALDNESS_SKIN);
 	}
 	
 	public boolean isMuzzle() {
-		return this.getTypeTags().contains(FaceTypeTag.MUZZLE);
+		return this.getTypeTags().contains(BodyPartTag.FACE_MUZZLE);
 	}
 	
 	public boolean isHasFangs() {
-		return this.getTypeTags().contains(FaceTypeTag.FANGS);
+		return this.getTypeTags().contains(BodyPartTag.FACE_FANGS);
 	}
 	
 	public boolean isBeak() {
-		return this.getTypeTags().contains(FaceTypeTag.BEAK);
+		return this.getTypeTags().contains(BodyPartTag.FACE_BEAK);
 	}
 	
 	public boolean isSharkTeeth() {
-		return this.getTypeTags().contains(FaceTypeTag.SHARK_TEETH);
+		return this.getTypeTags().contains(BodyPartTag.FACE_SHARK_TEETH);
 	}
 }

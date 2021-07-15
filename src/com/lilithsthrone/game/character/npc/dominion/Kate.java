@@ -9,11 +9,10 @@ import org.w3c.dom.Element;
 
 import com.lilithsthrone.game.Game;
 import com.lilithsthrone.game.character.CharacterImportSetting;
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.EquipClothingSetting;
 import com.lilithsthrone.game.character.GameCharacter;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.types.HornType;
 import com.lilithsthrone.game.character.body.types.LegType;
 import com.lilithsthrone.game.character.body.types.PenisType;
@@ -44,6 +43,7 @@ import com.lilithsthrone.game.character.body.valueEnums.WingSize;
 import com.lilithsthrone.game.character.effects.Perk;
 import com.lilithsthrone.game.character.effects.PerkCategory;
 import com.lilithsthrone.game.character.effects.PerkManager;
+import com.lilithsthrone.game.character.effects.StatusEffect;
 import com.lilithsthrone.game.character.fetishes.Fetish;
 import com.lilithsthrone.game.character.gender.Gender;
 import com.lilithsthrone.game.character.markings.Tattoo;
@@ -276,7 +276,7 @@ public class Kate extends NPC {
 		// Penis:
 		// (For when she grows one)
 		this.setPenisVirgin(false);
-		this.setPenisGirth(PenetrationGirth.FOUR_THICK);
+		this.setPenisGirth(PenetrationGirth.FOUR_GIRTHY);
 		this.setPenisSize(15);
 //		this.setInternalTesticles(true); Use player preferences
 		this.setTesticleSize(TesticleSize.THREE_LARGE);
@@ -347,7 +347,7 @@ public class Kate extends NPC {
 			this.addClothing(c, 2+Util.random.nextInt(5), false, false);
 		}
 		
-		for(AbstractClothing c : CharacterUtils.generateEnchantedClothingForTrader(this, clothingToSell, 6, 2)) {
+		for(AbstractClothing c : Main.game.getCharacterUtils().generateEnchantedClothingForTrader(this, clothingToSell, 6, 2)) {
 			this.addClothing(c, false);
 		}
 	}
@@ -487,13 +487,47 @@ public class Kate extends NPC {
 	@Override
 	public Value<Boolean, String> getItemUseEffects(AbstractItem item,  GameCharacter itemOwner, GameCharacter user, GameCharacter target) {
 		if(user.isPlayer() && !target.isPlayer()) {
-			if(item.getItemType().equals(ItemType.getItemTypeFromId("innoxia_pills_fertility"))) {
-				itemOwner.useItem(item, target, false);
+			if(item.isTypeOneOf("innoxia_pills_fertility", "innoxia_pills_broodmother")) {
+				String useDesc = itemOwner.useItem(item, target, false, true);
 				return new Value<>(true,
 						"<p>"
-							+ "Producing a '[#ITEM_innoxia_pills_fertility.getName(false)]' from your inventory, you pop it out of its plastic wrapper before pushing it into Kate's mouth."
-							+ " She giggles as she happily swallows the little pink pill, knowing that it's going to make her womb far more fertile."
-						+ "</p>");
+							+ "Producing a "+item.getName(false, false)+" from your inventory, you pop it out of its plastic wrapper before pushing it into Kate's mouth."
+							+ " She giggles as she happily swallows the little "+item.getColour(0).getName()+" pill, knowing that it's going to make her womb far more fertile."
+						+ "</p>"
+						+ useDesc);
+				
+			} else if(item.getItemType()==ItemType.PREGNANCY_TEST) {
+				String useDesc = itemOwner.useItem(item, target, false, true);
+				if(this.isPregnant()) {
+					this.setCharacterReactedToPregnancy(user, true);
+					String litterCount = Util.intToString(this.getPregnantLitter().getTotalLitterCount());
+					return new Value<>(true,
+							"<p>"
+								+ "Producing "+item.getName(true, false)+" from your inventory, you pass it over Kate's tummy and take a look at the results..."
+							+ "</p>"
+							+ useDesc
+							+"<p>"
+								+ (this.isVisiblyPregnant()
+									?"[kate.speechNoEffects(What were you expecting?)] Kate laughs, before rubbing her pregnant belly and winking at you. [kate.speech(You can already see I'm knocked up, can't you?)]"
+									:"[kate.speechNoEffects(~Ooh!~ I'm pregnant!)]"
+											+ (this.getPregnantLitter().getTotalLitterCount()>2
+													?" Kate exclaims, before rubbing her belly and biting her lip. [kate.speechNoEffects(I've got "+litterCount+" kids in here? ~Mmm!~ My tummy's gonna be so big...)]"
+													:" Kate moans, before rubbing her belly and winking at you. [kate.speech(I'm gonna have a big, round tummy soon!)]"))
+							+ "</p>");
+					
+				} else {
+					return new Value<>(true,
+							"<p>"
+									+ "Producing "+item.getName(true, false)+" from your inventory, you pass it over Kate's tummy and take a look at the results..."
+							+ "</p>"
+							+ useDesc
+							+"<p>"
+								+ (this.hasStatusEffect(StatusEffect.PREGNANT_0)
+									?"[kate.speechNoEffects(~Aww!~ I'm not pregnant!)] Kate whines, before rubbing her belly and pouting at you. [kate.speech(Come on, [pc.name], there's plenty of time for you to change that!)]"
+									:"[kate.speechNoEffects(What were you expecting? Of course I'm not going to be pregnant!)] Kate laughs, before rubbing her belly and biting her lip. [kate.speech(Although there's plenty of time for you to change that...)]")
+							+ "</p>");
+				}
+				
 			} else {
 				return new Value<>(false,
 						"<p>"
@@ -505,9 +539,12 @@ public class Kate extends NPC {
 	}
 	
 	@Override
-	public String getCondomEquipEffects(GameCharacter equipper, GameCharacter target, boolean rough) {
+	public String getCondomEquipEffects(AbstractClothingType condomClothingType, GameCharacter equipper, GameCharacter target, boolean rough) {
 		if(Main.game.isInSex()) {
 			if(!target.isPlayer()) {
+				if(condomClothingType.equals(ClothingType.getClothingTypeFromId("innoxia_penis_condom_webbing"))) {
+					return null;
+				}
 				return "<p>"
 							+ "Holding out a condom to [kate.name], you force [kate.herHim] to take it and put it on."
 							+ " Quickly ripping it out of its little foil wrapper, [kate.she] rolls it down the length of [kate.her] [kate.cock+] as [kate.she] whines at you,"
@@ -517,7 +554,12 @@ public class Kate extends NPC {
 				AbstractClothing clothing = target.getClothingInSlot(InventorySlot.PENIS);
 				if(clothing!=null && clothing.isCondom()) {
 					target.unequipClothingIntoVoid(clothing, true, equipper);
-					inventory.resetEquipDescription();
+					target.getInventory().resetEquipDescription();
+				}
+				if(condomClothingType.equals(ClothingType.getClothingTypeFromId("innoxia_penis_condom_webbing"))) {
+					return UtilText.parse(equipper, target,
+							"[npc.Name] [npc.verb(direct)] [npc.her] spinneret at [npc2.namePos] [npc2.cock], but, sensing what [npc.sheIs] about to do, Kate slaps it away and laughs,"
+							+ " [kate.speech(No way! It's no fun if I don't get any cum!)]");
 				}
 				return "<p>"
 							+ "As you pull out a condom, a worried frown flashes across Kate's face, "
@@ -529,13 +571,7 @@ public class Kate extends NPC {
 						+ "</p>";
 			}
 		}
-		return AbstractClothingType.getEquipDescriptions(target, equipper, rough,
-				"You tear open the packet and roll the condom down the length of your [pc.penis].",
-				"You tear open the packet and roll the condom down the length of [npc.namePos] [npc.penis].",
-				"You tear open the packet and forcefully roll the condom down the length of [npc.namePos] [npc.penis].",
-				"[npc.Name] tears open the packet and rolls the condom down the length of [npc.her] [npc.penis].",
-				"[npc.Name] tears open the packet and rolls the condom down the length of your [pc.penis].",
-				"[npc.Name] tears open the packet and forcefully rolls the condom down the length of your [pc.penis].", null, null);
+		return null;
 	}
 	
 	

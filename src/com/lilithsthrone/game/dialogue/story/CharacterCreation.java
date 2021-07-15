@@ -3,13 +3,14 @@ package com.lilithsthrone.game.dialogue.story;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.lilithsthrone.game.Game;
 import com.lilithsthrone.game.PropertyValue;
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.GameCharacter;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
 import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.Femininity;
@@ -28,11 +29,13 @@ import com.lilithsthrone.game.character.persona.SexualOrientation;
 import com.lilithsthrone.game.character.quests.Quest;
 import com.lilithsthrone.game.character.quests.QuestLine;
 import com.lilithsthrone.game.character.quests.QuestType;
+import com.lilithsthrone.game.character.race.Race;
 import com.lilithsthrone.game.character.race.RaceStage;
 import com.lilithsthrone.game.character.race.RacialBody;
 import com.lilithsthrone.game.character.race.Subspecies;
 import com.lilithsthrone.game.combat.DamageType;
 import com.lilithsthrone.game.combat.spells.Spell;
+import com.lilithsthrone.game.combat.spells.SpellSchool;
 import com.lilithsthrone.game.dialogue.DialogueNode;
 import com.lilithsthrone.game.dialogue.responses.Response;
 import com.lilithsthrone.game.dialogue.responses.ResponseEffectsOnly;
@@ -64,7 +67,7 @@ import com.lilithsthrone.world.places.PlaceType;
 
 /**
  * @since 0.1.0
- * @version 0.3.1
+ * @version 0.4
  * @author Innoxia
  */
 public class CharacterCreation {
@@ -76,7 +79,28 @@ public class CharacterCreation {
 	public static final int TIME_TO_JOB = 150;
 	public static final int TIME_TO_SEX_EXPERIENCE = 150;
 	public static final int TIME_TO_FINAL_CHECK = 150;
+
+	public static SpellSchool getStartingTomeSpellSchool() {
+		if(Main.game.getPlayer().getBirthMonth().getValue() % 4 == 1) {
+			return SpellSchool.EARTH;
+		} else if(Main.game.getPlayer().getBirthMonth().getValue() % 4 == 2) {
+			return SpellSchool.AIR;
+		} else if(Main.game.getPlayer().getBirthMonth().getValue()  % 4 == 3) {
+			return SpellSchool.WATER;
+		}
+		return SpellSchool.FIRE;
+	}
 	
+	public static SpellSchool getStartingDemonstoneSpellSchool() {
+		if(Main.game.getPlayer().getBirthMonth().getValue() % 4 == 2) {
+			return SpellSchool.EARTH;
+		} else if(Main.game.getPlayer().getBirthMonth().getValue() % 4 == 3) {
+			return SpellSchool.AIR;
+		} else if(Main.game.getPlayer().getBirthMonth().getValue()  % 4 == 0) {
+			return SpellSchool.WATER;
+		}
+		return SpellSchool.FIRE;
+	}
 
 	public static final DialogueNode CHARACTER_CREATION_START = new DialogueNode("Disclaimer", "", true) {
 
@@ -438,7 +462,7 @@ public class CharacterCreation {
 		switch(character.getFemininity()) {
 			case MASCULINE_STRONG:
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing(ClothingType.GROIN_BRIEFS, PresetColour.CLOTHING_WHITE, false), true, character);
-				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing(ClothingType.TORSO_OXFORD_SHIRT, PresetColour.CLOTHING_WHITE, false), true, character);
+				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_torso_long_sleeved_shirt", PresetColour.CLOTHING_WHITE, false), true, character);
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_neck_tie", PresetColour.CLOTHING_RED, false), true, character);
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_torsoOver_suit_jacket", PresetColour.CLOTHING_BLACK, false), true, character);
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_leg_trousers", PresetColour.CLOTHING_BLACK, false), true, character);
@@ -454,7 +478,7 @@ public class CharacterCreation {
 				
 			case MASCULINE:
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing(ClothingType.GROIN_BOXERS, PresetColour.CLOTHING_BLACK, false), true, character);
-				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing(ClothingType.TORSO_SHORT_SLEEVE_SHIRT, PresetColour.CLOTHING_WHITE, false), true, character);
+				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_torso_short_sleeved_shirt", PresetColour.CLOTHING_WHITE, false), true, character);
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_leg_trousers", PresetColour.CLOTHING_BLACK, false), true, character);
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_sock_socks", PresetColour.CLOTHING_BLACK, false), true, character);
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_foot_mens_smart_shoes", PresetColour.CLOTHING_BLACK, false), true, character);
@@ -473,7 +497,7 @@ public class CharacterCreation {
 				} else {
 					Main.game.getPlayerCell().getInventory().addClothing(Main.game.getItemGen().generateClothing(ClothingType.CHEST_CROPTOP_BRA, PresetColour.CLOTHING_WHITE, false));
 				}
-				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing(ClothingType.TORSO_SHORT_SLEEVE_SHIRT, PresetColour.CLOTHING_WHITE, false), true, character);
+				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_torso_short_sleeved_shirt", PresetColour.CLOTHING_WHITE, false), true, character);
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_leg_jeans", PresetColour.CLOTHING_BLUE_GREY, false), true, character);
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_sock_socks", PresetColour.CLOTHING_WHITE, false), true, character);
 				character.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_foot_low_top_skater_shoes", PresetColour.CLOTHING_RED, false), true, character);
@@ -557,10 +581,10 @@ public class CharacterCreation {
 				generateClothingOnFloor("innoxia_neck_scarf", PresetColour.CLOTHING_BLACK);
 				generateClothingOnFloor(ClothingType.TORSO_OVER_HOODIE, PresetColour.CLOTHING_BLACK);
 				generateClothingOnFloor(ClothingType.TORSO_RIBBED_SWEATER, PresetColour.CLOTHING_GREY);
-				generateClothingOnFloor(ClothingType.TORSO_SHORT_SLEEVE_SHIRT, PresetColour.CLOTHING_WHITE);
+				generateClothingOnFloor("innoxia_torso_short_sleeved_shirt", PresetColour.CLOTHING_WHITE);
 				generateClothingOnFloor("innoxia_torso_tshirt", PresetColour.CLOTHING_BLUE_LIGHT);
 				generateClothingOnFloor(ClothingType.GROIN_BRIEFS, PresetColour.CLOTHING_WHITE);
-				generateClothingOnFloor(ClothingType.TORSO_OXFORD_SHIRT, PresetColour.CLOTHING_WHITE);
+				generateClothingOnFloor("innoxia_torso_long_sleeved_shirt", PresetColour.CLOTHING_WHITE);
 				generateClothingOnFloor("innoxia_neck_tie", PresetColour.CLOTHING_RED);
 				generateClothingOnFloor("innoxia_torsoOver_suit_jacket", PresetColour.CLOTHING_BLACK);
 				break;
@@ -589,7 +613,7 @@ public class CharacterCreation {
 				generateClothingOnFloor(ClothingType.STOMACH_UNDERBUST_CORSET, PresetColour.CLOTHING_BLACK);
 
 				generateClothingOnFloor("innoxia_torso_tshirt", PresetColour.CLOTHING_BLUE_LIGHT);
-				generateClothingOnFloor(ClothingType.TORSO_BLOUSE, PresetColour.CLOTHING_BLUE_LIGHT);
+				generateClothingOnFloor("innoxia_torso_blouse", PresetColour.CLOTHING_BLUE_LIGHT);
 				generateClothingOnFloor(ClothingType.TORSO_CAMITOP_STRAPS, PresetColour.CLOTHING_GREEN);
 				
 				generateClothingOnFloor(ClothingType.TORSO_OVER_HOODIE, PresetColour.CLOTHING_PINK_LIGHT);
@@ -640,7 +664,7 @@ public class CharacterCreation {
 				generateClothingOnFloor(ClothingType.STOMACH_UNDERBUST_CORSET, PresetColour.CLOTHING_BLACK);
 
 				generateClothingOnFloor(ClothingType.getClothingTypeFromId("innoxia_torso_feminine_short_sleeve_shirt"), PresetColour.CLOTHING_BLUE_LIGHT);
-				generateClothingOnFloor(ClothingType.TORSO_BLOUSE, PresetColour.CLOTHING_BLUE_LIGHT);
+				generateClothingOnFloor("innoxia_torso_blouse", PresetColour.CLOTHING_BLUE_LIGHT);
 				generateClothingOnFloor(ClothingType.TORSO_CAMITOP_STRAPS, PresetColour.CLOTHING_GREEN);
 				generateClothingOnFloor(ClothingType.TORSO_LONG_SLEEVE_DRESS, PresetColour.CLOTHING_BLACK);
 				generateClothingOnFloor(ClothingType.TORSO_SHORT_CROPTOP, PresetColour.CLOTHING_PINK);
@@ -690,7 +714,7 @@ public class CharacterCreation {
 						
 						+ CharacterModificationUtils.getOrientationChoiceDiv()
 						
-						+ CharacterModificationUtils.getPersonalityChoiceDiv()
+						+ CharacterModificationUtils.getPersonalityChoiceDiv(false)
 						
 					+"</div>";
 		}
@@ -755,8 +779,21 @@ public class CharacterCreation {
 					+"<br/>"
 					+ "<div class='container-full-width' style='text-align:center;'>"
 						+ "<div style='position:relative; display:inline-block; padding-bottom:0; margin 0 auto; vertical-align:middle; width:100%; text-align:center;'>"
+							+ "<i>"
+								+ "Your first name can be set as three values; your masculine name, androgynous name, and feminine name."
+								+ " Your name will automatically switch to the one which corresponds to your body femininity."
+							+ "</i>"
+							+ "<br/>"
 							+ "<p style='display:inline-block; padding:0; margin:0; height:32px; line-height:32px; width:100px;'>First name: </p>"
-							+ "<form style='display:inline-block; padding:0; margin:0; text-align:center;'><input type='text' id='nameInput' value='"+ UtilText.parseForHTMLDisplay(Main.game.getPlayer().getName(false))+ "'></form>"
+							+ "</form style='display:inline-block; padding:0; margin:0; text-align:center;'>"
+									+ "<input type='text' id='nameMasculineInput' style=' color:"+PresetColour.MASCULINE.toWebHexString()+";' value='"+ UtilText.parseForHTMLDisplay(Main.game.getPlayer().getNameTriplet().getMasculine())+ "'>"
+									
+							+ "</form style='display:inline-block; padding:0; margin:0; text-align:center;'>"
+								+ "<input type='text' id='nameAndrogynousInput' style=' color:"+PresetColour.ANDROGYNOUS.toWebHexString()+";' value='"+ UtilText.parseForHTMLDisplay(Main.game.getPlayer().getNameTriplet().getAndrogynous())+ "'>"
+								
+							+ "</form style='display:inline-block; padding:0; margin:0; text-align:center;'>"
+								+ "<input type='text' id='nameFeminineInput' style=' color:"+PresetColour.FEMININE.toWebHexString()+";' value='"+ UtilText.parseForHTMLDisplay(Main.game.getPlayer().getNameTriplet().getFeminine())+ "'>"
+							
 							+ "<br/>"
 							+ "<p style='display:inline-block; padding:0; margin:0; height:32px; line-height:32px; width:100px;'>Surname: </p>"
 							+ "<form style='display:inline-block; padding:0; margin:0; text-align:center;'><input type='text' id='surnameInput' value='"+ UtilText.parseForHTMLDisplay(Main.game.getPlayer().getSurname())+ "'></form>"
@@ -789,14 +826,19 @@ public class CharacterCreation {
 					}
 					@Override
 					public void effects() {
-						Main.mainController.getWebEngine().executeScript("document.getElementById('hiddenFieldName').innerHTML=document.getElementById('nameInput').value;");
-						if(Main.mainController.getWebEngine().getDocument()!=null) {
-							if (Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().length() < 2
-									|| Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().length() > 32
-									|| !Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().matches("[^\\[\\]\\.]+")) {
-								unsuitableName = true;
-							} else {
-								unsuitableName = false;
+						List<String> fieldsList = Util.newArrayListOfValues("nameMasculineInput", "nameAndrogynousInput", "nameFeminineInput");
+						List<String> namesList = new ArrayList<>();
+						for(String s : fieldsList) {
+							Main.mainController.getWebEngine().executeScript("document.getElementById('hiddenFieldName').innerHTML=document.getElementById('"+s+"').value;");
+							if(Main.mainController.getWebEngine().getDocument()!=null) {
+								if (Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().length() < 2
+										|| Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().length() > 32
+										|| !Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().matches("[^\\[\\]\\.]+")) {
+									unsuitableName = true;
+								} else {
+									unsuitableName = false;
+									namesList.add(Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent());
+								}
 							}
 						}
 						Main.mainController.getWebEngine().executeScript("document.getElementById('hiddenFieldSurname').innerHTML=document.getElementById('surnameInput').value;");
@@ -813,7 +855,7 @@ public class CharacterCreation {
 							Main.game.setContent(new Response("" ,"", CHOOSE_NAME));
 							
 						} else {
-							Main.game.getPlayer().setName(new NameTriplet(Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent()));
+							Main.game.getPlayer().setName(new NameTriplet(namesList.get(0), namesList.get(1), namesList.get(2)));
 							Main.game.getPlayer().setSurname(Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldSurname").getTextContent());
 
 							Main.game.getPlayerCell().resetInventory();
@@ -842,7 +884,7 @@ public class CharacterCreation {
 							Main.game.getPlayer().setSurname(Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldSurname").getTextContent());
 						}
 
-						Main.game.getPlayer().setName(new NameTriplet(Name.getRandomName(Main.game.getPlayer())));
+						Main.game.getPlayer().setName(Name.getRandomTriplet(Race.HUMAN));
 					}
 				};
 				
@@ -850,18 +892,23 @@ public class CharacterCreation {
 				return new Response("Random Surname", "Generate a random surname.", CHOOSE_NAME){
 					@Override
 					public void effects() {
-						Main.mainController.getWebEngine().executeScript("document.getElementById('hiddenFieldName').innerHTML=document.getElementById('nameInput').value;");
-						if(Main.mainController.getWebEngine().getDocument()!=null) {
-							if (Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().length() < 2
-									|| Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().length() > 16
-									|| !Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().matches("[^\\[\\]\\.]+"))
-								unsuitableName = true;
-							else {
-								unsuitableName = false;
+						List<String> fieldsList = Util.newArrayListOfValues("nameMasculineInput", "nameAndrogynousInput", "nameFeminineInput");
+						List<String> namesList = new ArrayList<>();
+						for(String s : fieldsList) {
+							Main.mainController.getWebEngine().executeScript("document.getElementById('hiddenFieldName').innerHTML=document.getElementById('"+s+"').value;");
+							if(Main.mainController.getWebEngine().getDocument()!=null) {
+								if (Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().length() < 2
+										|| Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().length() > 16
+										|| !Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent().matches("[^\\[\\]\\.]+"))
+									unsuitableName = true;
+								else {
+									unsuitableName = false;
+									namesList.add(Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent());
+								}
 							}
 						}
 						if(!unsuitableName) {
-							Main.game.getPlayer().setName(new NameTriplet(Main.mainController.getWebEngine().getDocument().getElementById("hiddenFieldName").getTextContent()));
+							Main.game.getPlayer().setName(new NameTriplet(namesList.get(0), namesList.get(1), namesList.get(2)));
 						}
 						
 						Main.game.getPlayer().setSurname(Name.getSurname(Main.game.getPlayer()));
@@ -1000,7 +1047,7 @@ public class CharacterCreation {
 						
 					+ CharacterModificationUtils.getHeightChoiceDiv()
 					
-					+ CharacterModificationUtils.getKatesDivCoveringsNew(false, BodyCoveringType.HUMAN, "Skin Colour", "The colour of the skin that's covering your body.", true, false, false)
+					+ CharacterModificationUtils.getKatesDivCoveringsNew(false, Race.HUMAN, BodyCoveringType.HUMAN, "Skin Colour", "The colour of the skin that's covering your body.", true, false, false)
 					
 					+ "<div class='cosmetics-container' style='background:transparent;'>"
 					
@@ -1044,7 +1091,7 @@ public class CharacterCreation {
 					
 					+ CharacterModificationUtils.getLipPuffynessDiv()
 
-					+ CharacterModificationUtils.getKatesDivCoveringsNew(false, BodyCoveringType.EYE_HUMAN, "Iris Colour", "The colour of your eye's irises.", true, false, false);
+					+ CharacterModificationUtils.getKatesDivCoveringsNew(false, Main.game.getPlayer().getEyeType().getRace(), BodyCoveringType.EYE_HUMAN, "Iris Colour", "The colour of your eye's irises.", true, false, false);
 		}
 		
 		@Override
@@ -1075,7 +1122,7 @@ public class CharacterCreation {
 					
 					+ CharacterModificationUtils.getKatesDivHairStyles(false, "Hair Style", "Choose your hair style. Certain hair styles are unavailable at shorter hair lengths.")
 
-					+ CharacterModificationUtils.getKatesDivCoveringsNew(false, BodyCoveringType.HAIR_HUMAN, "Hair Colour", "The colour of your hair.", true, false);
+					+ CharacterModificationUtils.getKatesDivCoveringsNew(false, Main.game.getPlayer().getHairType().getRace(), BodyCoveringType.HAIR_HUMAN, "Hair Colour", "The colour of your hair.", true, false);
 		}
 		
 		@Override
@@ -1324,22 +1371,22 @@ public class CharacterCreation {
 					+ "</div>"
 							
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_BLUSHER, "Blusher", "Blusher (also called rouge) is used to colour the cheeks so as to provide a more youthful appearance, and to emphasise the cheekbones.", true, false)
+							false, Race.NONE, BodyCoveringType.MAKEUP_BLUSHER, "Blusher", "Blusher (also called rouge) is used to colour the cheeks so as to provide a more youthful appearance, and to emphasise the cheekbones.", true, false)
 					
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_LIPSTICK, "Lipstick", "Lipstick is used to provide colour, texture, and protection to the wearer's lips.", true, false)
+							false, Race.NONE, BodyCoveringType.MAKEUP_LIPSTICK, "Lipstick", "Lipstick is used to provide colour, texture, and protection to the wearer's lips.", true, false)
 
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_EYE_LINER, "Eyeliner", "Eyeliner is applied around the contours of the eyes to help to define shape or highlight different features.", true, false)
+							false, Race.NONE, BodyCoveringType.MAKEUP_EYE_LINER, "Eyeliner", "Eyeliner is applied around the contours of the eyes to help to define shape or highlight different features.", true, false)
 
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_EYE_SHADOW, "Eye shadow", "Eye shadow is used to make the wearer's eyes stand out or look more attractive.", true, false)
+							false, Race.NONE, BodyCoveringType.MAKEUP_EYE_SHADOW, "Eye shadow", "Eye shadow is used to make the wearer's eyes stand out or look more attractive.", true, false)
 
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_NAIL_POLISH_HANDS, "Nail polish", "Nail polish is used to colour and protect the nails on your [pc.hands].", true, false)
+							false, Race.NONE, BodyCoveringType.MAKEUP_NAIL_POLISH_HANDS, "Nail polish", "Nail polish is used to colour and protect the nails on your [pc.hands].", true, false)
 
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_NAIL_POLISH_FEET, "Toenail polish", "Toenail polish is used to colour and protect the nails on your [pc.feet].", true, false);
+							false, Race.NONE, BodyCoveringType.MAKEUP_NAIL_POLISH_FEET, "Toenail polish", "Toenail polish is used to colour and protect the nails on your [pc.feet].", true, false);
 		}
 		
 		@Override
@@ -1370,7 +1417,7 @@ public class CharacterCreation {
 			
 			if(Main.game.isPubicHairEnabled() || Main.game.isFacialHairEnabled() || Main.game.isBodyHairEnabled()) {
 				UtilText.nodeContentSB.append(CharacterModificationUtils.getKatesDivCoveringsNew(
-						false, Main.game.getPlayer().getBodyHairCoveringType(), "Body hair", "This is the hair that covers all areas other than the head.", false, false, false));
+						false, Race.NONE, Main.game.getPlayer().getBodyHairCoveringType(), "Body hair", "This is the hair that covers all areas other than the head.", false, false, false));
 			} else {
 				UtilText.nodeContentSB.append(CharacterModificationUtils.getKatesDivGenericBodyHairDisabled(
 						"Body hair", "This is the hair that covers all areas other than the head.", "All extra body hair options are disabled. You will not see any extra hair content."));
@@ -1764,6 +1811,18 @@ public class CharacterCreation {
 							+ " you explain,"
 							+ " [pc.speech(and I'm currently waiting to hear back from my publisher about my latest novel.)]");
 					break;
+				case ARISTOCRAT:
+					UtilText.nodeContentSB.append(
+							"[pc.speech(I don't need to concern myself with working,)]"
+							+ " you explain,"
+							+ " [pc.speech(My family estate provides all the income I need, so I spend my time travelling and enjoying life.)]");
+					break;
+				case TOURIST:
+					UtilText.nodeContentSB.append(
+							"[pc.speech(I'm here on vacation,)]"
+							+ " you explain,"
+							+ " [pc.speech(While I'm here in the UK, I don't want to be thinking about work.)]");
+					break;
 				default:
 					break;
 			}
@@ -1932,16 +1991,42 @@ public class CharacterCreation {
 						Main.game.getTextStartStringBuilder().append(Main.game.getPlayer().setQuestProgress(QuestLine.MAIN, Quest.MAIN_1_A_LILAYAS_TESTS));
 						
 						Main.game.getPlayer().setMoney(5000);
-						Main.game.getPlayer().equipMainWeaponFromNowhere(Main.game.getItemGen().generateWeapon("innoxia_crystal_rare", DamageType.FIRE));
 						
-						AbstractItem spellBook = Main.game.getItemGen().generateItem(ItemType.getSpellBookType(Spell.FIREBALL));
-						if(Main.game.getPlayer().getBirthMonth().getValue() % 4 == 1) {
-							spellBook = Main.game.getItemGen().generateItem(ItemType.getSpellBookType(Spell.SLAM));
-						} else if(Main.game.getPlayer().getBirthMonth().getValue() % 4 == 2) {
-							spellBook = Main.game.getItemGen().generateItem(ItemType.getSpellBookType(Spell.POISON_VAPOURS));
-						} else if(Main.game.getPlayer().getBirthMonth().getValue()  % 4 == 3) {
-							spellBook = Main.game.getItemGen().generateItem(ItemType.getSpellBookType(Spell.ICE_SHARD));
+						DamageType damageType = DamageType.FIRE;
+						switch(CharacterCreation.getStartingDemonstoneSpellSchool()) {
+							case AIR:
+								damageType = DamageType.POISON;
+								break;
+							case EARTH:
+								damageType = DamageType.PHYSICAL;
+								break;
+							case ARCANE:
+							case FIRE:
+								damageType = DamageType.FIRE;
+								break;
+							case WATER:
+								damageType = DamageType.ICE;
+								break;
 						}
+						Main.game.getPlayer().equipMainWeaponFromNowhere(Main.game.getItemGen().generateWeapon("innoxia_crystal_rare", damageType));
+						
+						Spell startingSpell = Spell.FIREBALL;
+						switch(getStartingTomeSpellSchool()) {
+							case AIR:
+								startingSpell = Spell.POISON_VAPOURS;
+								break;
+							case EARTH:
+								startingSpell = Spell.SLAM;
+								break;
+							case FIRE:
+							case ARCANE:
+								startingSpell = Spell.FIREBALL;
+								break;
+							case WATER:
+								startingSpell = Spell.ICE_SHARD;
+								break;
+						}
+						AbstractItem spellBook = Main.game.getItemGen().generateItem(ItemType.getSpellBookType(startingSpell));
 						Main.game.getWorlds().get(WorldType.LILAYAS_HOUSE_FIRST_FLOOR).getCell(PlaceType.LILAYA_HOME_ROOM_PLAYER).getInventory().addItem(spellBook);
 						
 						applyGameStart();
@@ -2063,7 +2148,7 @@ public class CharacterCreation {
 					+ "<br/>"
 					+"<details>"
 						+ "<summary class='quest-title' style='color:" + QuestType.MAIN.getColour().toWebHexString() + ";'>Import Log</summary>"
-						+ CharacterUtils.getCharacterImportLog()
+						+ Main.game.getCharacterUtils().getCharacterImportLog()
 					+ "</details>"
 					+ "<div class='container-full-width'>"
 						+ "<h5 style='text-align:center;'>Appearance</h5>"
@@ -2094,8 +2179,24 @@ public class CharacterCreation {
 						Main.game.getPlayer().getCharactersEncountered().clear();
 						Main.game.getTextStartStringBuilder().append(Main.game.getPlayer().startQuest(QuestLine.MAIN));
 						Main.game.getTextStartStringBuilder().append(Main.game.getPlayer().setQuestProgress(QuestLine.MAIN, Quest.MAIN_1_A_LILAYAS_TESTS));
-						
-						Main.game.getPlayer().equipMainWeaponFromNowhere(Main.game.getItemGen().generateWeapon("innoxia_crystal_rare", DamageType.FIRE));
+
+						DamageType damageType = DamageType.FIRE;
+						switch(CharacterCreation.getStartingDemonstoneSpellSchool()) {
+							case AIR:
+								damageType = DamageType.POISON;
+								break;
+							case EARTH:
+								damageType = DamageType.PHYSICAL;
+								break;
+							case ARCANE:
+							case FIRE:
+								damageType = DamageType.FIRE;
+								break;
+							case WATER:
+								damageType = DamageType.ICE;
+								break;
+						}
+						Main.game.getPlayer().equipMainWeaponFromNowhere(Main.game.getItemGen().generateWeapon("innoxia_crystal_rare", damageType));
 						
 						AbstractItem spellBook = Main.game.getItemGen().generateItem(ItemType.getSpellBookType(Spell.FIREBALL));
 						if(Main.game.getPlayer().getBirthMonth().getValue() % 4 == 1) {

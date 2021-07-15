@@ -13,7 +13,6 @@ import com.lilithsthrone.game.character.body.valueEnums.LabiaSize;
 import com.lilithsthrone.game.character.body.valueEnums.OrificeElasticity;
 import com.lilithsthrone.game.character.body.valueEnums.OrificeModifier;
 import com.lilithsthrone.game.character.body.valueEnums.OrificePlasticity;
-import com.lilithsthrone.game.character.body.valueEnums.PenetrationGirth;
 import com.lilithsthrone.game.character.body.valueEnums.Wetness;
 import com.lilithsthrone.game.character.effects.StatusEffect;
 import com.lilithsthrone.game.character.fetishes.Fetish;
@@ -26,7 +25,7 @@ import com.lilithsthrone.utils.Util;
 
 /**
  * @since 0.1.0
- * @version 0.3.8.9
+ * @version 0.4
  * @author Innoxia
  */
 public class Vagina implements BodyPartInterface {
@@ -35,21 +34,20 @@ public class Vagina implements BodyPartInterface {
 	protected Clitoris clitoris;
 	protected int labiaSize;
 	protected boolean pierced;
+	protected boolean eggLayer;
 	
 	protected OrificeVagina orificeVagina;
 	protected FluidGirlCum girlcum;
 	protected OrificeVaginaUrethra orificeUrethra;
 
-	public Vagina(AbstractVaginaType type, int labiaSize, int clitSize, int wetness, float capacity, int depth, int elasticity, int plasticity, boolean virgin) {
+	public Vagina(AbstractVaginaType type, int labiaSize, int clitSize, int clitGirth, int wetness, float capacity, int depth, int elasticity, int plasticity, boolean virgin) {
 		this.type = type;
 		this.labiaSize = labiaSize;
-		this.clitoris = new Clitoris(clitSize, PenetrationGirth.THREE_AVERAGE.getValue());
-		pierced = false;
-		
+		this.clitoris = new Clitoris(clitSize, clitGirth);
+		this.pierced = false;
+		this.eggLayer = type.isEggLayer();
 		orificeVagina = new OrificeVagina(wetness, capacity, depth, elasticity, plasticity, virgin, type.getDefaultRacialOrificeModifiers());
-
 		orificeUrethra = new OrificeVaginaUrethra(Wetness.TWO_MOIST.getValue(), 0, 2, OrificeElasticity.ZERO_UNYIELDING.getValue(), OrificePlasticity.THREE_RESILIENT.getValue(), true, new ArrayList<>());
-		
 		girlcum = new FluidGirlCum(type.getFluidType());
 	}
 
@@ -113,7 +111,7 @@ public class Vagina implements BodyPartInterface {
 			descriptorList.add(this.getGirlcum().getFlavour().getName()+"-flavoured");
 		}
 		
-		if(owner.isVaginaBestial()) {
+		if(owner.isVaginaFeral()) {
 			descriptorList.add(Util.randomItemFrom(Util.newArrayListOfValues(
 					"feral",
 					"bestial",
@@ -155,6 +153,7 @@ public class Vagina implements BodyPartInterface {
 		if(!Main.game.isStarted() || owner==null) {// This always overrides pregnancy prevention, as the only times where this is true are for utility methods:
 			this.type = type;
 			this.girlcum.setType(type.getFluidType());
+			this.eggLayer = type.isEggLayer();
 			if(owner!=null) {
 				owner.resetAreaKnownByCharacters(CoverableArea.VAGINA);
 				owner.postTransformationCalculation();
@@ -173,15 +172,19 @@ public class Vagina implements BodyPartInterface {
 		StringBuilder sb = new StringBuilder();
 		
 		// Cannot transform if pregnant:
-		if (!overridePregnancyPrevention && type==VaginaType.NONE && (owner.isPregnant() || owner.hasStatusEffect(StatusEffect.PREGNANT_0))) {
+		if (!overridePregnancyPrevention
+				&& type==VaginaType.NONE
+				&& (owner.isPregnant() || owner.hasStatusEffect(StatusEffect.PREGNANT_0) || owner.getIncubationLitter(SexAreaOrifice.VAGINA)!=null)) {
 			sb.append(UtilText.parse(owner,
 					"<p>"
 						+ "[npc.Name] [npc.verb(let)] out a lewd moan as [npc.she] [npc.verb(feel)] [npc.her] [npc.pussy+] starting to grow hot and sensitive,"
 							+ " and as a wave of tingling excitement washes through [npc.her] lower abdomen, [npc.her] moan turns into a desperate gasp."
 						+ " Much to [npc.her] surprise, the feeling fades away almost as quickly as it came, and with a sigh, [npc.she] [npc.verb(realise)] that "
-						+ (owner.hasStatusEffect(StatusEffect.PREGNANT_0)
+						+ (owner.getIncubationLitter(SexAreaOrifice.VAGINA)!=null
+							?"<b>the eggs being incubated in [npc.her] womb have prevented [npc.her] vagina from being removed</b>!"
+							:(owner.hasStatusEffect(StatusEffect.PREGNANT_0)
 								?"<b>the possibility of being pregnant has prevented [npc.her] vagina from being removed</b>!"
-								:"<b>[npc.her] ongoing pregnancy has prevented [npc.her] vagina from being removed</b>!")
+								:"<b>[npc.her] ongoing pregnancy has prevented [npc.her] vagina from being removed</b>!"))
 						+ "<br/>"
 						+ "[npc.NamePos] pussy remains [style.boldTfSex(unchanged)]."
 					+ "</p>"));
@@ -280,40 +283,34 @@ public class Vagina implements BodyPartInterface {
 		sb.append(this.type.applyAdditionalTransformationEffects(owner, false));
 		this.type = type;
 		this.girlcum.setType(type.getFluidType());
+		this.eggLayer = type.isEggLayer();
 		owner.resetAreaKnownByCharacters(CoverableArea.VAGINA);
 		sb.append(this.type.getTransformationDescription(owner));
 		sb.append(this.type.applyAdditionalTransformationEffects(owner, true));
 		
 		sb.append("</p>");
-		
-		if(type.isEggLayer()) {
-			sb.append(
-					"<p>"
-						+ "Instead of giving birth to live young, [npc.name] now [style.colourSex(lays eggs)]!"
-					+ "</p>");
-		}
+
+		sb.append("<p style='text-align:center;'>");
+			if(this.eggLayer) {
+				sb.append("<i>Instead of giving birth to live young, [npc.name] now [style.colourEgg([npc.verb(lay)] eggs)]!</i>");
+			} else {
+				sb.append("<i>[npc.Name] now [style.colourSex([npc.verb(give)] birth to live young)]!</i>");
+			}
+		sb.append("</p>");
 		
 		orificeVagina.getOrificeModifiers().clear();
 		for(OrificeModifier om : type.getDefaultRacialOrificeModifiers()) {
 			orificeVagina.addOrificeModifier(owner, om);
 		}
 		
-		sb.append(
-				"<p>"
+		sb.append("<p>"
 				+ "Any old modifiers which [npc.her] pussy might have had have [style.boldShrink(transformed away)]!");
 		
 		if(orificeVagina.getOrificeModifiers().isEmpty()) {
 			sb.append("</p>");
 		} else {
-			if (owner.isPlayer()) {
-				sb.append(
-						"<br/>"
-						+ "Instead, your new pussy is:");
-			} else {
-				sb.append(
-						"<br/>"
-						+ "Instead, [npc.her] new pussy is:");
-			}
+			sb.append("<br/>"
+					+ "Instead, [npc.her] new pussy is:");
 			
 			for(OrificeModifier om : orificeVagina.getOrificeModifiers()) {
 				sb.append("<br/>[style.boldGrow("+Util.capitaliseSentence(om.getName())+")]");
@@ -389,6 +386,11 @@ public class Vagina implements BodyPartInterface {
 	}
 
 	public String setPierced(GameCharacter owner, boolean pierced) {
+		if(owner==null) {
+			this.pierced = pierced;
+			return "";
+		}
+		
 		if(this.pierced == pierced || !owner.hasVagina()) {
 			return "<p style='text-align:center;'>[style.colourDisabled(Nothing happens...)]</p>";
 		}
@@ -396,12 +398,8 @@ public class Vagina implements BodyPartInterface {
 		this.pierced = pierced;
 		
 		if(pierced) {
-			if(owner.isPlayer()) {
-				return "<p>Your [pc.pussy] is now [style.boldGrow(pierced)]!</p>";
-			} else {
-				return UtilText.parse(owner,
-						"<p>[npc.NamePos] [npc.pussy] is now [style.boldGrow(pierced)]!</p>");
-			}
+			return UtilText.parse(owner, "<p>[npc.NamePos] [npc.pussy] is now [style.boldGrow(pierced)]!</p>");
+			
 		} else {
 			AbstractClothing c = owner.getClothingInSlot(InventorySlot.PIERCING_VAGINA);
 			String piercingUnequip = "";
@@ -410,19 +408,57 @@ public class Vagina implements BodyPartInterface {
 				piercingUnequip = owner.addClothing(c, false);
 			}
 			
-			if(owner.isPlayer()) {
-				return "<p>"
-							+ "Your [pc.pussy] is [style.boldShrink(no longer pierced)]!"
-						+ "</p>"
-						+piercingUnequip;
-			} else {
-				return UtilText.parse(owner,
-						"<p>"
-								+ "[npc.NamePos] [npc.pussy] is [style.boldShrink(no longer pierced)]!"
-						+ "</p>"
-						+piercingUnequip);
-			}
+			return UtilText.parse(owner,
+					"<p>"
+						+ "[npc.NamePos] [npc.pussy] is [style.boldShrink(no longer pierced)]!"
+					+ "</p>"
+					+piercingUnequip);
 		}
+	}
+
+	public boolean isEggLayer() {
+		return eggLayer;
+	}
+
+	public String setEggLayer(GameCharacter owner, boolean eggLayer) {
+		if(owner==null) {
+			this.eggLayer = eggLayer;
+			return "";
+		}
+		
+		if(this.eggLayer == eggLayer || !owner.hasVagina()) {
+			return "<p style='text-align:center;'>[style.colourDisabled(Nothing happens...)]</p>";
+		}
+		
+		if(owner.isPregnant()) {
+			return UtilText.parse(owner,
+					"<p>"
+						+ "[npc.Name] [npc.verb(let)] out a shocked gasp as an unpleasant tingling sensation suddenly spreads throughout [npc.her] lower abdomen."
+						+ " Almost as soon as it arrived, however, this alarming feeling fades away, and [npc.name] [npc.verb(realise)] that [npc.her] ongoing pregnancy is preventing [npc.her] womb from being transformed!"
+					+ "</p>");
+		}
+		
+		this.eggLayer = eggLayer;
+		
+		if(eggLayer) {
+			return UtilText.parse(owner,
+					"<p>"
+						+ "[npc.Name] [npc.verb(let)] out a shocked gasp as an unpleasant tingling sensation suddenly spreads throughout [npc.her] lower abdomen."
+						+ " An intense cramp quickly replaces this feeling, causing [npc.namePos] gasp to turn into a distressed groan."
+						+ "<br/>"
+						+ "Thankfully, this uncomfortable transformation quickly runs its course, leaving [npc.name] panting for breath and instinctively knowing that [style.boldEgg([npc.she] will now lay eggs instead of birthing live young)]!"
+					+ "</p>");
+			
+		} else {
+			return UtilText.parse(owner,
+					"<p>"
+						+ "[npc.Name] [npc.verb(let)] out a shocked gasp as an unpleasant tingling sensation suddenly spreads throughout [npc.her] lower abdomen."
+						+ " An intense cramp quickly replaces this feeling, causing [npc.namePos] gasp to turn into a distressed groan."
+						+ "<br/>"
+						+ "Thankfully, this uncomfortable transformation quickly runs its course, leaving [npc.name] panting for breath and instinctively knowing that [style.boldSex([npc.she] will now birth live young instead of laying eggs)]!"
+					+ "</p>");
+		}
+	
 	}
 
 	public Clitoris getClitoris() {
@@ -430,10 +466,10 @@ public class Vagina implements BodyPartInterface {
 	}
 
 	@Override
-	public boolean isBestial(GameCharacter owner) {
+	public boolean isFeral(GameCharacter owner) {
 		if(owner==null) {
 			return false;
 		}
-		return owner.getLegConfiguration().getBestialParts().contains(Vagina.class) && getType().getRace().isBestialPartsAvailable();
+		return owner.isFeral() || (owner.getLegConfiguration().getFeralParts().contains(Vagina.class) && getType().getRace().isFeralPartsAvailable());
 	}
 }

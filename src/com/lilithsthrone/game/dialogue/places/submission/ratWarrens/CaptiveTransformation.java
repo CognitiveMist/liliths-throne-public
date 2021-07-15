@@ -4,8 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.lilithsthrone.game.character.GameCharacter;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.types.BreastType;
 import com.lilithsthrone.game.character.body.types.PenisType;
 import com.lilithsthrone.game.character.body.types.VaginaType;
@@ -172,8 +172,8 @@ public enum CaptiveTransformation {
 					map.put("You's gonna be growin' a nice fat cock! Yer gonna be makin' us a lotta cash with all the cum this thing's gonna be spurtin' out! Heh-heh-heh!",
 							target.setPenisType(RacialBody.valueOfRace(target.getRace()).getPenisType())
 							+ target.incrementPenisSize(20)
-							+ (target.getPenisRawGirthValue()<PenetrationGirth.FOUR_THICK.getValue()
-									?target.setPenisGirth(PenetrationGirth.FOUR_THICK)
+							+ (target.getPenisRawGirthValue()<PenetrationGirth.FOUR_GIRTHY.getValue()
+									?target.setPenisGirth(PenetrationGirth.FOUR_GIRTHY)
 									:""));
 				}
 			} else {
@@ -187,8 +187,8 @@ public enum CaptiveTransformation {
 				} else {
 					map.put("Yer cock's gonna need ta be bigger'n that, otherwise the milkin' tube might slip right off while we're milkin' ya!",
 							target.incrementPenisSize(20)
-							+ (target.getPenisRawGirthValue()<PenetrationGirth.FOUR_THICK.getValue()
-									?target.setPenisGirth(PenetrationGirth.FOUR_THICK)
+							+ (target.getPenisRawGirthValue()<PenetrationGirth.FOUR_GIRTHY.getValue()
+									?target.setPenisGirth(PenetrationGirth.FOUR_GIRTHY)
 									:""));
 				}
 			}
@@ -363,7 +363,7 @@ public enum CaptiveTransformation {
 						target.setLipSize(LipSize.THREE_PLUMP));
 			}
 			
-			if((target.isTaur() && Main.getProperties().udders>=1) || (target.getRaceStage()==RaceStage.GREATER && Main.getProperties().udders==2)
+			if((target.isTaur() && Main.getProperties().getUddersLevel()>=1) || (target.getRaceStage()==RaceStage.GREATER && Main.getProperties().getUddersLevel()==2)
 //					&& Main.game.isLactationContentEnabled()
 					&& RacialBody.valueOfRace(target.getRace()).getBreastCrotchType()!=BreastType.NONE) {
 				map.put("Let's give yer some fuckin' udders with nice big teats! We's gotta get yer milk production up as 'igh as we can!",
@@ -396,14 +396,14 @@ public enum CaptiveTransformation {
 					map.put("You's gonna be growin' a nice fat cock! Yer gonna be makin' us a lotta cash with all the cum this thing's gonna be spurtin' out! Heh-heh-heh!",
 							target.setPenisType(RacialBody.valueOfRace(target.getRace()).getPenisType())
 							+ target.incrementPenisSize(20)
-							+ (target.getPenisRawGirthValue()<PenetrationGirth.FOUR_THICK.getValue()
-									?target.setPenisGirth(PenetrationGirth.FOUR_THICK)
+							+ (target.getPenisRawGirthValue()<PenetrationGirth.FOUR_GIRTHY.getValue()
+									?target.setPenisGirth(PenetrationGirth.FOUR_GIRTHY)
 									:""));
 				} else {
 					map.put("Yer cock needs ta be big an' fat!",
 							target.incrementPenisSize(20)
-							+ (target.getPenisRawGirthValue()<PenetrationGirth.FOUR_THICK.getValue()
-									?target.setPenisGirth(PenetrationGirth.FOUR_THICK)
+							+ (target.getPenisRawGirthValue()<PenetrationGirth.FOUR_GIRTHY.getValue()
+									?target.setPenisGirth(PenetrationGirth.FOUR_GIRTHY)
 									:""));
 				}
 				

@@ -649,7 +649,7 @@ public class SlimeQueensLair {
 							Main.game.getNpc(SlimeRoyalGuard.class),
 							Util.newHashMapOfValues(
 									new Value<>(Main.game.getPlayer(), "[pc.speech(Fine, I'll spar with you,)] you say, readying yourself for a fight, [pc.speech(but remember what you said about your body being mine when you lose!)]"),
-									new Value<>(Main.game.getNpc(SlimeRoyalGuard.class), "[slimeRoyalGuard.speech(Hah!)] [slimeRoyalGuard.name] booms. [slimeRoyalGuard.speech(I'm looking forwards to claiming my prize!)]")));
+									new Value<>(Main.game.getNpc(SlimeRoyalGuard.class), "[slimeRoyalGuard.speech(Hah!)] [slimeRoyalGuard.name] booms. [slimeRoyalGuard.speech(I'm looking forward to claiming my prize!)]")));
 				} else {
 					return null;
 				}
@@ -1237,7 +1237,7 @@ public class SlimeQueensLair {
 	public static final DialogueNode SLIME_QUEEN_BATH = new DialogueNode("Bed Chamber", "", true, true) {
 		@Override
 		public void applyPreParsingEffects() {
-			Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().applyWash(true, false, StatusEffect.getStatusEffectFromId("innoxia_cleaned_bath"), 240+30));
+			Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().applyWash(true, false, StatusEffect.CLEANED_BATH, 240+30));
 		}
 		@Override
 		public String getContent() {

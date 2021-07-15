@@ -19,8 +19,6 @@ import com.lilithsthrone.game.character.attributes.Attribute;
 import com.lilithsthrone.game.character.attributes.CorruptionLevel;
 import com.lilithsthrone.game.character.attributes.IntelligenceLevel;
 import com.lilithsthrone.game.character.attributes.ObedienceLevelBasic;
-import com.lilithsthrone.game.character.effects.AbstractStatusEffect;
-import com.lilithsthrone.game.character.effects.Perk;
 import com.lilithsthrone.game.character.effects.StatusEffect;
 import com.lilithsthrone.game.character.npc.NPC;
 import com.lilithsthrone.game.character.persona.SexualOrientation;
@@ -87,32 +85,14 @@ public class RoomPlayer {
 		List<GameCharacter> charactersPresent = new ArrayList<>(LilayaHomeGeneric.getSlavesAndOccupantsPresent());
 		charactersPresent.addAll(Main.game.getPlayer().getCompanions());
 		charactersPresent.add(Main.game.getPlayer());
-		
-		Main.game.endTurn(sleepTimeInMinutes*60);
-		
+
 		for(GameCharacter character : charactersPresent) {
-			character.setHealth(character.getAttributeValue(Attribute.HEALTH_MAXIMUM));
-			character.setMana(character.getAttributeValue(Attribute.MANA_MAXIMUM));
-			character.setLustNoText(character.getRestingLust());
-			
-			character.removeStatusEffect(StatusEffect.WELL_RESTED);
-			character.removeStatusEffect(StatusEffect.WELL_RESTED_BOOSTED);
-			character.removeStatusEffect(StatusEffect.WELL_RESTED_BOOSTED_EXTRA);
-			
-			boolean neet = character.hasTrait(Perk.JOB_UNEMPLOYED, true);
-			boolean emperorBed = Main.game.getPlayerCell().getPlace().getPlaceUpgrades().contains(PlaceUpgrade.LILAYA_PLAYER_ROOM_BED);
-			AbstractStatusEffect restedEffect = StatusEffect.WELL_RESTED;
-			if(neet) {
-				if(emperorBed) {
-					restedEffect = StatusEffect.WELL_RESTED_BOOSTED_EXTRA;
-				} else {
-					restedEffect = StatusEffect.WELL_RESTED_BOOSTED;
-				}
-			} else if(emperorBed) {
-				restedEffect = StatusEffect.WELL_RESTED_BOOSTED;
-			}
-			character.addStatusEffect(restedEffect, ((neet?8:6)*60*60) + (240*60));
+			character.applySleep(sleepTimeInMinutes);
 		}
+
+		Main.game.getPlayer().setActive(false);
+		Main.game.endTurn(sleepTimeInMinutes*60);
+		Main.game.getPlayer().setActive(true);
 	}
 	
 	private static Response getResponseRoom(int responseTab, int index) {
@@ -133,7 +113,7 @@ public class RoomPlayer {
 						applySleep(sleepTimeInMinutes);
 					}
 				};
-	
+
 			} else if (index == 2) {
 				return new Response("Rest (4 hours)",
 						"Rest for four hours. As well as replenishing your "+Attribute.HEALTH_MAXIMUM.getName()+" and "+Attribute.MANA_MAXIMUM.getName()+", you will also get the 'Well Rested' status effect.",
@@ -144,8 +124,19 @@ public class RoomPlayer {
 						applySleep(sleepTimeInMinutes);
 					}
 				};
-	
-			} else if (index == 3) {
+
+            } else if (index == 3) {
+                return new Response("Rest (8 hours)",
+                        "Rest for eight hours. As well as replenishing your "+Attribute.HEALTH_MAXIMUM.getName()+" and "+Attribute.MANA_MAXIMUM.getName()+", you will also get the 'Well Rested' status effect.",
+                        AUNT_HOME_PLAYERS_ROOM_SLEEP){
+                    @Override
+                    public void effects() {
+                        sleepTimeInMinutes = 60 * 8;
+                        applySleep(sleepTimeInMinutes);
+                    }
+                };
+
+            } else if (index == 4) {
 				return new Response("Rest (12 hours)",
 						"Rest for twelve hours. As well as replenishing your "+Attribute.HEALTH_MAXIMUM.getName()+" and "+Attribute.MANA_MAXIMUM.getName()+", you will also get the 'Well Rested' status effect.",
 						AUNT_HOME_PLAYERS_ROOM_SLEEP){
@@ -156,7 +147,7 @@ public class RoomPlayer {
 					}
 				};
 	
-			} else if (index == 4) {
+			} else if (index == 5) {
 				int timeUntilChange = Main.game.getMinutesUntilNextMorningOrEvening() + 5; // Add 5 minutes so that if the days are drawing in, you don't get stuck in a loop of always sleeping to sunset/sunrise
 				LocalDateTime[] sunriseSunset = DateAndTime.getTimeOfSolarElevationChange(Main.game.getDateNow(), SolarElevationAngle.SUN_ALTITUDE_SUNRISE_SUNSET, Game.DOMINION_LATITUDE, Game.DOMINION_LONGITUDE);
 				return new Response("Rest until " + (Main.game.isDayTime() ? "Sunset" : "Sunrise"),
@@ -173,13 +164,6 @@ public class RoomPlayer {
 						applySleep(sleepTimeInMinutes);
 					}
 				};
-				
-			} else if (index == 5) {
-				if(Main.game.getDialogueFlags().values.contains(DialogueFlagValue.knowsDate)) {
-					return new Response("Calendar", "Take another look at the enchanted calendar that's pinned up on one wall.", AUNT_HOME_PLAYERS_ROOM_CALENDAR);
-				} else {
-					return new Response("<span style='color:"+PresetColour.GENERIC_EXCELLENT.toWebHexString()+";'>Calendar</span>", "There's a calendar pinned up on one wall. Take a closer look at it.", AUNT_HOME_PLAYERS_ROOM_CALENDAR);
-				}
 				
 			} else if (index == 6) {
 				return new Response("Manage room", "Enter the management screen for this particular room.", OccupantManagementDialogue.ROOM_UPGRADES) {
@@ -205,11 +189,17 @@ public class RoomPlayer {
 					return new Response("Manage people", "You'll either need a slaver license, or permission from Lilaya to house your friends, before you can access this menu!",  null);
 				}
 				
+			} else if (index == 8) {
+				if(Main.game.getDialogueFlags().values.contains(DialogueFlagValue.knowsDate)) {
+					return new Response("Calendar", "Take another look at the enchanted calendar that's pinned up on one wall.", AUNT_HOME_PLAYERS_ROOM_CALENDAR);
+				} else {
+					return new Response("<span style='color:"+PresetColour.GENERIC_EXCELLENT.toWebHexString()+";'>Calendar</span>", "There's a calendar pinned up on one wall. Take a closer look at it.", AUNT_HOME_PLAYERS_ROOM_CALENDAR);
+				}
 			}
 			
 			List<NPC> charactersPresent = LilayaHomeGeneric.getSlavesAndOccupantsPresent();
 			
-			int indexPresentStart = 8;
+			int indexPresentStart = 9;
 			if(index-indexPresentStart<charactersPresent.size() && index-indexPresentStart>=0) {
 				NPC character = charactersPresent.get(index-indexPresentStart);
 				return new Response(
@@ -270,11 +260,11 @@ public class RoomPlayer {
 						List<NPC> charactersPresent = LilayaHomeGeneric.getSlavesAndOccupantsPresent();
 						slavesWashing = charactersPresent.stream().filter((npc) -> npc.hasSlaveJobSetting(SlaveJob.BEDROOM, SlaveJobSetting.BEDROOM_HELP_WASH)).collect(Collectors.toList());
 						for(GameCharacter npc : slavesWashing) {
-							npc.applyWash(true, true, null, 240+30);
+							npc.applyWash(true, true, StatusEffect.CLEANED_SHOWER, 240+30);
 						}
 						
 						Main.game.getTextEndStringBuilder().append("<p style='text-align:center'><i>You leave your clothes outside of your bathroom so that they can be cleaned while you wash yourself...</i></p>");
-						Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().applyWash(true, false, null, 240+30));
+						Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().applyWash(true, false, StatusEffect.CLEANED_SHOWER, 240+30));
 					}
 					@Override
 					public int getSecondsPassed() {
@@ -294,11 +284,11 @@ public class RoomPlayer {
 						List<GameCharacter> charactersPresent = new ArrayList<>(LilayaHomeGeneric.getSlavesAndOccupantsPresent());
 						slavesWashing = charactersPresent.stream().filter((npc) -> npc.hasSlaveJobSetting(SlaveJob.BEDROOM, SlaveJobSetting.BEDROOM_HELP_WASH)).collect(Collectors.toList());
 						for(GameCharacter npc : slavesWashing) {
-							npc.applyWash(true, true, StatusEffect.getStatusEffectFromId("innoxia_cleaned_bath"), 240+30);
+							npc.applyWash(true, true, StatusEffect.CLEANED_BATH, 240+30);
 						}
 						
 						Main.game.getTextEndStringBuilder().append("<p style='text-align:center'><i>You leave your clothes outside of your bathroom so that they can be cleaned while you wash yourself...</i></p>");
-						Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().applyWash(true, true, StatusEffect.getStatusEffectFromId("innoxia_cleaned_bath"), 240+30));
+						Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().applyWash(true, true, StatusEffect.CLEANED_BATH, 240+30));
 					}
 					@Override
 					public int getSecondsPassed() {
@@ -863,10 +853,10 @@ public class RoomPlayer {
 					break;
 				case MARCH:
 					if(Main.game.getPlayer().getSexualOrientation()==SexualOrientation.ANDROPHILIC) {
-						sb.append("a fierce-looking "+Subspecies.CAT_MORPH_TIGER.getSingularMaleName(null)+"."
+						sb.append("a fierce-looking "+Subspecies.getSubspeciesFromId("innoxia_panther_subspecies_tiger").getSingularMaleName(null)+"."
 								+ " Striking a dominant pose, he's flashing you a toothy grin, clearly excited by the fact that his huge feline cock is fully on display.");
 					} else {
-						sb.append("a fierce-looking "+Subspecies.CAT_MORPH_TIGER.getSingularFemaleName(null)+"."
+						sb.append("a fierce-looking "+Subspecies.getSubspeciesFromId("innoxia_panther_subspecies_tiger").getSingularFemaleName(null)+"."
 								+ " Striking a dominant pose, she's flashing you a toothy grin, clearly excited by the fact that her large breasts and tight pussy are fully on display.");
 					}
 					break;
@@ -1912,9 +1902,9 @@ public class RoomPlayer {
 		@Override
 		public void applyPreParsingEffects() {
 			for(GameCharacter npc : slavesWashing) {
-				npc.applyWash(true, true, StatusEffect.getStatusEffectFromId("innoxia_cleaned_bath"), 240+30);
+				npc.applyWash(true, true, StatusEffect.CLEANED_SHOWER, 240+30);
 			}
-			Main.game.getPlayer().applyWash(true, true, StatusEffect.getStatusEffectFromId("innoxia_cleaned_bath"), 240+30);
+			Main.game.getPlayer().applyWash(true, true, StatusEffect.CLEANED_SHOWER, 240+30);
 		}
 		@Override
 		public String getDescription() {
@@ -2059,9 +2049,9 @@ public class RoomPlayer {
 		@Override
 		public void applyPreParsingEffects() {
 			for(GameCharacter npc : slavesWashing) {
-				npc.applyWash(true, true, StatusEffect.getStatusEffectFromId("innoxia_cleaned_bath"), 240+30);
+				npc.applyWash(true, true, StatusEffect.CLEANED_BATH, 240+30);
 			}
-			Main.game.getPlayer().applyWash(true, true, StatusEffect.getStatusEffectFromId("innoxia_cleaned_bath"), 240+30);
+			Main.game.getPlayer().applyWash(true, true, StatusEffect.CLEANED_BATH, 240+30);
 		}
 		@Override
 		public String getDescription() {
@@ -2407,6 +2397,7 @@ public class RoomPlayer {
 					public void effects() {
 						Main.game.getTextEndStringBuilder().append(UtilText.parseFromXMLFile("places/dominion/nightlife/theWateringHole", "AUNT_HOME_PLAYERS_ROOM_CLUBBER_TAKEN_HOME_CHANGE_MIND", NightlifeDistrict.getClubbersPresent()));
 						NightlifeDistrict.removeClubbers();
+						Main.game.setRequestAutosave(true);
 					}
 				};
 				
@@ -2419,6 +2410,7 @@ public class RoomPlayer {
 					public void effects() {
 						Main.game.getTextEndStringBuilder().append(UtilText.parseFromXMLFile("places/dominion/nightlife/theWateringHole", "AUNT_HOME_PLAYERS_ROOM_CLUBBER_TAKEN_HOME_CHANGE_MIND_RUDE", NightlifeDistrict.getClubbersPresent()));
 						NightlifeDistrict.removeClubbers();
+						Main.game.setRequestAutosave(true);
 					}
 				};
 				
@@ -2455,6 +2447,7 @@ public class RoomPlayer {
 					public void effects() {
 						Main.game.getTextStartStringBuilder().append(UtilText.parseFromXMLFile("places/dominion/nightlife/theWateringHole", "BACK_HOME_AFTER_SEX_SEE_AGAIN", NightlifeDistrict.getClubbersPresent()));
 						NightlifeDistrict.saveClubbers();
+						Main.game.setRequestAutosave(true);
 					}
 				};
 				
@@ -2466,6 +2459,7 @@ public class RoomPlayer {
 					public void effects() {
 						Main.game.getTextStartStringBuilder().append(UtilText.parseFromXMLFile("places/dominion/nightlife/theWateringHole", "BACK_HOME_AFTER_SEX_DO_NOT_SEE_AGAIN", NightlifeDistrict.getClubbersPresent()));
 						NightlifeDistrict.removeClubbers();
+						Main.game.setRequestAutosave(true);
 					}
 				};
 				
@@ -2477,6 +2471,7 @@ public class RoomPlayer {
 					public void effects() {
 						Main.game.getTextStartStringBuilder().append(UtilText.parseFromXMLFile("places/dominion/nightlife/theWateringHole", "BACK_HOME_AFTER_SEX_DO_NOT_SEE_AGAIN_RUDE", NightlifeDistrict.getClubbersPresent()));
 						NightlifeDistrict.removeClubbers();
+						Main.game.setRequestAutosave(true);
 					}
 				};
 			}

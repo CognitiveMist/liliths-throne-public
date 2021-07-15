@@ -9,10 +9,9 @@ import org.w3c.dom.Element;
 
 import com.lilithsthrone.game.Game;
 import com.lilithsthrone.game.character.CharacterImportSetting;
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.EquipClothingSetting;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.valueEnums.AreolaeSize;
 import com.lilithsthrone.game.character.body.valueEnums.AssSize;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
@@ -43,6 +42,7 @@ import com.lilithsthrone.game.character.persona.PersonalityTrait;
 import com.lilithsthrone.game.character.persona.SexualOrientation;
 import com.lilithsthrone.game.character.race.RaceStage;
 import com.lilithsthrone.game.character.race.Subspecies;
+import com.lilithsthrone.game.dialogue.DialogueFlagValue;
 import com.lilithsthrone.game.dialogue.DialogueNode;
 import com.lilithsthrone.game.inventory.AbstractCoreItem;
 import com.lilithsthrone.game.inventory.CharacterInventory;
@@ -261,8 +261,12 @@ public class Finch extends NPC {
 			this.addClothing(c, 2+Util.random.nextInt(5), false, false);
 		}
 		
-		for(AbstractClothing c : CharacterUtils.generateEnchantedClothingForTrader(this, clothingToSell, 4, 2)) {
+		for(AbstractClothing c : Main.game.getCharacterUtils().generateEnchantedClothingForTrader(this, clothingToSell, 4, 2)) {
 			this.addClothing(c, false);
+		}
+		
+		if(Main.game.getDialogueFlags().hasFlag(DialogueFlagValue.finchFreedomTalk)) {
+			this.addItem(Main.game.getItemGen().generateItem("innoxia_slavery_freedom_certification"), 10, false, false);
 		}
 	}
 	
@@ -280,7 +284,15 @@ public class Finch extends NPC {
 		return "<p>"
 					+ "[finch.speech(Looking for the good stuff, huh?)] [finch.name] says, winking at you as he hands you a 'slaver-exclusive' sales brochure,"
 					+ " [finch.speech(Let me know what you fancy!)]"
-				+ "</p>";
+				+ "</p>"
+				+ (Main.game.getDialogueFlags().hasFlag(DialogueFlagValue.finchFreedomTalk)
+					?"<p>"
+						+ "As you start to look through the brochure, [finch.name] lowers his voice and adds,"
+						+ " [finch.speech(Oh, and don't forget that you can buy Freedom Certifications from me."
+							+ " They're pre-signed and have the official seal, so all you need to do is fill out the name of your slave and sign it."
+							+ " They're carrying an arcane enchantment that instantly registers your slave as being freed, so there's nothing more to it than that...)]"
+					+ "</p>"
+					:"");
 	}
 
 	@Override
@@ -290,10 +302,7 @@ public class Finch extends NPC {
 
 	@Override
 	public boolean willBuy(AbstractCoreItem item) {
-		return (item instanceof AbstractClothing)
-				&& !item.getItemTags().contains(ItemTag.CONTRABAND_LIGHT)
-				&& !item.getItemTags().contains(ItemTag.CONTRABAND_MEDIUM)
-				&& !item.getItemTags().contains(ItemTag.CONTRABAND_HEAVY);
+		return false;
 	}
 
 }

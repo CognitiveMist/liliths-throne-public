@@ -9,8 +9,8 @@ import java.util.Set;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.lilithsthrone.controller.xmlParsing.XMLUtil;
 import com.lilithsthrone.game.Game;
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.npc.NPC;
 import com.lilithsthrone.game.character.npc.dominion.Daddy;
@@ -21,7 +21,6 @@ import com.lilithsthrone.game.dialogue.places.submission.impFortress.ImpFortress
 import com.lilithsthrone.game.occupantManagement.slave.SlaveJob;
 import com.lilithsthrone.main.Main;
 import com.lilithsthrone.utils.Util;
-import com.lilithsthrone.utils.Vector2i;
 import com.lilithsthrone.utils.XMLSaving;
 import com.lilithsthrone.utils.colours.Colour;
 import com.lilithsthrone.utils.colours.PresetColour;
@@ -44,15 +43,6 @@ public class DialogueFlags implements XMLSaving {
 	
 	// Timers:
 	public Map<String, Long> savedLongs = new HashMap<>();
-//	public long ralphDiscountStartTime;
-//	public long kalahariBreakStartTime;
-//	public long daddyResetTimer;
-//	public long candiSexTimer;
-//	public long ralphSexTimer;
-//	public long impFortressAlphaDefeatedTime;
-//	public long impFortressDemonDefeatedTime;
-//	public long impFortressFemalesDefeatedTime;
-//	public long impFortressMalesDefeatedTime;
 	public int helenaSlaveOrderDay;
 
 	public int impCitadelImpWave;
@@ -85,8 +75,8 @@ public class DialogueFlags implements XMLSaving {
 	// Enforcer warehouse guards defeated:
 	public Set<String> warehouseDefeatedIDs = new HashSet<>();
 
-	// Storage tiles checked:
-	public Set<Vector2i> supplierStorageRoomsChecked = new HashSet<>();
+//	// Storage tiles checked:
+//	public Set<Vector2i> supplierStorageRoomsChecked = new HashSet<>();
 	
 	
 	public DialogueFlags() {
@@ -132,33 +122,33 @@ public class DialogueFlags implements XMLSaving {
 		Element element = doc.createElement("dialogueFlags");
 		parentElement.appendChild(element);
 		
-//		CharacterUtils.createXMLElementWithValue(doc, element, "ralphDiscountStartTime", String.valueOf(ralphDiscountStartTime));
-//		CharacterUtils.createXMLElementWithValue(doc, element, "kalahariBreakStartTime", String.valueOf(kalahariBreakStartTime));
-//		CharacterUtils.createXMLElementWithValue(doc, element, "daddyResetTimer", String.valueOf(daddyResetTimer));
+//		XMLUtil.createXMLElementWithValue(doc, element, "ralphDiscountStartTime", String.valueOf(ralphDiscountStartTime));
+//		XMLUtil.createXMLElementWithValue(doc, element, "kalahariBreakStartTime", String.valueOf(kalahariBreakStartTime));
+//		XMLUtil.createXMLElementWithValue(doc, element, "daddyResetTimer", String.valueOf(daddyResetTimer));
 //		
-//		CharacterUtils.createXMLElementWithValue(doc, element, "impFortressAlphaDefeatedTime", String.valueOf(impFortressAlphaDefeatedTime));
-//		CharacterUtils.createXMLElementWithValue(doc, element, "impFortressDemonDefeatedTime", String.valueOf(impFortressDemonDefeatedTime));
-//		CharacterUtils.createXMLElementWithValue(doc, element, "impFortressFemalesDefeatedTime", String.valueOf(impFortressFemalesDefeatedTime));
-//		CharacterUtils.createXMLElementWithValue(doc, element, "impFortressMalesDefeatedTime", String.valueOf(impFortressMalesDefeatedTime));
+//		XMLUtil.createXMLElementWithValue(doc, element, "impFortressAlphaDefeatedTime", String.valueOf(impFortressAlphaDefeatedTime));
+//		XMLUtil.createXMLElementWithValue(doc, element, "impFortressDemonDefeatedTime", String.valueOf(impFortressDemonDefeatedTime));
+//		XMLUtil.createXMLElementWithValue(doc, element, "impFortressFemalesDefeatedTime", String.valueOf(impFortressFemalesDefeatedTime));
+//		XMLUtil.createXMLElementWithValue(doc, element, "impFortressMalesDefeatedTime", String.valueOf(impFortressMalesDefeatedTime));
 		
-		CharacterUtils.createXMLElementWithValue(doc, element, "ralphDiscount", String.valueOf(ralphDiscount));
-		CharacterUtils.createXMLElementWithValue(doc, element, "scarlettPrice", String.valueOf(scarlettPrice));
-		CharacterUtils.createXMLElementWithValue(doc, element, "eponaStamps", String.valueOf(eponaStamps));
-		CharacterUtils.createXMLElementWithValue(doc, element, "helenaSlaveOrderDay", String.valueOf(helenaSlaveOrderDay));
+		XMLUtil.createXMLElementWithValue(doc, element, "ralphDiscount", String.valueOf(ralphDiscount));
+		XMLUtil.createXMLElementWithValue(doc, element, "scarlettPrice", String.valueOf(scarlettPrice));
+		XMLUtil.createXMLElementWithValue(doc, element, "eponaStamps", String.valueOf(eponaStamps));
+		XMLUtil.createXMLElementWithValue(doc, element, "helenaSlaveOrderDay", String.valueOf(helenaSlaveOrderDay));
 
 
-		CharacterUtils.createXMLElementWithValue(doc, element, "impCitadelImpWave", String.valueOf(impCitadelImpWave));
+		XMLUtil.createXMLElementWithValue(doc, element, "impCitadelImpWave", String.valueOf(impCitadelImpWave));
 
-		CharacterUtils.createXMLElementWithValue(doc, element, "murkPlayerTfStage", String.valueOf(murkPlayerTfStage));
-		CharacterUtils.createXMLElementWithValue(doc, element, "murkCompanionTfStage", String.valueOf(murkCompanionTfStage));
+		XMLUtil.createXMLElementWithValue(doc, element, "murkPlayerTfStage", String.valueOf(murkPlayerTfStage));
+		XMLUtil.createXMLElementWithValue(doc, element, "murkCompanionTfStage", String.valueOf(murkCompanionTfStage));
 		
-		CharacterUtils.createXMLElementWithValue(doc, element, "offspringDialogueTokens", String.valueOf(offspringDialogueTokens));
-		CharacterUtils.createXMLElementWithValue(doc, element, "slaveTrader", slaveTrader);
-		CharacterUtils.createXMLElementWithValue(doc, element, "slaveryManagerSlaveSelected", managementCompanion);
+		XMLUtil.createXMLElementWithValue(doc, element, "offspringDialogueTokens", String.valueOf(offspringDialogueTokens));
+		XMLUtil.createXMLElementWithValue(doc, element, "slaveTrader", slaveTrader);
+		XMLUtil.createXMLElementWithValue(doc, element, "slaveryManagerSlaveSelected", managementCompanion);
 
-		CharacterUtils.createXMLElementWithValue(doc, element, "natalyaCollarColour", PresetColour.getIdFromColour(natalyaCollarColour));
-		CharacterUtils.createXMLElementWithValue(doc, element, "natalyaPoints", String.valueOf(natalyaPoints));
-		CharacterUtils.createXMLElementWithValue(doc, element, "sadistNatalyaSlave", sadistNatalyaSlave);
+		XMLUtil.createXMLElementWithValue(doc, element, "natalyaCollarColour", PresetColour.getIdFromColour(natalyaCollarColour));
+		XMLUtil.createXMLElementWithValue(doc, element, "natalyaPoints", String.valueOf(natalyaPoints));
+		XMLUtil.createXMLElementWithValue(doc, element, "sadistNatalyaSlave", sadistNatalyaSlave);
 		
 		Element savedLongsElement = doc.createElement("savedLongs");
 		element.appendChild(savedLongsElement);
@@ -172,7 +162,7 @@ public class DialogueFlags implements XMLSaving {
 		Element valuesElement = doc.createElement("dialogueValues");
 		element.appendChild(valuesElement);
 		for(DialogueFlagValue value : values) {
-			CharacterUtils.createXMLElementWithValue(doc, valuesElement, "dialogueValue", value.toString());
+			XMLUtil.createXMLElementWithValue(doc, valuesElement, "dialogueValue", value.toString());
 		}
 		
 		
@@ -184,15 +174,14 @@ public class DialogueFlags implements XMLSaving {
 		
 		saveSet(element, doc, warehouseDefeatedIDs, "warehouseDefeatedIDs");
 		
-		Element supplierStorageRoomsCheckedElement = doc.createElement("supplierStorageRoomsChecked");
-		element.appendChild(supplierStorageRoomsCheckedElement);
-		for(Vector2i value : supplierStorageRoomsChecked) {
-			Element location = doc.createElement("location");
-			supplierStorageRoomsCheckedElement.appendChild(location);
-			CharacterUtils.addAttribute(doc, location, "x", String.valueOf(value.getX()));
-			CharacterUtils.addAttribute(doc, location, "y", String.valueOf(value.getY()));
-		}
-		
+//		Element supplierStorageRoomsCheckedElement = doc.createElement("supplierStorageRoomsChecked");
+//		element.appendChild(supplierStorageRoomsCheckedElement);
+//		for(Vector2i value : supplierStorageRoomsChecked) {
+//			Element location = doc.createElement("location");
+//			supplierStorageRoomsCheckedElement.appendChild(location);
+//			XMLUtil.addAttribute(doc, location, "x", String.valueOf(value.getX()));
+//			XMLUtil.addAttribute(doc, location, "y", String.valueOf(value.getY()));
+//		}
 		
 		return element;
 	}
@@ -247,6 +236,14 @@ public class DialogueFlags implements XMLSaving {
 				Element e = (Element) ((Element) parentElement.getElementsByTagName("savedLongs").item(0)).getElementsByTagName("save").item(i);
 				
 				String id = e.getAttribute("id");
+				if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.15")) {
+					if(id.equals("MACHINES")
+							|| id.equals("INTERCOM")
+							|| id.equals("BUSINESS")
+							|| id.equals("BOUNTY_HUNTERS")) {
+						id = "KAY_"+id;
+					}
+				}
 				newFlags.setSavedLong(id, Long.valueOf(e.getTextContent()));
 			}
 			
@@ -307,16 +304,16 @@ public class DialogueFlags implements XMLSaving {
 		
 		loadSet(parentElement, doc, newFlags.warehouseDefeatedIDs, "warehouseDefeatedIDs");
 		
-		if(parentElement.getElementsByTagName("supplierStorageRoomsChecked").item(0)!=null) {
-			for(int i=0; i<((Element) parentElement.getElementsByTagName("supplierStorageRoomsChecked").item(0)).getElementsByTagName("location").getLength(); i++){
-				Element e = (Element) ((Element) parentElement.getElementsByTagName("supplierStorageRoomsChecked").item(0)).getElementsByTagName("location").item(i);
-				
-				newFlags.supplierStorageRoomsChecked.add(
-						new Vector2i(
-								Integer.valueOf(e.getAttribute("x")),
-								Integer.valueOf(e.getAttribute("y"))));
-			}
-		}
+//		if(parentElement.getElementsByTagName("supplierStorageRoomsChecked").item(0)!=null) {
+//			for(int i=0; i<((Element) parentElement.getElementsByTagName("supplierStorageRoomsChecked").item(0)).getElementsByTagName("location").getLength(); i++){
+//				Element e = (Element) ((Element) parentElement.getElementsByTagName("supplierStorageRoomsChecked").item(0)).getElementsByTagName("location").item(i);
+//				
+//				newFlags.supplierStorageRoomsChecked.add(
+//						new Vector2i(
+//								Integer.valueOf(e.getAttribute("x")),
+//								Integer.valueOf(e.getAttribute("y"))));
+//			}
+//		}
 
 		return newFlags;
 	}
@@ -325,7 +322,7 @@ public class DialogueFlags implements XMLSaving {
 		Element valuesElement = doc.createElement(title);
 		parentElement.appendChild(valuesElement);
 		for(String value : set) {
-			CharacterUtils.createXMLElementWithValue(doc, valuesElement, "value", value.toString());
+			XMLUtil.createXMLElementWithValue(doc, valuesElement, "value", value.toString());
 		}
 	}
 	
@@ -420,7 +417,8 @@ public class DialogueFlags implements XMLSaving {
 		try {
 			return (NPC) Main.game.getNPCById(managementCompanion);
 		} catch (Exception e) {
-			Util.logGetNpcByIdError("getSlaveryManagerSlaveSelected()", managementCompanion);
+			Util.logGetNpcByIdError("getManagementCompanion()", managementCompanion);
+			//e.printStackTrace();
 			return null;
 		}
 	}
@@ -456,7 +454,7 @@ public class DialogueFlags implements XMLSaving {
 	}
 	
 	public boolean hasHelenaConversationTopic(HelenaConversationTopic topic) {
-		return reindeerEncounteredIDs.contains(topic.toString());
+		return helenaConversationTopics.contains(topic.toString());
 	}
 	
 	public void addReindeerEncountered(String reindeerID) {

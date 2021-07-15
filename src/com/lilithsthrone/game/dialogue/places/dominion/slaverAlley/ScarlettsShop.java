@@ -18,7 +18,7 @@ import com.lilithsthrone.game.character.attributes.Attribute;
 import com.lilithsthrone.game.character.attributes.CorruptionLevel;
 import com.lilithsthrone.game.character.attributes.ObedienceLevel;
 import com.lilithsthrone.game.character.body.CoverableArea;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
 import com.lilithsthrone.game.character.body.valueEnums.BodySize;
 import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.CupSize;
@@ -49,6 +49,7 @@ import com.lilithsthrone.game.dialogue.DialogueNode;
 import com.lilithsthrone.game.dialogue.companions.CompanionManagement;
 import com.lilithsthrone.game.dialogue.companions.OccupantManagementDialogue;
 import com.lilithsthrone.game.dialogue.places.dominion.helenaHotel.HelenaHotel;
+import com.lilithsthrone.game.dialogue.places.dominion.shoppingArcade.SuccubisSecrets;
 import com.lilithsthrone.game.dialogue.responses.Response;
 import com.lilithsthrone.game.dialogue.responses.ResponseSex;
 import com.lilithsthrone.game.dialogue.utils.BodyChanging;
@@ -234,8 +235,7 @@ public class ScarlettsShop {
 				if(Main.game.getDialogueFlags().hasFlag(DialogueFlagValue.helenaScarlettSleepoverSex)) { // If this is the morning oral scene, Scarlett stops after cumming.
 					return super.isPartnerWantingToStopSex(partner);
 				}
-				return (Main.sex.getNumberOfOrgasms(partner)>=partner.getOrgasmsBeforeSatisfied() && Main.sex.getNumberOfOrgasms(Main.game.getPlayer())>=1)
-						|| Main.sex.getNumberOfOrgasms(partner)>=3;
+				return Main.sex.isSatisfiedFromOrgasms(partner, true) && (Main.sex.isOrgasmCountMet(Main.game.getPlayer(), 1, true) || Main.sex.getNumberOfOrgasms(partner)>=3);
 			}
 			@Override
 			public OrgasmBehaviour getCharacterOrgasmBehaviour(GameCharacter character) {
@@ -374,6 +374,8 @@ public class ScarlettsShop {
 		Main.game.getNpc(Helena.class).addSlave(slave);
 		
 		BodyChanging.setTarget(slave);
+		
+		SuccubisSecrets.initCoveringsMap(slave);
 	}
 	
 	
@@ -2956,7 +2958,7 @@ public class ScarlettsShop {
 			sb.append("<div class='cosmetics-container' style='background:transparent;'>"
 						+ CharacterModificationUtils.getAgeChoiceDiv()
 						+ CharacterModificationUtils.getOrientationChoiceDiv()
-						+ CharacterModificationUtils.getPersonalityChoiceDiv()
+						+ CharacterModificationUtils.getPersonalityChoiceDiv(true)
 						+ CharacterModificationUtils.getObedienceChoiceDiv()
 						+ CharacterModificationUtils.getAffectionChoiceDiv()
 						+ CharacterModificationUtils.getFetishChoiceDiv()
@@ -3034,33 +3036,44 @@ public class ScarlettsShop {
 				}
 				return new Response("Penis", "Customise aspects of your slave's penis.", HELENAS_SHOP_CUSTOM_SLAVE_BODY_PENIS);
 				
-			} else if(index==10 && Main.getProperties().udders!=0) {
+			} else if(index==10) {
+				if(Main.game.getCurrentDialogueNode()==HELENAS_SHOP_CUSTOM_SLAVE_BODY_SPINNERET) {
+					return new Response("Spinneret", "You are already customising the aspects of your slave's spinneret!", null);
+				}
+				if(!BodyChanging.getTarget().hasSpinneret()) {
+					return new Response("Spinneret",
+							"Your slave does not have a spinneret!<br/><i>Spinnerets are gained via certain tail or leg types.</i>",
+							null);
+				}
+				return new Response("Spinneret", "Customise aspects of your slave's penis.", HELENAS_SHOP_CUSTOM_SLAVE_BODY_SPINNERET);
+				
+			} else if(index==11 && Main.getProperties().getUddersLevel()!=0) {
 				if(Main.game.getCurrentDialogueNode()==HELENAS_SHOP_CUSTOM_SLAVE_BODY_BREASTS_CROTCH) {
 					return new Response("Crotch-boobs", "You are already customising the aspects of your slave's crotch-boobs!", null);
 				}
 				
-				if(Main.getProperties().udders==1 && BodyChanging.getTarget().getLegConfiguration().isBipedalPositionedCrotchBoobs()) {
+				if(Main.getProperties().getUddersLevel()==1 && BodyChanging.getTarget().getLegConfiguration().isBipedalPositionedCrotchBoobs()) {
 					return new Response("Crotch-boobs", "As you have crotch-boobs disabled for non-taur characters, you cannot access this menu!", null);
 				}
 				
 				return new Response(
 						BodyChanging.getTarget().getBreastCrotchShape()==BreastShape.UDDERS?"Udders":"Crotch-boobs",
-						UtilText.parse(BodyChanging.getTarget(), "Change aspects of [npc.namePos] [npc.crotchBoobs]."),
+						UtilText.parse(BodyChanging.getTarget(), "Change aspects of your slave's [npc.crotchBoobs]."),
 						HELENAS_SHOP_CUSTOM_SLAVE_BODY_BREASTS_CROTCH);
 				
-			} else if(index==11) {
+			} else if(index==12) {
 				if(Main.game.getCurrentDialogueNode()==HELENAS_SHOP_CUSTOM_SLAVE_BODY_MAKEUP) {
 					return new Response("Makeup", "You are already customising your slave's makeup!", null);
 				}
 				return new Response("Makeup", "Customise your slave's makeup.", HELENAS_SHOP_CUSTOM_SLAVE_BODY_MAKEUP);
 				
-			} else if(index==12) {
+			} else if(index==13) {
 				if(Main.game.getCurrentDialogueNode()==HELENAS_SHOP_CUSTOM_SLAVE_BODY_PIERCINGS) {
 					return new Response("Piercings", "You are already customising your slave's piercings!", null);
 				}
 				return new Response("Piercings", "Customise your slave's piercings.", HELENAS_SHOP_CUSTOM_SLAVE_BODY_PIERCINGS);
 				
-			} else if(index==13) {
+			} else if(index==14) {
 				return new Response("[style.colourMinorGood(Finalise order)]",
 						"Tell Helena that you've completed the ordering forms, and see how much this is going to cost you...",
 						HELENAS_SHOP_CUSTOM_SLAVE_FINISH);
@@ -3286,6 +3299,30 @@ public class ScarlettsShop {
 		}
 	};
 
+	public static final DialogueNode HELENAS_SHOP_CUSTOM_SLAVE_BODY_SPINNERET = new DialogueNode("Customise Slave", "", true) {
+		@Override
+		public int getSecondsPassed() {
+			return 10;
+		}
+		@Override
+		public String getHeaderContent() {
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append(UtilText.parseFromXMLFile("places/dominion/slaverAlley/helenasBoutique", "HELENAS_SHOP_CUSTOM_SLAVE_BODY_SPINNERET"));
+			sb.append(BodyChanging.BODY_CHANGING_SPINNERET.getHeaderContent());
+					
+			return sb.toString();
+		}
+		@Override
+		public String getContent() {
+			return "";
+		}
+		@Override
+		public Response getResponse(int responseTab, int index) {
+			return HELENAS_SHOP_CUSTOM_SLAVE_PERSONALITY.getResponse(responseTab, index);
+		}
+	};
+
 	public static final DialogueNode HELENAS_SHOP_CUSTOM_SLAVE_BODY_MAKEUP = new DialogueNode("Customise Slave", "", true) {
 		@Override
 		public int getSecondsPassed() {
@@ -3298,17 +3335,17 @@ public class ScarlettsShop {
 			sb.append(UtilText.parseFromXMLFile("places/dominion/slaverAlley/helenasBoutique", "HELENAS_SHOP_CUSTOM_SLAVE_BODY_MAKEUP"));
 
 			sb.append(CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_BLUSHER, "Blusher", "Blusher (also called rouge) is used to colour the cheeks so as to provide a more youthful appearance, and to emphasise the cheekbones.", true, true)
+							false, Race.NONE, BodyCoveringType.MAKEUP_BLUSHER, "Blusher", "Blusher (also called rouge) is used to colour the cheeks so as to provide a more youthful appearance, and to emphasise the cheekbones.", true, true)
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_LIPSTICK, "Lipstick", "Lipstick is used to provide colour, texture, and protection to the wearer's lips.", true, true)
+							false, Race.NONE, BodyCoveringType.MAKEUP_LIPSTICK, "Lipstick", "Lipstick is used to provide colour, texture, and protection to the wearer's lips.", true, true)
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_EYE_LINER, "Eyeliner", "Eyeliner is applied around the contours of the eyes to help to define shape or highlight different features.", true, true)
+							false, Race.NONE, BodyCoveringType.MAKEUP_EYE_LINER, "Eyeliner", "Eyeliner is applied around the contours of the eyes to help to define shape or highlight different features.", true, true)
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_EYE_SHADOW, "Eye shadow", "Eye shadow is used to make the wearer's eyes stand out or look more attractive.", true, true)
+							false, Race.NONE, BodyCoveringType.MAKEUP_EYE_SHADOW, "Eye shadow", "Eye shadow is used to make the wearer's eyes stand out or look more attractive.", true, true)
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_NAIL_POLISH_HANDS, "Nail polish", "Nail polish is used to colour and protect the nails on a person's hands.", true, true)
+							false, Race.NONE, BodyCoveringType.MAKEUP_NAIL_POLISH_HANDS, "Nail polish", "Nail polish is used to colour and protect the nails on a person's hands.", true, true)
 					+CharacterModificationUtils.getKatesDivCoveringsNew(
-							false, BodyCoveringType.MAKEUP_NAIL_POLISH_FEET, "Toenail polish", "Toenail polish is used to colour and protect the nails on person's feet.", true, true));
+							false, Race.NONE, BodyCoveringType.MAKEUP_NAIL_POLISH_FEET, "Toenail polish", "Toenail polish is used to colour and protect the nails on person's feet.", true, true));
 					
 			return sb.toString();
 		}
@@ -5046,7 +5083,7 @@ public class ScarlettsShop {
 								
 							} else {
 								Main.game.getNpc(Scarlett.class).setPenisSize(30);
-								Main.game.getNpc(Scarlett.class).setPenisGirth(PenetrationGirth.FOUR_THICK);
+								Main.game.getNpc(Scarlett.class).setPenisGirth(PenetrationGirth.FOUR_GIRTHY);
 								Main.game.getNpc(Scarlett.class).setPenisCumStorage(150);
 							}
 

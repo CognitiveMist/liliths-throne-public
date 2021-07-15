@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.body.abstractTypes.AbstractArmType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
 import com.lilithsthrone.game.dialogue.utils.UtilText;
 import com.lilithsthrone.main.Main;
@@ -196,6 +197,10 @@ public class Arm implements BodyPartInterface {
 			this.underarmHair = underarmHair;
 			return "";
 		}
+
+		if(!this.getType().isUnderarmHairAllowed()) {
+			return UtilText.parse(owner, "<p style='text-align:center;'>[style.colourDisabled(As [npc.namePos] arm type prevents [npc.herHim] from growing any underarm hair, nothing happens...)]</p>");
+		}
 		
 		if(getUnderarmHair() == underarmHair) {
 			return "<p style='text-align:center;'>[style.colourDisabled(Nothing happens...)]</p>";
@@ -236,10 +241,10 @@ public class Arm implements BodyPartInterface {
 	}
 
 	@Override
-	public boolean isBestial(GameCharacter owner) {
+	public boolean isFeral(GameCharacter owner) {
 		if(owner==null) {
 			return false;
 		}
-		return owner.getLegConfiguration().getBestialParts().contains(Arm.class) && getType().getRace().isBestialPartsAvailable();
+		return owner.isFeral() || (owner.getLegConfiguration().getFeralParts().contains(Arm.class) && getType().getRace().isFeralPartsAvailable());
 	}
 }

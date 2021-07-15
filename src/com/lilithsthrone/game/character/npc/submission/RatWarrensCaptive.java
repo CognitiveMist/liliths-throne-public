@@ -9,13 +9,12 @@ import org.w3c.dom.Element;
 
 import com.lilithsthrone.game.Game;
 import com.lilithsthrone.game.character.CharacterImportSetting;
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.EquipClothingSetting;
 import com.lilithsthrone.game.character.attributes.Attribute;
-import com.lilithsthrone.game.character.body.Covering;
 import com.lilithsthrone.game.character.body.FluidCum;
 import com.lilithsthrone.game.character.body.Penis;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.types.FluidType;
 import com.lilithsthrone.game.character.body.valueEnums.AreolaeSize;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
@@ -91,14 +90,14 @@ public class RatWarrensCaptive extends NPC {
 			this.setPlayerKnowsName(false);
 			this.setGenericName("captive");
 
-			CharacterUtils.randomiseBody(this, true);
+			Main.game.getCharacterUtils().randomiseBody(this, true);
 			
 			// INVENTORY:
 			
 			resetInventory(true);
 			inventory.setMoney(0);
 	
-//			CharacterUtils.applyMakeup(this, true);
+//			Main.game.getCharacterUtils().applyMakeup(this, true);
 			this.equipClothing(EquipClothingSetting.getAllClothingSettings());
 			
 			initPerkTreeAndBackgroundPerks();
@@ -181,7 +180,7 @@ public class RatWarrensCaptive extends NPC {
 			this.addAssOrificeModifier(OrificeModifier.PUFFY);
 			this.setAssWetness(Wetness.FIVE_SLOPPY);
 			this.setAssDepth(OrificeDepth.FIVE_VERY_DEEP.getValue());
-			this.setAssCapacity(Penis.getGenericDiameter(38, PenetrationGirth.SIX_GIRTHY), true);
+			this.setAssCapacity(Penis.getGenericDiameter(38, PenetrationGirth.SEVEN_FAT), true);
 			this.setAssElasticity(OrificeElasticity.ZERO_UNYIELDING.getValue());
 			this.setAssPlasticity(OrificePlasticity.SEVEN_MOULDABLE.getValue());
 			if(Main.game.isAssHairEnabled()) {
@@ -204,7 +203,7 @@ public class RatWarrensCaptive extends NPC {
 		this.setVaginaDepth(OrificeDepth.FIVE_VERY_DEEP.getValue());
 		this.setVaginaElasticity(OrificeElasticity.ZERO_UNYIELDING.getValue());
 		this.setVaginaPlasticity(OrificePlasticity.SEVEN_MOULDABLE.getValue());
-		this.setVaginaCapacity(Penis.getGenericDiameter(38, PenetrationGirth.SIX_GIRTHY), true);
+		this.setVaginaCapacity(Penis.getGenericDiameter(38, PenetrationGirth.SEVEN_FAT), true);
 		
 		if(Main.game.isPubicHairEnabled()) {
 			this.setPubicHair(BodyHair.FOUR_NATURAL);

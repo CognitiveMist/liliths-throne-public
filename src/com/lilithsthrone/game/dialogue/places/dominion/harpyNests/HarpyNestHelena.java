@@ -8,8 +8,8 @@ import java.util.Map;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.attributes.CorruptionLevel;
 import com.lilithsthrone.game.character.body.CoverableArea;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.fetishes.Fetish;
 import com.lilithsthrone.game.character.npc.dominion.Helena;
 import com.lilithsthrone.game.character.npc.dominion.Scarlett;
@@ -102,8 +102,7 @@ public class HarpyNestHelena {
 				if(partner.getWorldLocation()==WorldType.HARPY_NEST) { // If this is a scene in the nest, Scarlett stops after cumming.
 					return super.isPartnerWantingToStopSex(partner);
 				}
-				return (Main.sex.getNumberOfOrgasms(partner)>=partner.getOrgasmsBeforeSatisfied() && Main.sex.getNumberOfOrgasms(Main.game.getPlayer())>=1)
-						|| Main.sex.getNumberOfOrgasms(partner)>=3;
+				return Main.sex.isSatisfiedFromOrgasms(partner, true) && (Main.sex.isOrgasmCountMet(Main.game.getPlayer(), 1, true) || Main.sex.getNumberOfOrgasms(partner)>=3);
 			}
 			@Override
 			public SexControl getSexControl(GameCharacter character) {

@@ -17,9 +17,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import com.lilithsthrone.main.Main;
 import org.w3c.dom.Document;
 
 import com.lilithsthrone.controller.xmlParsing.Element;
@@ -27,6 +25,7 @@ import com.lilithsthrone.controller.xmlParsing.XMLMissingTagException;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.combat.DamageType;
 import com.lilithsthrone.game.combat.DamageVariance;
+import com.lilithsthrone.game.combat.moves.AbstractCombatMove;
 import com.lilithsthrone.game.combat.moves.CombatMove;
 import com.lilithsthrone.game.combat.spells.Spell;
 import com.lilithsthrone.game.dialogue.utils.UtilText;
@@ -96,7 +95,7 @@ public abstract class AbstractWeaponType extends AbstractCoreType {
 	private Map<DamageType, List<Spell>> spells;
 
 	private boolean combatMovesRegenOnDamageTypeChange;
-	private Map<DamageType, List<CombatMove>> combatMoves;
+	private Map<DamageType, List<AbstractCombatMove>> combatMoves;
 
 	@SuppressWarnings("unused")
 	private int enchantmentLimit; // Removed as part of 0.3.3.7's update to add enchantment capacity mechanics.
@@ -118,9 +117,7 @@ public abstract class AbstractWeaponType extends AbstractCoreType {
 
 		if (weaponXMLFile.exists()) {
 			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(weaponXMLFile);
+				Document doc = Main.getDocBuilder().parse(weaponXMLFile);
 				
 				// Cast magic:
 				doc.getDocumentElement().normalize();
@@ -222,7 +219,7 @@ public abstract class AbstractWeaponType extends AbstractCoreType {
 					this.combatMovesRegenOnDamageTypeChange = Boolean.valueOf(coreAttributes.getMandatoryFirstOf("combatMoves").getAttribute("changeOnReforge"));
 					
 					for(Element e : coreAttributes.getMandatoryFirstOf("combatMoves").getAllOf("move")) {
-						CombatMove cm = CombatMove.getMove(e.getTextContent());
+						AbstractCombatMove cm = CombatMove.getCombatMoveFromId(e.getTextContent());
 						
 						DamageType dt = null;
 						if(!e.getAttribute("damageType").isEmpty()) {
@@ -576,11 +573,20 @@ public abstract class AbstractWeaponType extends AbstractCoreType {
 	
 	public static String genericMeleeAttackDescription(GameCharacter character, GameCharacter target, boolean isHit) {
 		if(isHit) {
-			return UtilText.parse(character, target,
-					UtilText.returnStringAtRandom(
-						"Darting forwards, [npc.name] [npc.verb(deliver)] a solid punch to [npc2.namePos] [npc2.arm].",
-						"Striking out at [npc2.name], [npc.name] [npc.verb(manage)] to land a solid punch on [npc2.her] [npc2.arm]!",
-						"[npc.Name] [npc.verb(strike)] out at [npc2.name] in unarmed combat, and [npc.verb(manage)] to land a solid hit on [npc2.her] torso."));
+			if(character.isFeral()) {
+				return UtilText.parse(character, target,
+						UtilText.returnStringAtRandom(
+							"Darting forwards, [npc.name] [npc.verb(rear)] up [npc.verb(deliver)] a solid kick to [npc2.namePos] torso.",
+							"Striking out at [npc2.name], [npc.name] [npc.verb(manage)] to land a solid kick on [npc2.her] [npc2.leg]!",
+							"[npc.Name] [npc.verb(strike)] out at [npc2.name] in unarmed combat, and [npc.verb(manage)] to land a solid kick on [npc2.her] torso."));
+				
+			} else {
+				return UtilText.parse(character, target,
+						UtilText.returnStringAtRandom(
+							"Darting forwards, [npc.name] [npc.verb(deliver)] a solid punch to [npc2.namePos] [npc2.arm].",
+							"Striking out at [npc2.name], [npc.name] [npc.verb(manage)] to land a solid punch on [npc2.her] [npc2.arm]!",
+							"[npc.Name] [npc.verb(strike)] out at [npc2.name] in unarmed combat, and [npc.verb(manage)] to land a solid hit on [npc2.her] torso."));
+			}
 			
 		} else {
 			return UtilText.parse(character, target,
@@ -754,12 +760,12 @@ public abstract class AbstractWeaponType extends AbstractCoreType {
 		return combatMovesRegenOnDamageTypeChange;
 	}
 
-	public Map<DamageType, List<CombatMove>> getCombatMoves() {
+	public Map<DamageType, List<AbstractCombatMove>> getCombatMoves() {
 		return combatMoves;
 	}
 	
-	public List<CombatMove> getCombatMoves(DamageType damageType) {
-		List<CombatMove> damageTypeCombatMoves = new ArrayList<>();
+	public List<AbstractCombatMove> getCombatMoves(DamageType damageType) {
+		List<AbstractCombatMove> damageTypeCombatMoves = new ArrayList<>();
 		if(combatMoves.containsKey(null)) {
 			damageTypeCombatMoves.addAll(combatMoves.get(null));
 		}

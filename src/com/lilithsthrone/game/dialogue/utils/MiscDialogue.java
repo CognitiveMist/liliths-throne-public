@@ -3,9 +3,10 @@ package com.lilithsthrone.game.dialogue.utils;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
 import com.lilithsthrone.game.character.effects.AbstractStatusEffect;
 import com.lilithsthrone.game.character.npc.NPC;
+import com.lilithsthrone.game.character.race.Race;
 import com.lilithsthrone.game.dialogue.DialogueNode;
 import com.lilithsthrone.game.dialogue.DialogueNodeType;
 import com.lilithsthrone.game.dialogue.responses.Response;
@@ -26,18 +27,20 @@ public class MiscDialogue {
 		public String getContent() {
 			StringBuilder sb = new StringBuilder();
 			for(Entry<Long, Map<AbstractStatusEffect, String>> entry : Main.game.getPlayer().getStatusEffectDescriptions().entrySet()){
-				sb.append("<div class='container-full-width'>");
-					sb.append("<h6 style='text-align:center; margin:16px auto 0 auto; padding:0;'>"+Units.dateTime(Main.game.getStartingDate().plusSeconds(entry.getKey()))+":</h6>");
-					for(Entry<AbstractStatusEffect, String> innerEntry : entry.getValue().entrySet()) {
-						sb.append("<hr/>");
-						sb.append("<h6 style='text-align:center; margin:0; padding:0;'>");
-							sb.append(Util.capitaliseSentence(innerEntry.getKey().getName(Main.game.getPlayer())));
-						sb.append("</h6>");
-						sb.append("<p style='margin-top:0;'>");
-							sb.append(UtilText.parse(Main.game.getPlayer(), innerEntry.getValue()));
-						sb.append("</p>");
-					}
-				sb.append("</div>");
+				if(!entry.getValue().isEmpty()) {
+					sb.append("<div class='container-full-width'>");
+						sb.append("<h6 style='text-align:center; margin:16px auto 0 auto; padding:0;'>"+Units.dateTime(Main.game.getStartingDate().plusSeconds(entry.getKey()))+":</h6>");
+						for(Entry<AbstractStatusEffect, String> innerEntry : entry.getValue().entrySet()) {
+							sb.append("<hr/>");
+							sb.append("<h6 style='text-align:center; margin:0; padding:0;'>");
+								sb.append(Util.capitaliseSentence(innerEntry.getKey()==null?"Miscellaneous Effects":innerEntry.getKey().getName(Main.game.getPlayer())));
+							sb.append("</h6>");
+							sb.append("<p style='margin-top:0;'>");
+								sb.append(UtilText.parse(Main.game.getPlayer(), innerEntry.getValue()));
+							sb.append("</p>");
+						}
+					sb.append("</div>");
+				}
 			}
 			return sb.toString();
 		}
@@ -93,22 +96,22 @@ public class MiscDialogue {
 				
 			} else {
 				sb.append(CharacterModificationUtils.getKatesDivCoveringsNew(
-								false, BodyCoveringType.MAKEUP_BLUSHER, "Blusher", "Blusher (also called rouge) is used to colour the cheeks so as to provide a more youthful appearance, and to emphasise the cheekbones.", true, true)
+								false, Race.NONE, BodyCoveringType.MAKEUP_BLUSHER, "Blusher", "Blusher (also called rouge) is used to colour the cheeks so as to provide a more youthful appearance, and to emphasise the cheekbones.", true, true)
 						
 						+CharacterModificationUtils.getKatesDivCoveringsNew(
-								false, BodyCoveringType.MAKEUP_LIPSTICK, "Lipstick", "Lipstick is used to provide colour, texture, and protection to the wearer's lips.", true, true)
+								false, Race.NONE, BodyCoveringType.MAKEUP_LIPSTICK, "Lipstick", "Lipstick is used to provide colour, texture, and protection to the wearer's lips.", true, true)
 						
 						+CharacterModificationUtils.getKatesDivCoveringsNew(
-								false, BodyCoveringType.MAKEUP_EYE_LINER, "Eyeliner", "Eyeliner is applied around the contours of the eyes to help to define shape or highlight different features.", true, true)
+								false, Race.NONE, BodyCoveringType.MAKEUP_EYE_LINER, "Eyeliner", "Eyeliner is applied around the contours of the eyes to help to define shape or highlight different features.", true, true)
 						
 						+CharacterModificationUtils.getKatesDivCoveringsNew(
-								false, BodyCoveringType.MAKEUP_EYE_SHADOW, "Eye shadow", "Eye shadow is used to make the wearer's eyes stand out or look more attractive.", true, true)
+								false, Race.NONE, BodyCoveringType.MAKEUP_EYE_SHADOW, "Eye shadow", "Eye shadow is used to make the wearer's eyes stand out or look more attractive.", true, true)
 						
 						+CharacterModificationUtils.getKatesDivCoveringsNew(
-								false, BodyCoveringType.MAKEUP_NAIL_POLISH_HANDS, "Nail polish", "Nail polish is used to colour and protect the nails on your [pc.hands].", true, true)
+								false, Race.NONE, BodyCoveringType.MAKEUP_NAIL_POLISH_HANDS, "Nail polish", "Nail polish is used to colour and protect the nails on your [pc.hands].", true, true)
 						
 						+CharacterModificationUtils.getKatesDivCoveringsNew(
-								false, BodyCoveringType.MAKEUP_NAIL_POLISH_FEET, "Toenail polish", "Toenail polish is used to colour and protect the nails on your [pc.feet].", true, true));
+								false, Race.NONE, BodyCoveringType.MAKEUP_NAIL_POLISH_FEET, "Toenail polish", "Toenail polish is used to colour and protect the nails on your [pc.feet].", true, true));
 			}
 			
 			return sb.toString();

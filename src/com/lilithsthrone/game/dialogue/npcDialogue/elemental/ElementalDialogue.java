@@ -1,7 +1,6 @@
 package com.lilithsthrone.game.dialogue.npcDialogue.elemental;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.lilithsthrone.game.character.effects.PerkManager;
@@ -9,6 +8,7 @@ import com.lilithsthrone.game.character.fetishes.Fetish;
 import com.lilithsthrone.game.character.npc.NPC;
 import com.lilithsthrone.game.character.npc.NPCFlagValue;
 import com.lilithsthrone.game.character.npc.misc.Elemental;
+import com.lilithsthrone.game.character.race.AbstractSubspecies;
 import com.lilithsthrone.game.character.race.Race;
 import com.lilithsthrone.game.character.race.Subspecies;
 import com.lilithsthrone.game.dialogue.DialogueNode;
@@ -201,15 +201,6 @@ public class ElementalDialogue {
 							Main.game.updateResponses();
 						}
 					};
-					
-				} else if(index==10) {
-					return new Response("Dispel", "Dispel [el.name]...",  Main.game.getDefaultDialogue(false)) {
-						@Override
-						public void effects() {
-							getElemental().returnToHome();
-							Main.game.getPlayer().setElementalSummoned(false);
-						}
-					};
 				}
 			}
 			
@@ -237,7 +228,17 @@ public class ElementalDialogue {
 						}
 					};
 				}
+				
+			} else if(index==10) {
+				return new Response("Dispel", "Dispel [el.name]...",  Main.game.getDefaultDialogue(false)) {
+					@Override
+					public void effects() {
+						getElemental().returnToHome();
+						Main.game.getPlayer().setElementalSummoned(false);
+					}
+				};
 			}
+			
 			if(index==0) {
 				return new Response("Finished", "Tell [el.name] that you've finished talking with [el.herHim] and let [el.herHim] return to [el.her] passive form.", Main.game.getDefaultDialogue(false)) {
 					@Override
@@ -341,9 +342,9 @@ public class ElementalDialogue {
 			}
 			
 			List<Response> responses = new ArrayList<>();
-			List<Subspecies> subspecies = new ArrayList<>();
-			Collections.addAll(subspecies, Subspecies.values());
-			subspecies.removeIf(s -> !s.getRace().isBestialPartsAvailable());
+			List<AbstractSubspecies> subspecies = new ArrayList<>();
+			subspecies.addAll(Subspecies.getAllSubspecies());
+			subspecies.removeIf(s -> !s.getRace().isFeralPartsAvailable());
 			subspecies.removeIf(s -> s.getRace()==Race.DEMON || s.getRace()==Race.ELEMENTAL || s.getRace()==Race.SLIME);
 			subspecies.removeIf(s -> s.isNonBiped()); // Otherwise centaurs get added as well as horse-morphs
 			
@@ -360,7 +361,7 @@ public class ElementalDialogue {
 				});
 			}
 			
-			for(Subspecies sub : subspecies) {
+			for(AbstractSubspecies sub : subspecies) {
 				String feralName = sub.getFeralName(getElemental());
 				if(getElemental().getPassiveForm()==sub) {
 					responses.add(new Response(Util.capitaliseSentence(feralName), "[el.Name] is already assuming the passive form of a small, feral "+feralName+"!", null));

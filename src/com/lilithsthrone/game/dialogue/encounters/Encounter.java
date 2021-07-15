@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.EquipClothingSetting;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.attributes.Attribute;
@@ -31,6 +30,7 @@ import com.lilithsthrone.game.character.npc.submission.SubmissionAttacker;
 import com.lilithsthrone.game.character.persona.Occupation;
 import com.lilithsthrone.game.character.quests.Quest;
 import com.lilithsthrone.game.character.quests.QuestLine;
+import com.lilithsthrone.game.character.race.Race;
 import com.lilithsthrone.game.character.race.Subspecies;
 import com.lilithsthrone.game.combat.spells.Spell;
 import com.lilithsthrone.game.dialogue.DialogueFlagValue;
@@ -191,6 +191,7 @@ public enum Encounter {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				npc.setLocation(Main.game.getPlayer(), true);
 				Main.game.setActiveNPC(npc);
 				return Main.game.getActiveNPC().getEncounterDialogue();
 			}
@@ -358,8 +359,8 @@ public enum Encounter {
 				if(Math.random()<IncestEncounterRate()) { // Incest
 					List<NPC> offspringAvailable = Main.game.getOffspringNotSpawned(
 						npc-> (npc.getSubspecies()==Subspecies.HALF_DEMON
-								?(npc.getHalfDemonSubspecies().getWorldLocations().keySet().contains(WorldType.DOMINION))
-								:(npc.getSubspecies().getWorldLocations().keySet().contains(WorldType.DOMINION)
+								?(npc.getHalfDemonSubspecies().isAbleToNaturallySpawnInLocation(WorldType.DOMINION, PlaceType.DOMINION_BACK_ALLEYS))
+								:(npc.getSubspecies().isAbleToNaturallySpawnInLocation(WorldType.DOMINION, PlaceType.DOMINION_BACK_ALLEYS)
 										|| npc.getSubspecies()==Subspecies.ANGEL
 										|| npc.getSubspecies()==Subspecies.FOX_ASCENDANT
 										|| npc.getSubspecies()==Subspecies.FOX_ASCENDANT_ARCTIC
@@ -379,6 +380,7 @@ public enum Encounter {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				npc.setLocation(Main.game.getPlayer(), true);
 				Main.game.setActiveNPC(npc);
 				return Main.game.getActiveNPC().getEncounterDialogue();
 				
@@ -390,7 +392,7 @@ public enum Encounter {
 					if(Math.random()<0.5f) {
 						randomItem = Main.game.getItemGen().generateItem(ItemType.EGGPLANT);
 					} else {
-						randomItem = Main.game.getItemGen().generateItem(ItemType.FEMININE_BURGER);
+						randomItem = Main.game.getItemGen().generateItem("innoxia_cheat_unlikely_whammer");
 					}
 				}
 				
@@ -406,8 +408,9 @@ public enum Encounter {
 					List<AbstractClothingType> randomClothingList = new ArrayList<>(ClothingType.getAllClothing());
 					randomClothingList.removeIf((clothing) ->
 							(!clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_KATE)
-							&& !clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_NYAN)
-							&& !clothing.getDefaultItemTags().contains(ItemTag.DOMINION_ALLEYWAY_SPAWN))
+								&& !clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_NYAN)
+								&& !clothing.getDefaultItemTags().contains(ItemTag.DOMINION_ALLEYWAY_SPAWN))
+							|| clothing.getDefaultItemTags().contains(ItemTag.NO_RANDOM_SPAWN)
 							|| clothing.getRarity()==Rarity.EPIC
 							|| clothing.getRarity()==Rarity.LEGENDARY);
 					randomItem = Main.game.getItemGen().generateClothing(randomClothingList.get(Util.random.nextInt(randomClothingList.size())));
@@ -508,11 +511,11 @@ public enum Encounter {
 				if(Math.random()<IncestEncounterRate()) { // Incest
 					List<NPC> offspringAvailable = Main.game.getOffspringNotSpawned(
 							npc-> (npc.getSubspecies()==Subspecies.HALF_DEMON
-								?(npc.getHalfDemonSubspecies().getWorldLocations().keySet().contains(WorldType.DOMINION)
+								?(npc.getHalfDemonSubspecies().isAbleToNaturallySpawnInLocation(WorldType.DOMINION, PlaceType.DOMINION_CANAL)
 										|| npc.getHalfDemonSubspecies()==Subspecies.SLIME
 										|| npc.getHalfDemonSubspecies()==Subspecies.ALLIGATOR_MORPH
 										|| npc.getHalfDemonSubspecies()==Subspecies.RAT_MORPH)
-								:(npc.getSubspecies().getWorldLocations().keySet().contains(WorldType.DOMINION)
+								:(npc.getSubspecies().isAbleToNaturallySpawnInLocation(WorldType.DOMINION, PlaceType.DOMINION_CANAL)
 										|| npc.getSubspecies()==Subspecies.SLIME
 										|| npc.getSubspecies()==Subspecies.ALLIGATOR_MORPH
 										|| npc.getSubspecies()==Subspecies.RAT_MORPH)));
@@ -528,6 +531,7 @@ public enum Encounter {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				Main.game.getActiveNPC().setLocation(Main.game.getPlayer(), true);
 				return Main.game.getActiveNPC().getEncounterDialogue();
 				
 			}else if(node == EncounterType.DOMINION_FIND_ITEM) {
@@ -538,7 +542,7 @@ public enum Encounter {
 					if(Math.random()<0.5f) {
 						randomItem = Main.game.getItemGen().generateItem(ItemType.EGGPLANT);
 					} else {
-						randomItem = Main.game.getItemGen().generateItem(ItemType.FEMININE_BURGER);
+						randomItem = Main.game.getItemGen().generateItem("innoxia_cheat_unlikely_whammer");
 					}
 				}
 				
@@ -554,8 +558,9 @@ public enum Encounter {
 					List<AbstractClothingType> randomClothingList = new ArrayList<>(ClothingType.getAllClothing());
 					randomClothingList.removeIf((clothing) ->
 							(!clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_KATE)
-							&& !clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_NYAN)
-							&& !clothing.getDefaultItemTags().contains(ItemTag.DOMINION_ALLEYWAY_SPAWN))
+								&& !clothing.getDefaultItemTags().contains(ItemTag.SOLD_BY_NYAN)
+								&& !clothing.getDefaultItemTags().contains(ItemTag.DOMINION_ALLEYWAY_SPAWN))
+							|| clothing.getDefaultItemTags().contains(ItemTag.NO_RANDOM_SPAWN)
 							|| clothing.getRarity()==Rarity.EPIC
 							|| clothing.getRarity()==Rarity.LEGENDARY);
 					randomItem = Main.game.getItemGen().generateClothing(randomClothingList.get(Util.random.nextInt(randomClothingList.size())));
@@ -626,8 +631,8 @@ public enum Encounter {
 				if(Math.random()<IncestEncounterRate()) { // Incest
 					List<NPC> offspringAvailable = Main.game.getOffspringNotSpawned(
 							npc-> (npc.getSubspecies()==Subspecies.HALF_DEMON
-								?(npc.getHalfDemonSubspecies().getWorldLocations().keySet().contains(WorldType.HARPY_NEST))
-								:(npc.getSubspecies().getWorldLocations().keySet().contains(WorldType.HARPY_NEST))));
+								?(npc.getHalfDemonSubspecies().getRace()==Race.HARPY)
+								:(npc.getSubspecies().getRace()==Race.HARPY)));
 					
 					if(!offspringAvailable.isEmpty()) {
 						return SpawnAndStartChildHere(offspringAvailable);
@@ -649,10 +654,10 @@ public enum Encounter {
 			
 			if(node == EncounterType.HARPY_NEST_FIND_ITEM) {
 				if(Math.random() < 0.66) {
-					randomItem = Main.game.getItemGen().generateItem(ItemType.SEX_INGREDIENT_HARPY_PERFUME);
+					randomItem = Main.game.getItemGen().generateItem("innoxia_race_harpy_harpy_perfume");
 					
 				} else {
-					randomItem = Main.game.getItemGen().generateItem(ItemType.RACE_INGREDIENT_HARPY);
+					randomItem = Main.game.getItemGen().generateItem(ItemType.getItemTypeFromId("innoxia_race_harpy_bubblegum_lollipop"));
 				}
 				
 				Main.game.getActiveWorld().getCell(Main.game.getPlayer().getLocation()).getInventory().addItem((AbstractItem) randomItem);
@@ -686,8 +691,8 @@ public enum Encounter {
 				if(Math.random()<IncestEncounterRate()) { // Incest
 					List<NPC> offspringAvailable = Main.game.getOffspringNotSpawned(
 							npc-> (npc.getSubspecies()==Subspecies.HALF_DEMON
-								?(npc.getHalfDemonSubspecies().getWorldLocations().keySet().contains(WorldType.HARPY_NEST))
-								:(npc.getSubspecies().getWorldLocations().keySet().contains(WorldType.HARPY_NEST))));
+								?(npc.getHalfDemonSubspecies().getRace()==Race.HARPY)
+								:(npc.getSubspecies().getRace()==Race.HARPY)));
 					
 					if(!offspringAvailable.isEmpty()) {
 						return SpawnAndStartChildHere(offspringAvailable);
@@ -709,10 +714,10 @@ public enum Encounter {
 			
 			if (node == EncounterType.HARPY_NEST_FIND_ITEM) {
 				if(Math.random() < 0.66) {
-					randomItem = Main.game.getItemGen().generateItem(ItemType.SEX_INGREDIENT_HARPY_PERFUME);
+					randomItem = Main.game.getItemGen().generateItem("innoxia_race_harpy_harpy_perfume");
 					
 				} else {
-					randomItem = Main.game.getItemGen().generateItem(ItemType.RACE_INGREDIENT_HARPY);
+					randomItem = Main.game.getItemGen().generateItem(ItemType.getItemTypeFromId("innoxia_race_harpy_bubblegum_lollipop"));
 				}
 				
 				Main.game.getActiveWorld().getCell(Main.game.getPlayer().getLocation()).getInventory().addItem((AbstractItem) randomItem);
@@ -763,14 +768,14 @@ public enum Encounter {
 						
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.getGenderFromUserPreferences(false, false), false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(3+Util.random.nextInt(4)); // 3-6
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
 
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.getGenderFromUserPreferences(false, false), false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(3+Util.random.nextInt(4)); // 3-6
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
@@ -805,21 +810,21 @@ public enum Encounter {
 						
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.getGenderFromUserPreferences(false, false), false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(6+Util.random.nextInt(4)); // 6-8
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
 						
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.getGenderFromUserPreferences(false, false), false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(3+Util.random.nextInt(4)); // 3-6
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
 
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.getGenderFromUserPreferences(false, false), false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(3+Util.random.nextInt(4)); // 3-6
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
@@ -850,21 +855,21 @@ public enum Encounter {
 						
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.F_V_B_FEMALE, false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(8+Util.random.nextInt(3)); // 8-10
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
 
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.F_V_B_FEMALE, false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(6+Util.random.nextInt(3)); // 6-8
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
 
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.F_V_B_FEMALE, false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(4+Util.random.nextInt(3)); // 4-6
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
@@ -894,21 +899,21 @@ public enum Encounter {
 						
 						// Alpha imp:
 						imp = new ImpAttacker(Subspecies.IMP_ALPHA, Gender.M_P_MALE, false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(8+Util.random.nextInt(3)); // 8-10
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
 						
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.M_P_MALE, false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(6+Util.random.nextInt(3)); // 6-8
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
 						
 						// Normal imp:
 						imp = new ImpAttacker(Subspecies.IMP, Gender.M_P_MALE, false);
-						impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+						impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 						imp.setLevel(4+Util.random.nextInt(3)); // 4-6
 						Main.game.addNPC(imp, false);
 						impGroup.add(imp);
@@ -936,8 +941,8 @@ public enum Encounter {
 				if(Math.random()<IncestEncounterRate()) {
 					List<NPC> offspringAvailable = Main.game.getOffspringNotSpawned(
 							npc-> (npc.getSubspecies()==Subspecies.HALF_DEMON
-								?(npc.getHalfDemonSubspecies().getWorldLocations().keySet().contains(WorldType.SUBMISSION))
-								:(npc.getSubspecies().getWorldLocations().keySet().contains(WorldType.SUBMISSION))));
+								?(npc.getHalfDemonSubspecies().isAbleToNaturallySpawnInLocation(WorldType.SUBMISSION, PlaceType.SUBMISSION_TUNNELS))
+								:(npc.getSubspecies().isAbleToNaturallySpawnInLocation(WorldType.SUBMISSION, PlaceType.SUBMISSION_TUNNELS))));
 					
 					if(!offspringAvailable.isEmpty()) {
 						return SpawnAndStartChildHere(offspringAvailable);
@@ -950,6 +955,7 @@ public enum Encounter {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				Main.game.getActiveNPC().setLocation(Main.game.getPlayer(), true);
 				return Main.game.getActiveNPC().getEncounterDialogue();
 				
 			} else if (node == EncounterType.SUBMISSION_FIND_ITEM) {
