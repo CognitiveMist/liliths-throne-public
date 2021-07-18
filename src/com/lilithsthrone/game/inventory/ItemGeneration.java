@@ -89,7 +89,7 @@ public class ItemGeneration {
 		int index = 0;
 		ColourReplacement cr = wt.getColourReplacement(false, index);
 		while(cr!=null) {
-			if(colours.size()<=index || !cr.getAllColours().contains(colours.get(0))) {
+			if(colours.size()<=index || !cr.getAllColours().contains(colours.get(index))) {
 				colours.add(cr.getRandomOfDefaultColours());
 			}
 			index++;
@@ -140,7 +140,6 @@ public class ItemGeneration {
 	}
 	
 	
-	
 	// Clothing generation:
 	
 	public AbstractClothing generateClothing(String clothingTypeId, Colour primaryColour, Colour secondaryColour, Colour tertiaryColour, boolean allowRandomEnchantment) {
@@ -153,7 +152,7 @@ public class ItemGeneration {
 		int index = 0;
 		ColourReplacement cr = clothingType.getColourReplacement(index);
 		while(cr!=null) {
-			if(colours.size()<=index || !cr.getAllColours().contains(colours.get(0))) {
+			if(colours.size()<=index || !cr.getAllColours().contains(colours.get(index))) {
 				colours.add(cr.getRandomOfDefaultColours());
 			}
 			index++;
@@ -216,7 +215,7 @@ public class ItemGeneration {
 		int index = 0;
 		ColourReplacement cr = clothingType.getColourReplacement(index);
 		while(cr!=null) {
-			if(colours.size()<=index || !cr.getAllColours().contains(colours.get(0))) {
+			if(colours.size()<=index || !cr.getAllColours().contains(colours.get(index))) {
 				colours.add(cr.getRandomOfDefaultColours());
 			}
 			index++;
