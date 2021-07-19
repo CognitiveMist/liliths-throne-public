@@ -218,6 +218,10 @@ public class Testicle implements BodyPartInterface {
 		return cumStorage * (this.testicleSize + 1) * 200;
 	}
 
+	public int getBaseRawCumStorageValue() {
+		return cumStorage;
+	}
+
 	/**
 	 * Sets the cumStorage. Value is bound to >=0 && <=CumProduction.SEVEN_MONSTROUS_AMOUNT_POURING.getMaximumValue()
 	 */

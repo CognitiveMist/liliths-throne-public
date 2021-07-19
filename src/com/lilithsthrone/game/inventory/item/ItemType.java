@@ -412,7 +412,7 @@ public class ItemType {
 			null,
 			Rarity.EPIC,
 			Util.newArrayListOfValues(new ItemEffect(ItemEffectType.BOTTLED_ESSENCE_ARCANE)),
-			Util.newArrayListOfValues(ItemTag.ESSENCE)) {
+			Util.newArrayListOfValues(ItemTag.ESSENCE, ItemTag.DOMINION_ALLEYWAY_SPAWN, ItemTag.SUBMISSION_TUNNEL_SPAWN)) {
 		@Override
 		public String getUseName() {
 			return "absorb";

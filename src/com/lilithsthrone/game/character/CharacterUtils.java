@@ -813,9 +813,9 @@ public class CharacterUtils {
 			}
 			// Cum Production:
 			body.getPenis().getTesticle().setCumStorage(blankNPC, getSizeFromGenetics(
-					body.getPenis().getTesticle().getRawCumStorageValue(),
-					inheritsFromMotherPenis, mother.getPenisRawCumStorageValue(),
-					inheritsFromFatherPenis, father.getPenisRawCumStorageValue()));
+					body.getPenis().getTesticle().getBaseRawCumStorageValue(),
+					inheritsFromMotherPenis, mother.getPenisBaseRawCumStorageValue(),
+					inheritsFromFatherPenis, father.getPenisBaseRawCumStorageValue()));
 		}
 		
 		// Wings:

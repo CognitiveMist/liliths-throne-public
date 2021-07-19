@@ -4504,7 +4504,7 @@ public class MainControllerInitMethod {
 				id = "CUM_PRODUCTION_INCREASE";
 				if (((EventTarget) MainController.document.getElementById(id)) != null) {
 					((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
-						BodyChanging.getTarget().setPenisCumStorage(Math.min(CharacterModificationUtils.getCumUpperLimit(), BodyChanging.getTarget().getPenisRawCumStorageValue()+CharacterModificationUtils.FLUID_INCREMENT_SMALL));
+						BodyChanging.getTarget().setPenisCumStorage(Math.min(CharacterModificationUtils.getCumUpperLimit(), BodyChanging.getTarget().getPenisBaseRawCumStorageValue()+CharacterModificationUtils.FLUID_INCREMENT_SMALL));
 						BodyChanging.getTarget().fillCumToMaxStorage();
 						Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
 					}, false);
@@ -4512,7 +4512,7 @@ public class MainControllerInitMethod {
 				id = "CUM_PRODUCTION_INCREASE_LARGE";
 				if (((EventTarget) MainController.document.getElementById(id)) != null) {
 					((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
-						BodyChanging.getTarget().setPenisCumStorage(Math.min(CharacterModificationUtils.getCumUpperLimit(), BodyChanging.getTarget().getPenisRawCumStorageValue()+CharacterModificationUtils.FLUID_INCREMENT_AVERAGE));
+						BodyChanging.getTarget().setPenisCumStorage(Math.min(CharacterModificationUtils.getCumUpperLimit(), BodyChanging.getTarget().getPenisBaseRawCumStorageValue()+CharacterModificationUtils.FLUID_INCREMENT_AVERAGE));
 						BodyChanging.getTarget().fillCumToMaxStorage();
 						Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
 					}, false);
@@ -4520,7 +4520,7 @@ public class MainControllerInitMethod {
 				id = "CUM_PRODUCTION_INCREASE_HUGE";
 				if (((EventTarget) MainController.document.getElementById(id)) != null) {
 					((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e -> {
-						BodyChanging.getTarget().setPenisCumStorage(Math.min(CharacterModificationUtils.getCumUpperLimit(), BodyChanging.getTarget().getPenisRawCumStorageValue()+CharacterModificationUtils.FLUID_INCREMENT_LARGE));
+						BodyChanging.getTarget().setPenisCumStorage(Math.min(CharacterModificationUtils.getCumUpperLimit(), BodyChanging.getTarget().getPenisBaseRawCumStorageValue()+CharacterModificationUtils.FLUID_INCREMENT_LARGE));
 						BodyChanging.getTarget().fillCumToMaxStorage();
 						Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
 					}, false);

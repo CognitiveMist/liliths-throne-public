@@ -4313,8 +4313,8 @@ public class CharacterModificationUtils {
 				"CUM_PRODUCTION",
 				Util.capitaliseSentence(BodyChanging.getTarget().getPenisCumStorage().getName())
 					+"<br/>("+Units.fluid(BodyChanging.getTarget().getPenisRawCumStorageValue(), ValueType.PRECISE)+")",
-				BodyChanging.getTarget().getPenisRawCumStorageValue()<=0,
-				BodyChanging.getTarget().getPenisRawCumStorageValue()>=getCumUpperLimit(),
+				BodyChanging.getTarget().getPenisBaseRawCumStorageValue()<=0,
+				BodyChanging.getTarget().getPenisBaseRawCumStorageValue()>=getCumUpperLimit(),
 				FLUID_INCREMENT_SMALL,
 				FLUID_INCREMENT_AVERAGE,
 				FLUID_INCREMENT_LARGE);

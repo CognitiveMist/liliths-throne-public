@@ -28256,6 +28256,9 @@ public abstract class GameCharacter implements XMLSaving {
 	public int getPenisRawCumStorageValue() {
 		return body.getPenis().getTesticle().getRawCumStorageValue();
 	}
+	public int getPenisBaseRawCumStorageValue() {
+		return body.getPenis().getTesticle().getBaseRawCumStorageValue();
+	}
 	public int getCurrentPenisRawCumStorageValue() {
 		return getCurrentPenis().getTesticle().getRawCumStorageValue();
 	}
@@ -28263,7 +28266,7 @@ public abstract class GameCharacter implements XMLSaving {
 		return body.getPenis().getTesticle().setCumStorage(this, cumProduction);
 	}
 	public String incrementPenisCumStorage(int increment) {
-		return setPenisCumStorage(getPenisRawCumStorageValue() + increment);
+		return setPenisCumStorage(getPenisBaseRawCumStorageValue() + increment);
 	}
 	// Current cum:
 	public void fillCumToMaxStorage() {
