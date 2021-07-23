@@ -1986,7 +1986,7 @@ public abstract class AbstractClothing extends AbstractCoreItem implements XMLSa
 			}
 		}
 		if(remover.hasFetish(Fetish.FETISH_BONDAGE_VICTIM) && selfUnseal) {
-			cost *= 5;
+			cost *= 2;
 		}
 		return cost;
 	}

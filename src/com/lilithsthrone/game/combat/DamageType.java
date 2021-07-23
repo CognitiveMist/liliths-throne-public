@@ -119,7 +119,16 @@ public enum DamageType {
 					target.incrementMana(-damageAmount);
 					return HEALTH.damageTarget(source, target, damageAmount*2);
 				} else {
-					target.setLust(target.getLust()+damageAmount);
+					float newLust = target.getLust()+damageAmount;
+					target.setLust(newLust);
+					if(newLust > 100) {
+						int extraDamage = (int)newLust-100;
+						int initialDamage = damageAmount - extraDamage;
+								target.addStatusEffect(StatusEffect.DESPERATE_FOR_SEX, StatusEffect.DESPERATE_FOR_SEX.getApplicationLength());
+						this.damageTarget(source, target, extraDamage);
+						int codedDamage = (extraDamage<<16) + initialDamage;
+						return new Value<>("", codedDamage);
+					}
 				}
 			}
 			return new Value<>("", damageAmount);
