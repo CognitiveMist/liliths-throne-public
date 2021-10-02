@@ -347,6 +347,16 @@ public abstract class AbstractCombatMove {
 			}
 			return "<span style='color:" + damageType.getMultiplierAttribute().getColour().toWebHexString() + ";'>" + String.valueOf(damage*2) + " " + damageType.getName() + "</span>"
 					+ " and <span style='color:" + PresetColour.DAMAGE_TYPE_MANA.toWebHexString() + ";'>" + String.valueOf(damage) + " " + Attribute.MANA_MAXIMUM.getName() + "</span>";
+		} else if(target!=null && damageType==DamageType.LUST && target.hasStatusEffect(StatusEffect.DESPERATE_FOR_SEX)) {
+			int initialDamage = damage & 0xffff;
+			int extraDamage = (damage>>16) & 0xffff;
+			
+			if(extraDamage > 0) {
+				damageType = DamageType.HEALTH;
+				return "<span style='color:" + DamageType.LUST.getMultiplierAttribute().getColour().toWebHexString() + ";'>" + String.valueOf(initialDamage) + " " + DamageType.LUST.getName() + "</span>"
+						+ ", then <span style='color:" + damageType.getMultiplierAttribute().getColour().toWebHexString() + ";'>" + String.valueOf(extraDamage * 2) + " " + damageType.getName() + "</span>"
+						+ " and <span style='color:" + PresetColour.DAMAGE_TYPE_MANA.toWebHexString() + ";'>" + String.valueOf(extraDamage) + " " + Attribute.MANA_MAXIMUM.getName() + "</span>";
+			}
 		}
 		return "<span style='color:" + damageType.getMultiplierAttribute().getColour().toWebHexString() + ";'>" + String.valueOf(damage) + " " + damageType.getName() + "</span>";
 	}

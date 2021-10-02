@@ -332,13 +332,13 @@ public class Encounter {
 				map.put(EncounterType.DOMINION_ALLEY_ATTACK, 10f);
 				if(Main.game.getCurrentWeather()!=Weather.MAGIC_STORM
 						&& (!Main.game.getDialogueFlags().hasSavedLong("enforcer_encounter_minutes") || Main.game.getDialogueFlags().getSavedLong("enforcer_encounter_minutes")+(4*60)<Main.game.getMinutesPassed())) {
-					map.put(EncounterType.DOMINION_ALLEY_ENFORCERS, 15f);
+					map.put(EncounterType.DOMINION_ALLEY_ENFORCERS, 1.5f);
 				}
 			} else {
 				map.put(EncounterType.DOMINION_ALLEY_ATTACK, 15f);
 				if(Main.game.getCurrentWeather()!=Weather.MAGIC_STORM
 						&& (!Main.game.getDialogueFlags().hasSavedLong("enforcer_encounter_minutes") || Main.game.getDialogueFlags().getSavedLong("enforcer_encounter_minutes")+(4*60)<Main.game.getMinutesPassed())) {
-					map.put(EncounterType.DOMINION_ALLEY_ENFORCERS, 2.5f);
+					map.put(EncounterType.DOMINION_ALLEY_ENFORCERS, .25f);
 				}
 			}
 			
@@ -491,7 +491,7 @@ public class Encounter {
 					new Value<EncounterType, Float>(EncounterType.DOMINION_FIND_WEAPON, 2f),
 					Main.game.getCurrentWeather()!=Weather.MAGIC_STORM
 							&& (!Main.game.getDialogueFlags().hasSavedLong("enforcer_encounter_minutes") || Main.game.getDialogueFlags().getSavedLong("enforcer_encounter_minutes")+(4*60)<Main.game.getMinutesPassed())
-						?new Value<EncounterType, Float>(EncounterType.DOMINION_ALLEY_ENFORCERS, 2.5f)
+						?new Value<EncounterType, Float>(EncounterType.DOMINION_ALLEY_ENFORCERS, .25f)
 						:null,
 					getSlaveWantingToUseYouInDominion()!=null && Main.game.getCurrentWeather()!=Weather.MAGIC_STORM
 						?new Value<EncounterType, Float>(EncounterType.SLAVE_USES_YOU, 5f)
@@ -536,7 +536,7 @@ public class Encounter {
 				return Main.game.getActiveNPC().getEncounterDialogue();
 				
 			}else if(node == EncounterType.DOMINION_FIND_ITEM) {
-				if(!Main.game.isSillyModeEnabled() || Math.random()<0.99f) {
+				if(/*!Main.game.isSillyModeEnabled() ||*/ Math.random()<0.99f) {
 					randomItem = Main.game.getItemGen().generateItem(ItemType.getDominionAlleywayItems().get(Util.random.nextInt(ItemType.getDominionAlleywayItems().size())));
 					
 				} else {

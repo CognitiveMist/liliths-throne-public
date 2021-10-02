@@ -2242,21 +2242,25 @@ public class Body implements XMLSaving {
 				case MESSY:
 					sb.append((hair.getType().isDefaultPlural(owner)?"are":"is")+" unstyled and very messy.");
 					break;
-				case FRENCH_BRAID:
-					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been woven into a long French braid.");
+				/*
+				case HIME_CUT:
+					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been straightened and styled into a hime cut.");
 					break;
-				case UPDO:
-					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into an elegant updo.");
+				case CHONMAGE:
+					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been straightened, oiled and styled into a chonmage topknot.");
 					break;
+				 */
 				case TOPKNOT:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into a topknot.");
 					break;
 				case DREADLOCKS:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into dreadlocks.");
 					break;
-				case BEEHIVE:
-					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into an elaborate beehive"+UtilText.returnStringAtRandom(".",", bees not included."));
+				/*
+				case BIRD_CAGE:
+					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into an elaborate bird cage"+UtilText.returnStringAtRandom(".",", birds not included."));
 					break;
+				 */
 				case TWIN_BRAIDS:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been woven into long twin braids.");
 					break;
@@ -2274,6 +2278,15 @@ public class Body implements XMLSaving {
 					break;
 				case CHIGNON:
 					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been tied up into a chignon.");
+					break;
+				case FRENCH_BRAID:
+					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been woven into a long French braid.");
+					break;
+				case UPDO:
+					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into an elegant updo.");
+					break;
+				case BEEHIVE:
+					sb.append((hair.getType().isDefaultPlural(owner)?"have":"has")+" been styled into an elaborate beehive"+UtilText.returnStringAtRandom(".",", bees not included."));
 					break;
 			}
 		}

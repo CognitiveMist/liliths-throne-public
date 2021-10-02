@@ -1435,7 +1435,7 @@ public enum Fetish {
 			Util.newArrayListOfValues(PresetColour.CLOTHING_BLACK_STEEL, PresetColour.CLOTHING_GOLD, PresetColour.CLOTHING_GOLD),
 			null,
 			Util.newArrayListOfValues(
-					"[style.colourTerrible(5x cost)] to [style.colourSeal(unseal)] self-worn clothing",
+					"[style.colourTerrible(2x cost)] to [style.colourSeal(unseal)] self-worn clothing",
 					"BDSM set bonus applies [style.colourGood(positive effects)]"),
 			null) {
 		@Override

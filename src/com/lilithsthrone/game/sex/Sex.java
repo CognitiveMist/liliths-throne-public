@@ -2450,8 +2450,8 @@ public class Sex {
 					if(!Main.sex.isMasturbation()) {
 						arousalIncrements.put(targetCharacter, arousalIncrements.get(targetCharacter) + activeCharacter.getFetishLevel(f).getBonusArousalIncreasePartner());
 					}
-					activeCharacter.incrementFetishExperience(f, f.getExperienceGainFromSexAction());
 				}
+				activeCharacter.incrementFetishExperience(f, f.getExperienceGainFromSexAction());
 			}
 		}
 		if(sexAction.getCategory()!=SexActionCategory.POSITIONING) { // Positioning actions should not be affected by lust increments
@@ -2467,8 +2467,8 @@ public class Sex {
 						if(!Main.sex.isMasturbation()) {
 							arousalIncrements.put(activeCharacter, arousalIncrements.get(activeCharacter) + targetCharacter.getFetishLevel(f).getBonusArousalIncreasePartner());
 						}
-						targetCharacter.incrementFetishExperience(f, f.getExperienceGainFromSexAction());
 					}
+					targetCharacter.incrementFetishExperience(f, f.getExperienceGainFromSexAction());
 				}
 			}
 			if(sexAction.getCategory()!=SexActionCategory.POSITIONING) { // Positioning actions should not be affected by lust increments
