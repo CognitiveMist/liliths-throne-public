@@ -10,6 +10,7 @@ import java.util.Objects;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.attributes.Attribute;
 import com.lilithsthrone.game.character.body.CoverableArea;
+import com.lilithsthrone.game.character.body.valueEnums.GenitalArrangement;
 import com.lilithsthrone.game.character.effects.StatusEffect;
 import com.lilithsthrone.game.character.fetishes.Fetish;
 import com.lilithsthrone.game.character.gender.Gender;
@@ -199,6 +200,9 @@ public class PregnancyRoulette {
 					if(Main.game.getPlayer().isPregnant()) {
 						return new Response("Male Bred ("+UtilText.formatAsMoneyUncoloured(10000, "span")+")", "You are already pregnant, so you can't sign up to be the mother!", null);
 						
+					} else if(Main.game.getPlayer().hasIncubationLitter(SexAreaOrifice.VAGINA)) {
+						return new Response("Male Bred ("+UtilText.formatAsMoneyUncoloured(10000, "span")+")", "Your womb is full of eggs, so you can't sign up to be the mother!", null);
+						
 					} else if(Main.game.getPlayer().getTotalFluidInArea(SexAreaOrifice.VAGINA)>0) {
 						return new Response("Male Bred ("+UtilText.formatAsMoneyUncoloured(10000, "span")+")", "You can't sign up for pregnancy roulette if your pussy already is full of cum!", null);
 						
@@ -242,6 +246,9 @@ public class PregnancyRoulette {
 					if(Main.game.getPlayer().isPregnant()) {
 						return new Response("Futa Bred ("+UtilText.formatAsMoneyUncoloured(10000, "span")+")", "You are already pregnant, so you can't sign up to be the mother!", null);
 						
+					} else if(Main.game.getPlayer().hasIncubationLitter(SexAreaOrifice.VAGINA)) {
+						return new Response("Futa Bred ("+UtilText.formatAsMoneyUncoloured(10000, "span")+")", "Your womb is full of eggs, so you can't sign up to be the mother!", null);
+						
 					} else if(Main.game.getPlayer().getTotalFluidInArea(SexAreaOrifice.VAGINA)>0) {
 						return new Response("Futa Bred ("+UtilText.formatAsMoneyUncoloured(10000, "span")+")", "You can't sign up for pregnancy roulette if your pussy already is full of cum!", null);
 						
@@ -284,6 +291,9 @@ public class PregnancyRoulette {
 				} else if(index==4) {
 					if(!Main.game.getPlayer().hasPenisIgnoreDildo()) {
 						return new Response("Breeder ("+UtilText.formatAsMoneyUncoloured(10000, "span")+")", "You don't have a penis, so you can't sign up to be one of the breeders!", null);
+						
+					} else if(!Main.game.getPlayer().isAbleToOrgasm()) {
+						return new Response("Breeder ("+UtilText.formatAsMoneyUncoloured(10000, "span")+")", "You are unable to orgasm, so you can't sign up to be one of the breeders!", null);
 						
 					} else if(!Main.game.getPlayer().isAbleToAccessCoverableArea(CoverableArea.PENIS, true)) {
 						return new Response("Breeder ("+UtilText.formatAsMoneyUncoloured(10000, "span")+")", "You aren't able to gain access to your penis, so you can't sign up to be one of the breeders!", null);
@@ -549,6 +559,12 @@ public class PregnancyRoulette {
 			if(index==1) {
 				NPC breeder = breeders.get(breederIndex);
 				
+				if(!Main.game.getPlayer().isTaur() && !Main.game.getPlayer().hasLegs() && Main.game.getPlayer().getGenitalArrangement()!=GenitalArrangement.CLOACA_BEHIND) {
+					return new Response("Front "+breeder.getName(true),
+							"Due to your lack of legs and fact that you have a front-facing vagina, you're unable to be bred by lying on your front. You'll have to lie down on your back instead...",
+							null);
+				}
+				
 				return new ResponseSex("Front "+breeder.getName(true), "Lie on your front, where "+breeder.getName(true)+" will be the first to move up to fuck you.",
 						null, null, null, null, null, null,
 						true, false,
@@ -577,6 +593,12 @@ public class PregnancyRoulette {
 				if(Main.game.getPlayer().isTaur()) {
 					return new Response("Back "+breeder.getName(true),
 							"Due to your lower body being that of a feral [pc.legRace], you're unable to fit into the breeding stall by lying on your back. You'll have to lie down on your front instead...",
+							null);
+				}
+				
+				if(!Main.game.getPlayer().hasLegs() && Main.game.getPlayer().getGenitalArrangement()==GenitalArrangement.CLOACA_BEHIND) {
+					return new Response("Back "+breeder.getName(true),
+							"Due to your lack of legs and fact that you have a rear-facing vagina, you're unable to be bred by lying on your back. You'll have to lie down on your front instead...",
 							null);
 				}
 				
@@ -615,7 +637,7 @@ public class PregnancyRoulette {
 		}
 		@Override
 		public String getDescription() {
-			return UtilText.parse(breeders.get(breederIndex-1), "Now that [npc.name] has had [npc.her] turn and given you a creampie, [npc.she] has to [npc.step] back...");
+			return UtilText.parse(breeders.get(breederIndex-1), "Now that [npc.name] has had [npc.her] turn and given you a creampie, [npc.sheHasFull] to [npc.step] back...");
 		}
 		@Override
 		public String getContent() {
@@ -840,7 +862,10 @@ public class PregnancyRoulette {
 						true, false,
 						new SMBreedingStall(
 								Util.newHashMapOfValues(new Value<>(Main.game.getPlayer(), SexSlotBreedingStall.BREEDING_STALL_FUCKING)),
-								Util.newHashMapOfValues(new Value<>(mother, SexSlotBreedingStall.BREEDING_STALL_BACK))) {
+								Util.newHashMapOfValues(new Value<>(mother,
+										mother.hasLegs() || mother.getGenitalArrangement()!=GenitalArrangement.CLOACA_BEHIND
+											?SexSlotBreedingStall.BREEDING_STALL_BACK
+											:SexSlotBreedingStall.BREEDING_STALL_FRONT))) {
 							@Override
 							public void initStartingLustAndArousal(GameCharacter character) {
 								character.setArousal(50);

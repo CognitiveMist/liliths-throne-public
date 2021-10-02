@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.lilithsthrone.game.PropertyValue;
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.EquipClothingSetting;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.attributes.Attribute;
@@ -22,9 +21,10 @@ import com.lilithsthrone.game.character.npc.submission.FortressFemalesLeader;
 import com.lilithsthrone.game.character.npc.submission.FortressMalesLeader;
 import com.lilithsthrone.game.character.npc.submission.ImpAttacker;
 import com.lilithsthrone.game.character.npc.submission.Lyssieth;
-import com.lilithsthrone.game.character.npc.submission.SubmissionCitadelArcanist;
+import com.lilithsthrone.game.character.npc.submission.Takahashi;
 import com.lilithsthrone.game.character.quests.Quest;
 import com.lilithsthrone.game.character.quests.QuestLine;
+import com.lilithsthrone.game.character.race.AbstractSubspecies;
 import com.lilithsthrone.game.character.race.Race;
 import com.lilithsthrone.game.character.race.Subspecies;
 import com.lilithsthrone.game.combat.DamageType;
@@ -125,7 +125,7 @@ public class ImpCitadelDialogue {
 		for(GameCharacter character : getBossGroup(false)) {
 			character.setLocation(WorldType.EMPTY, PlaceType.GENERIC_HOLDING_CELL);
 		}
-		Main.game.getNpc(SubmissionCitadelArcanist.class).setLocation(WorldType.EMPTY, PlaceType.GENERIC_HOLDING_CELL);
+		Main.game.getNpc(Takahashi.class).setLocation(WorldType.EMPTY, PlaceType.GENERIC_HOLDING_CELL);
 		
 		// Sort out boss:
 		getBoss().setLocation(WorldType.LYSSIETH_PALACE, PlaceType.LYSSIETH_PALACE_OFFICE);
@@ -149,6 +149,8 @@ public class ImpCitadelDialogue {
 				character.returnToHome();
 			}
 		}
+		
+		getArcanist().equipClothing(EquipClothingSetting.getAllClothingSettings()); // Remove lab coat
 	}
 	
 	private static void banishImps() {
@@ -180,7 +182,7 @@ public class ImpCitadelDialogue {
 			}
 			
 			for(int i=0; i<impCount; i++) {
-				Subspecies subspecies = i<3?Subspecies.IMP_ALPHA:Subspecies.IMP;
+				AbstractSubspecies subspecies = i<3?Subspecies.IMP_ALPHA:Subspecies.IMP;
 				
 				ImpAttacker imp = new ImpAttacker(subspecies, Gender.getGenderFromUserPreferences(false, false), false);
 				imp.setLevel(12-(i*2)+Util.random.nextInt(3));
@@ -203,7 +205,7 @@ public class ImpCitadelDialogue {
 					imp.addSpell(Spell.TELEKENETIC_SHOWER);
 					
 				} else {
-					impAdjectives.add(CharacterUtils.setGenericName(imp, impAdjectives));
+					impAdjectives.add(Main.game.getCharacterUtils().setGenericName(imp, impAdjectives));
 					imp.equipMainWeaponFromNowhere(Main.game.getItemGen().generateWeapon(WeaponType.getWeaponTypeFromId("innoxia_pipe_pipe")));
 				}
 				impGroup.add(imp);
@@ -297,8 +299,8 @@ public class ImpCitadelDialogue {
 		return Main.game.getNpc(DarkSiren.class);
 	}
 	
-	public static GameCharacter getArcanist() {
-		return Main.game.getNpc(SubmissionCitadelArcanist.class);
+	public static Takahashi getArcanist() {
+		return (Takahashi) Main.game.getNpc(Takahashi.class);
 	}
 
 	public static GameCharacter getMainCompanion() {

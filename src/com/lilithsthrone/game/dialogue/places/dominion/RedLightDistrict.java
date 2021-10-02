@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lilithsthrone.game.character.GameCharacter;
+import com.lilithsthrone.game.character.effects.StatusEffect;
 import com.lilithsthrone.game.character.fetishes.Fetish;
 import com.lilithsthrone.game.character.fetishes.FetishDesire;
 import com.lilithsthrone.game.character.gender.Gender;
@@ -532,7 +533,7 @@ public class RedLightDistrict {
 				};
 				
 			} else if(index == 2) {
-				return new Response("Decline", "Tell [npc.name] that you're not interested in what [npc.she] has in mind...", ANGELS_KISS_SELL_SELF_DECLINE){
+				return new Response("Decline", "Tell [npc.name] that you're not interested in what [npc.sheHasFull] in mind...", ANGELS_KISS_SELL_SELF_DECLINE){
 					@Override
 					public void effects() {
 						Main.game.getTextStartStringBuilder().append(
@@ -580,7 +581,7 @@ public class RedLightDistrict {
 				};
 				
 			} else if(index == 2) {
-				return new Response("Decline", "Tell [npc.name] that you're not interested in what [npc.she] has in mind...", ANGELS_KISS_SELL_SELF_DECLINE){
+				return new Response("Decline", "Tell [npc.name] that you're not interested in what [npc.sheHasFull] in mind...", ANGELS_KISS_SELL_SELF_DECLINE){
 					@Override
 					public void effects() {
 						Main.game.getTextStartStringBuilder().append(
@@ -636,6 +637,14 @@ public class RedLightDistrict {
 					}
 				};
 
+			} else if (index == 2) {
+				return new Response("Wash", "Have a quick wash to clean yourself.", ANGELS_KISS_BEDROOM){
+					@Override
+					public void effects() {
+						Main.game.banishNPC(Main.game.getActiveNPC());
+						Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().applyWash(true, false, StatusEffect.CLEANED_SHOWER, 240+30));
+					}
+				};
 			} else {
 				return null;
 			}
@@ -664,6 +673,14 @@ public class RedLightDistrict {
 					}
 				};
 
+			} else if (index == 2) {
+				return new Response("Wash", "Have a quick wash to clean yourself.", ANGELS_KISS_BEDROOM){
+					@Override
+					public void effects() {
+						Main.game.banishNPC(Main.game.getActiveNPC());
+						Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().applyWash(true, false, StatusEffect.CLEANED_SHOWER, 240+30));
+					}
+				};
 			} else {
 				return null;
 			}

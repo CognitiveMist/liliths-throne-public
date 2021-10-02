@@ -7,7 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import com.lilithsthrone.game.character.CharacterUtils;
+import com.lilithsthrone.controller.xmlParsing.XMLUtil;
 import com.lilithsthrone.main.Main;
 import com.lilithsthrone.utils.Util;
 import com.lilithsthrone.utils.Vector2i;
@@ -43,9 +43,9 @@ public class World implements XMLSaving {
 		Element element = doc.createElement("world");
 		parentElement.appendChild(element);
 		
-		CharacterUtils.addAttribute(doc, element, "worldType", WorldType.getIdFromWorldType(this.getWorldType()));
-		CharacterUtils.addAttribute(doc, element, "width", String.valueOf(this.WORLD_WIDTH));
-		CharacterUtils.addAttribute(doc, element, "height", String.valueOf(this.WORLD_HEIGHT));
+		XMLUtil.addAttribute(doc, element, "worldType", WorldType.getIdFromWorldType(this.getWorldType()));
+		XMLUtil.addAttribute(doc, element, "width", String.valueOf(this.WORLD_WIDTH));
+		XMLUtil.addAttribute(doc, element, "height", String.valueOf(this.WORLD_HEIGHT));
 		
 		Element innerElement = doc.createElement("grid");
 		element.appendChild(innerElement);
@@ -97,14 +97,14 @@ public class World implements XMLSaving {
 		try {
 			return grid[vec.getX()][vec.getY()];
 		} catch(Exception ex) {
-			System.err.println("Error in WorldType: "+this.getWorldType());
+			System.err.println("Error in WorldType: "+WorldType.getIdFromWorldType(this.getWorldType()));
 			throw ex;
 		}
 	}
 	
 	/**
 	 * @param place The AbstractPlaceType to find a Cell of.
-	 * @return A Cell of the PlaceType defined by the argument 'place'. If there are multiple Cells with the same PlaceType, the first one that is found is returned.
+	 * @return A Cell of the PlaceType defined by the argument 'place'. If there are multiple Cells with the same PlaceType, the first one that is found is returned. Returns null if place type does not exist.
 	 */
 	public Cell getCell(AbstractPlaceType place) {
 		for(int i=0; i<grid.length; i++) {
@@ -153,6 +153,11 @@ public class World implements XMLSaving {
 		return cellsFound;
 	}
 	
+	/**
+	 * @param location The starting location from which to search for the place.
+	 * @param place The place of the cell which is being looked for.
+	 * @return The cell which has the 'place' place type that's closest to the starting location. Will return null if no cell with the defined place type is found.
+	 */
 	public Cell getClosestCell(Vector2i location, AbstractPlaceType place) {
 		float distance = 10000f;
 		Cell closestCell = null;
@@ -168,6 +173,26 @@ public class World implements XMLSaving {
 			}
 		}
 		return closestCell;
+	}
+
+	/**
+	 * @param location The starting location from which to search for the place.
+	 * @param place The place of the cell which is being looked for.
+	 * @return The distance to the cell which has the 'place' place type that's closest to the starting location. Will return 10000 if no cell with the defined place type is found.
+	 */
+	public float getClosestCellDistance(Vector2i location, AbstractPlaceType place) {
+		float distance = 10000f;
+		for(int i=0; i<grid.length; i++) {
+			for(int j=0; j<grid[0].length; j++) {
+				if(grid[i][j].getPlace().getPlaceType().equals(place)) {
+					float newDistance = Vector2i.getDistance(location, grid[i][j].getLocation());
+					if(newDistance < distance) {
+						distance = newDistance;
+					}
+				}
+			}
+		}
+		return distance;
 	}
 	
 	/**
@@ -212,26 +237,6 @@ public class World implements XMLSaving {
 		return corridorCells.get(Util.random.nextInt(corridorCells.size()));
 	}
 	
-	public Cell getNearestCell(AbstractPlaceType place, Vector2i startLocation) {
-		Cell nearestCell = null;
-		float closestDistance = 10000f;
-		
-		for(int i=0; i<grid.length; i++) {
-			for(int j=0; j<grid[0].length; j++) {
-				if(grid[i][j].getPlace().getPlaceType().equals(place)) {
-					float distance = (float) Math.sqrt(Math.pow(Math.abs(i-startLocation.getX()), 2) + Math.pow(Math.abs(j-startLocation.getY()), 2));
-					if(distance < closestDistance) {
-						nearestCell = grid[i][j];
-						closestDistance = distance;
-					}
-				}
-			}
-		}
-		
-		return nearestCell;
-	}
-	
-
 	public Cell[][] getCellGrid() {
 		return grid;
 	}

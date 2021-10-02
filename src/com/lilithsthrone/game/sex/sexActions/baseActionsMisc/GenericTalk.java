@@ -83,7 +83,7 @@ public class GenericTalk {
 							"[npc.Name] puts on [npc.her] most dominant voice as [npc.she] [npc.verb(snarl)], "));
 				}
 				
-				sb.append(Main.sex.getCharacterPerformingAction().getRoughTalk());
+				sb.append(Main.sex.getRoughTalk(Main.sex.getCharacterPerformingAction()));
 			}
 			
 			return sb.toString();
@@ -147,7 +147,7 @@ public class GenericTalk {
 						"[npc.Name] [npc.verb(bite)] [npc.her] [npc.lip] and [npc.verb(try)] to look as submissive as possible as [npc.she] [npc.verb(cry)] out, ",
 						"[npc.Name] [npc.verb(put)] on [npc.her] most innocent expression, before [npc.moaning], "));
 	
-				sb.append(Main.sex.getCharacterPerformingAction().getSubmissiveTalk());
+				sb.append(Main.sex.getSubmissiveTalk(Main.sex.getCharacterPerformingAction()));
 			}
 			
 			return sb.toString();
@@ -182,7 +182,7 @@ public class GenericTalk {
 
 		private boolean isAcceptingRequest() {
 			return Main.sex.isCharacterObeyingTarget(Main.sex.getCharacterTargetedForSexAction(this), Main.sex.getCharacterPerformingAction())
-					|| Main.sex.getCharacterTargetedForSexAction(this).getFetishDesire(Fetish.FETISH_DOMINANT).isPositive()
+//					|| Main.sex.getCharacterTargetedForSexAction(this).getFetishDesire(Fetish.FETISH_DOMINANT).isPositive()
 					|| Main.sex.getCharacterTargetedForSexAction(this).getFetishDesire(Fetish.FETISH_SADIST).isPositive()
 					|| Main.sex.getCharacterPerformingAction().hasPerkAnywhereInTree(Perk.CONVINCING_REQUESTS);
 		}
@@ -196,16 +196,16 @@ public class GenericTalk {
 						+ (isAcceptingRequest()
 								?"[style.italicsGood("
 								:"[style.italicsBad(")
-						+"Requires [npc.name] to like the '"+Fetish.FETISH_DOMINANT.getName(Main.sex.getCharacterTargetedForSexAction(this))+"' fetish,"
+						+"Requires [npc2.name] to like the '"+Fetish.FETISH_DOMINANT.getName(Main.sex.getCharacterTargetedForSexAction(this))+"' fetish,"
 							+ " like the '"+Fetish.FETISH_SADIST.getName(Main.sex.getCharacterTargetedForSexAction(this))+"' fetish,"
 							+ " or for you to have the '"+Perk.CONVINCING_REQUESTS.getName(Main.sex.getCharacterPerformingAction())+"' perk.)]";
 			}
-			return "Ask [npc2.name] to treat you as though you're [npc.her] worthless whore."
+			return "Ask [npc2.name] to treat you as though you're [npc2.her] worthless whore."
 						+ "<br/>"
 						+ (isAcceptingRequest()
 								?"[style.italicsGood("
 								:"[style.italicsBad(")
-						+"Requires [npc.name] to like the '"+Fetish.FETISH_DOMINANT.getName(Main.sex.getCharacterTargetedForSexAction(this))+"' fetish,"
+						+"Requires [npc2.name] to like the '"+Fetish.FETISH_DOMINANT.getName(Main.sex.getCharacterTargetedForSexAction(this))+"' fetish,"
 							+ " like the '"+Fetish.FETISH_SADIST.getName(Main.sex.getCharacterTargetedForSexAction(this))+"' fetish,"
 							+ " or for you to have the '"+Perk.CONVINCING_REQUESTS.getName(Main.sex.getCharacterPerformingAction())+"' perk.)]";
 		}
@@ -214,7 +214,7 @@ public class GenericTalk {
 		public boolean isBaseRequirementsMet() {
 			return Main.sex.isDom(Main.sex.getCharacterTargetedForSexAction(this))
 					&& Main.sex.getSexPace(Main.sex.getCharacterTargetedForSexAction(this))!=SexPace.DOM_ROUGH
-					&& Main.sex.getCharacterPerformingAction().hasFetish(Fetish.FETISH_MASOCHIST);
+					&& (Main.sex.getCharacterPerformingAction().hasFetish(Fetish.FETISH_MASOCHIST) || Main.sex.getCharacterPerformingAction().isPlayer());
 		}
 
 		@Override
@@ -329,11 +329,9 @@ public class GenericTalk {
 		@Override
 		public boolean isBaseRequirementsMet() {
 			return Main.sex.getSexPace(Main.sex.getCharacterPerformingAction())!=SexPace.SUB_RESISTING
-					&& !Main.sex.isDom(Main.sex.getCharacterPerformingAction())
 					&& Main.sex.isDom(Main.sex.getCharacterTargetedForSexAction(this))
-					&& Main.sex.isConsensual()
 					&& Main.sex.getSexPace(Main.sex.getCharacterTargetedForSexAction(this))==SexPace.DOM_ROUGH
-					&& Main.sex.getCharacterPerformingAction().getFetishDesire(Fetish.FETISH_MASOCHIST).isNegative();
+					&& (Main.sex.getCharacterPerformingAction().getFetishDesire(Fetish.FETISH_MASOCHIST).isNegative() || Main.sex.getCharacterPerformingAction().isPlayer());
 		}
 
 		@Override

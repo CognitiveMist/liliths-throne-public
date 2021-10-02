@@ -4,8 +4,6 @@
 In this text file I keep track of reported bugs and features that I am working on.
 Not everything in this file is up-to-date, and everything is subject to change at a later date.
 	
-	- Add in modding framework for sex actions. 
-	
 	- Repeat alleyway
 		after 3 subs in a row, can agree to be their bitch (reveals their name, new options when meeting them again)
 			for demons in dark alleyways, they use telepathic suggestion to increase your corruption 
@@ -21,65 +19,869 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	
 	Patch notes:
 	
+	Contributors:
+		Fixed bug where the Aristocrat background would allow you to boost your corruption to 100 during character creation. (by Maxis)
+		Fixed bug where coatls, the feathered dragons, would fail the subspecies match if they got feathered dragon tails. (by DSG)
+	
+	Engine/Modding:
+		Added behaviour to externally defined encounters, where if you use a value of >100 for the encounter chance, then all other encounters with chances of <=100 will be discarded and only encounters with chances of >100 will be used.
+		Added clothing tag 'BLOCKS_SIGHT' for use with blindfolds or other sight-limiting clothing. When worn, clothing with this tag will put the 'blinded' status effect on the character (or 'Blinded (Echo location)' if the character has a body part which grants echo location).
+		Added item tag 'UNIQUE_NO_NPC_EQUIP' to prevent unique clothing or weapons from being equipped onto NPCs.
+		Added 'personalityChances' element support to subspecies files, which is defined in the same manner as the 'personalityChances' in 'RacialBody.xml'. Personality chances in subspecies files are rolled after RacialBody chances.
+		The 'effects' element for responses now works for trading and combat responses.
+	
+	Artwork:
+		Added 5 images for Leotie, drawn by Jam (https://twitter.com/JamDrawers).
+	
 	Gameplay:
-		Starting Claire's teleportation side-quest now requires you to have first completed the 'Slime Queen' side quest. (As I felt as though it was a little out of character for the Enforcers to let a stranger see the teleportation pads.)
+		Added 'Evelyx's Dairy' location and internal map. It is automatically discovered when entering its world map tile, which can be found by starting at Elis, then going 5 tiles East, 2 tiles North. (Warning: There is a lot of placeholder content in this area in this version!)
+		Added new unique NPC 'Monica', who runs the clothing shop in ELis's shopping precinct. (Warning: Almost all of her content is placeholders in this version!)
+		Added an extra row of inventory slots to each page of character's inventories, effectively increasing inventory size by 30.
+		Added 'donkey-morph' as a subspecies of horse-morph. To be identified as a donkey-morph, a character needs to be identified as being the 'horse-morph' race, and needs to have the new 'upright horse' ear type. 
+		Added a content toggle for 'feral' content. (To turn it on or off, go to the main menu, then go to 'Content Options', then under the 'Bodies' option, set 'Feral' to on/off.)
 	
 	Items:
-		(For Clothing Modding) If multiple stickers in one sticker category are set to be the default sticker, one of these default stickers is now chosen at random to be used for an item of clothing, instead of always the last defined default sticker.
-		Made the shoulder strap on the 'ragged chest wrap' a sticker option.
-		'Impish Brew' now grants +25 corruption to potion effects, instead of +50.
-		Added ability to enchant clothing with vagina and penis addition and removal effects.
+		Added 'thin bangles' clothing item (androgynous, wrist slot, sold by Nyan).
+		Added 'wrap ring' clothing item (androgynous, finger slot, sold by Nyan).
+		Added unique item 'Clothing Keys', which are added to your inventory at the start of the game (and retroactively added to your inventory when loading into this version). Examining these keys gives you a list of all the sealed clothing to which you have an unlock key.
+		Added 'blindfold' (androgynous, eye slot, BDSM set, blinds wearer, sold by Finch).
+		Added 'lips ring' clothing item (androgynous, finger slot, sold by Nyan).
 	
 	Sex:
-		You can no longer 'Encourage creampie' or 'Encourage pullout' when spectating in a 'hidden' position (such as when you watch your slaves having sex in the alleyway or hallway encounters).
-		You can now use level drain on orgasming characters while in a spectator slot.
-		Added interactions in the 'Sitting' position between the 'Sitting in lap' slot and the 'Between legs' slot.
-		Added interactions in the 'Over Desk' position between the 'Lying back' slot and the 'Bent over' slot.
-		Added kissing and groping interactions between dominant and submissive standing characters in the 'Standing' sex position.
+		NPCs who like or love the dominant fetish will no longer always accept a request to be rough (although NPCs who like/love the sadist fetish still will).
+		Added a 'Request facial' as a new sex action for when a character has the option to prepare for their partner's orgasm. (Requires penis-face interaction availability, for the orgasming character to have a real penis, and to be not wearing a condom. NPCs will be more/less likely to use based on their 'cum addict' fetish desire.)
 	
 	Other:
-		The output of all parsing commands embedded within speech should now be correctly modified by any speech-altering effects (such as a slovenly character pronouncing 'her' as ''er').
-		Transformative potions which turn a character's lower body into a taur now correctly transform all of the body parts which are affected (all parts below the waist) into their default animal counterpart states.
-		Added transformation actions to alleyway prostitutes' post-combat victory scene.
-		Added pregnancy reactions to Murk's greeting dialogue while in Epona's tile.
-		Standardised sorting of all racial transformation options by their race name.
-		Half-demons no longer use the same outfit generation as dark alleyway demons, and dark alleyway demons now have a 5% chance to spawn with demon daggers instead of 50%.
-		The 'Enforcer HQ' tile is no longer considered to be dangerous during an arcane storm.
-		Increased the chance of the street encounter in which Wes's quest starts from 10% to 50%.
+		Reduced Nizhoni's breast size from JJ-cup to G-cup.
+		Taking a 'Quick shower' in your room now applies the 'Recently showered' status effect for half the time that 'Thorough shower' does.
+		Quadrupedal cattle-morphs are now called 'cowtaur'/'bulltaur' instead of 'cattletaur'.
+		Altered default speech colours to reduce saturation and therefore (hopefully) make them easier to read on the dark background.
+		Zebra (and the new donkey) subspecies now have a higher detection priority than centaur subspecies, allowing you to become a zebrataur (and donkeytaur).
+		Slightly improved the description of Lilith's statue in the centre of Dominion, and there is a 20% chance of having a small dialogue variation displayed every time the tile's description is displayed.
 	
 	Bugs:
-		Typo and parsing fixes.
-		Fixed issues with sex scenes at Epona's stall in the Gambling Den being treated as public sex.
-		Fixed bug where the Rat Warrens content would break if rat-morph Subspecies preferences were set to 'human'.
-		Fixed bug where accessing the positioning menu in the prologue sex scene would reset all of the previous sex dialogue.
-		Fixed issue with there being two 'miss' parsing commands.
-		New slaves will now correctly start with all default job settings and permissions selected.
-		Fixed harpy attacker NPC descriptions not changing when you become friends with them or enslave them.
-		Fixed issue with the 'slovenly' character speech modification sometimes breaking parsing commands.
-		Fixed Murk's and Lyssieth's special dirty talk text not being parsed as speech.
-		Choosing to dominantly fuck Murk in Epona's tile (after completing Axel's quest) should now start with both of you in the intended positions.
-		Fixed bug where slave interaction scenes in alleyways or Lilaya's corridor would sometimes throw background errors and not initialise correctly.
-		The Spa tile is now correctly immune to arcane storm effects.
-		Fixed issue with enslavement of friendly NPCs describing them as though they'd just been defeated in combat.
-		Exiting Lyssieth's palace now correctly places you in the cavern tile instead of the palace gate tile.
-		Fixed existing Patrol Enforcers in Dominion wearing 'contractor' stab-proof vests instead of Enforcer ones.
-		If foot, anal, lactation, or non-con settings are turned off, NPCs will no longer have the related fetishes or fetish desires.
-		If non-con is disabled, the related fetishes are now correctly hidden from the fetish list and fetish altering potion effects.
-		Fixed NPCs being described as being in the 'holding cell' in their contacts page tooltip.
-		Fixed issue where attributes derived from clothing could sometimes be duplicated or persist after the clothing's removal.
-		Fixed issue where equipping transformative clothing onto demons or half-demons would sometimes spam the event log with messages.
-		Dominant partners in the Watering Hole will no longer spawn with the 'submissive' fetish, and likewise Submissive partners will no longer spawn with the 'dominant' fetish.
-		Fixed background errors being thrown if you decided to spam-click the 'New Game' action.
-		Added a 'no preference' option to Scarlett's sex scene (where you act as her servant in Helena's nest), so that if you have no areas available for her to fuck, you no longer get stuck in that scene.
-		Added actions to exit Helena's apartment at the entrance tile (for if you somehow manage to get stuck in there).
-		Elementals now have the correct arcane storm status effect applied to them.
-		Fixed bug where you could swap position with Murk's milkers during sex with them.
+		Parsing and typo fixes.
+		Fixed issue where purchased slaves could not be impregnated.
+		Slaves being sold in slaver alley will now correctly have randomly-generated personality traits and fetishes.
+		Fixed issue where interacting with Felicia directly after completing Zaranix's section of the main quest would result in getting stuck with no available dialogue actions to choose from.
+		Fixed issue in sex scenes where you could swap position with characters who shouldn't have been able to get into the position you were in.
+		The 'Spawn attacker' option in the debug menu will now correctly assign the spawned NPC's personality traits, name, and perks corresponding to their subspecies.
+		Fixed some harmless(?) parsing error message spam in the error log when loading an old save.
+		Fixed issue where you could return to the Rat Warrens and enter it after Vengar had been dealt with (but before handing the quest in to Axel to complete it), which would cause several bugs within the area.
+		The tongue length TF limit on enchanted clothing will now show toe exact value instead of a vague descriptor.
+		Slimes which you've befriended from the bat caverns will no longer consume glowing mushrooms every hour.
+		Candi now correctly has the 'lewd' personality trait.
 	
 	
 	
+	[x] SlaveForSale
+		it used to be that they would have their fetishes per store that would show up always, but then they would also have a set of likes/dislikes generated in addition to that.
+		Now what is happening is they exclusively only have the store related ones and no other likes/dislikes.
+	[x] several things are very wrong with the 'request rough sex' description.
+		In the red text it names the fetishes on the opposite end ('dominant' and 'sadist,' instead of 'submissive' and 'masochist'), and masochist isn't listed as an associated fetish. 
+	[x] you're your
+	[-] when importing slaves, clothing colours are randomised for some characters but not others
+	[x] Going from Zaranix directly to Felicia results in getting stuck after her question "So, have you found Arthur yet?"
+	[x] Nizhoni breast reduction
+	[x] Make post
+	[x] Expand unique item inventory slots
+	[x] Add keys item to see what clothing unlock keys you have
+		[x] prevent giving to others
+	
+	[] Amber and Rose accept rejection to rough sex
+	
+	[] Dairy Farm
+		[x] Add as encounter, 5 East, 2 North
+		[x] Map
+			[x] world type info
+			[x] places
+		[x] Encounter
+			[x] If you use a value of greater than 100, then all other encounters with chances of less than or equal to 100 will be discarded and only encounters with chances of over 100 will be used.
+				[x] Test
+		[x] Dialogue
+		[x] Text
+		[x] Succubus manager
+			[x] Add class
+			[x] Rename office
+			[x] Rename farm
+		[x] Large industrial sheds
+		[x] Office building in front of them which leads into the sheds
+			[x] Reception desk
+				[x] Can pay to have sex with milkers
+					[x] trainee
+					[x] heifer
+					[x] cow
+						[x] Options:
+							[x] furry/partial
+							[x] taur
+							[x] pregnant
+								[x] test
+							[x] mileage
+					[x] test all
+				[x] remove all fours
+				[x] ear tag effects should be based on level
+				[x] Need to block swap slots action (based on their slot availabilities?)
+				[x] remove cow after sex
+				[x] Androphilic?
+				[x] set numerous cows to barn tiles
+		[x] Work
+			[x] Get given a milker tag
+				[x] Item
+					[x] Prevent recolouring
+			[x] Rename milker to cow
+			[x] lock work behind lactation content
+			[x] Dorm sleep/wash
+			[x] Work in 4 hour shifts
+				[x] get negative status effect which lasts for 6 hours after shift (removed via sleeping)
+			[x] Training shed - Promotion requirements: 100L milk produced, have vagina, be feminine, optionally fucked
+				[x] 100 flames/hour
+				[x] Milking pumps
+					[x] Equip
+					[x] Unequip
+				[x] Available potions:
+					[x] Breast size++
+					[x] Lactation++
+					[x] Puffy nipples
+					[x] Vagina
+					[x] Vagina wetness++
+					[x] Squirter
+					[x] Penis-
+					[x] Feminise
+					[x] Fetish changes: Lactation, self-breasts, exhibitionist, submissive
+					[x] cowbell collar
+						[x] +10 physique
+					[x] nose ring
+						[x] -25 lust resistance
+				[x] Optional: Get fucked by someone who's paid
+					[x] Add class
+					[x] manager public descriptions
+			[x] Breeding shed - Promotion requirements: 1000L milk produced, have vagina, be feminine, pregnant
+				[x] 150 flames/hour
+				[x] Extra Available potions:
+					[x] Fetish changes: vaginal, cock/cum, pregnancy
+					[x] (7) Partial cattle TF
+					[x] (8) Greater cattle TF
+					[x] cowbell collar
+						[x] +50 fertility
+					[x] nose ring
+						[x] +50 corruption
+				[x] Optional: Get bred by someone who's paid
+			[x] Milking shed - Promotion requirements: 10,000L milk produced, have vagina, be feminine, be taur
+				[x] 200 flames/hour
+				[x] Extra Available potions:
+					[x] Fetish changes: masochist, bondage bitch, size queen, bimbo
+					[x] (9) Cattle-taur TF (just demonic taur if demon)
+					[x] (10) Tattooed
+				[x] cowbell collar
+					[x] *2 effects
+				[x] nose ring
+					[x] *2 effects
+				[x] Optional: Get fucked/bred by someone who's paid
+					[x] Make this mandatory
+			[x] Slave shed - Bad End
+				[x] Sign willing slave contract
+				[x] Show off taur body to Lunette centauresses (revealed that this is how farm is untouched)
+				[x] Get bought by one of them as an investment
+				[x] Kept in shed to be milked forever, centauress visits to fuck you now and again
+		[x] Full test
+			[x] Milkers who are removed have their unique tags added to player inventory...
+			[x] Get ear pierced as part of start work
+			[x] Quick showers don't give status effect?
+			[x] Parsing errors on fluid display
+			[x] TF effects applying without using action
+			[x] Clothing requirements bugged?
+			[x] sex disable conditions not working correctly
+			[x] breast pumps not unequipped
+			[x] Continue -> Continue working
+			[x] 'partner' parsing does not work
+			[x] Improve initial work flow
+				[x] Initial dialogue with 'Start'
+			[x] 'Continue working' dialogue needs different variation from initial
+			[x] Promotion needs to set sticker of tag
+			[x] Test sex cow tag level
+			[x] make requirement to start work be nipples (and vagina if have vagina, udders if have udders) exposed
+				[x] Add to tile description
+			[x] dormitory should allow item storage
+			[x] describe pussy pump being inserted
+			[x] heifer promotion not showing
+			[x] cow-girl TF resets virginity and body sizes
+				[x] Change to manual parts TF and append descriptions...
+			[x] Use TF text in better body/improved mind TF scenes
+			[x] promotion when wearing tag shouldn't append equip
+			[x] collar and nose ring equip text offset and doesn't fit
+			[x] mated should sometimes be anal (anal if fetish and can access)
+			[x] potion vending machine in dormitory (tab index 1)
+				[x] increase femininity
+				[x] increases lactation and milk storage
+				[x] increases breast size
+				[x] increases vagina wetness
+				[x] bimbo potion
+				[x] Add basic food and drinks too
+					[x] Water
+					[x] Bubble milk
+					[x] Bread roll
+					[x] Bubble cream
+					[x] Berry trifle
+			[x] player cow sex has too much control
+			[x] Do not allow sex trigger twice in a row when a cow
+				[x] after sex
+				[x] after sex avoided
+			[x] Better body should be more feminine
+			[x] tattoo number is floating point
+			[x] Save player tattoo number
+				[#flags.setSavedLong('evelyx_player_number', game.getNpcTally()+2000)]
+			[x] Reduce sex chance
+			[x] After avoiding sex, make 'Continue working' just 'Continue'
+			[x] Parsing issues with interrupt scene: "Before you know it, four hours have passed, and whil..." appended to end
+			[x] Post-interrupt work scene says "You decide to spend another four hours working, an" which doesn't fit
+			[x] x/16 hours to be coloured
+			[x] post sex continue not leading to correct scene
+			[x] cowtauress TF breaks if not cow lower legs
+			[x] block lesser cow girl TF if greater or cowtauress
+			[x] 'Cattletauress' should be cowtauress and bulltauress
+		[x] Final promotion
+			[x] Non-bad end
+				[x] after sex, move out to corridor
+			[x] Bad end
+				[x] apply transformations
+				[-] add ability to export at end of bad end
+				[x] START not appending...
+				[x] player name change
+				[x] remove clothing
+				[x] tattoo
+				[x] add blindfold for BDSM
+		[x] Make receptionist donkey-boy
+			[x] add donkey subspecies
+			[x] horse-cock -> donkey-cock for donkey subspecies
+			[x] Dale
+			[x] kind, dominant
+			[x] Talk
+				[x] Himself
+				[x] Work
+				[x] Evelyx
+				[x] Farm
+				[x] Lunette
+			[x] Full test from start
+				[x] Remove pussy pump
+					[x] squirter text
+				[x] Cow sex
+					[x] Heifers need to want creampie
+					[x] Make sure heifers are not pregnant
+					[x] Move Dale to barn
+				[x] Work
+					[x] starting/promotions
+					[x] Add item tag to prevent equipping on others
+						[x] Add to ear tag
+					[x] Make Dale sleep between 01:00-05:00
+						[x] allow loitering
+						[x] Block access between these times
+						[x] Change 24/7 references
+						[x] Describe reflective glass doors behind reception desk
+							[x] add work permission text to go through doors
+					[x] Make him come to fit clothing, strap player in, etc.
+						[x] no milk change
+							[x] make machine administer lactation potion before Dale arrives
+						[x] If have hymen, can get him to take virginity
+						[x] special virginity loss description
+						[x] Can give him blowjob or quick fuck after these
+							[x] fuck needs to count impregnation for promotion
+					[x] pregnancy reaction
+						[x] stalls - BARN_WORK_INITIAL
+						[x] reception - RECEPTION
+						[x] dorms - DORMITORY_DALE_SEX_START, DORMITORY_DALE_SEX_START_ORAL, DORMITORY_DALE_SEX_START_PUSSY, DORMITORY_DALE_SEX_START_ANAL
+					[x] After fucked once
+						[x] make comments in reception scene
+						[x] blowjob under desk
+							[x] unique action paperwork
+						[x] Sex in dormitory
+							[x] split into cows/workers
+							[x] clothing
+							[x] rest needs to send Dale to desk
+							[x] blowjob
+							[x] ride him
+							[x] ride him (anal)
+		[x] Auction area revealed by walking on locked door tile?
+		[x] Test Dale content
+			[x] Sex in stall
+				[x] Error in parsing: StartIndex:6 (null, null) - #IF(!pc.hasVagina())
+				[x] Public sex descriptions wrong
+				[x] slight change to dale virginity loss scene
+				[x] donkey-cock name wrong
+			[x] Desk blowjob
+				[x] public
+				[x] paperwork action wrong speech
+				[x] title
+				[x] after sex travel
+			[x] Asking for rough Dale accepts when hates sadist?
+			[x] dorms
+			[x] Need Dale anal virginity loss text
+			[x] Full test
+				[x] pregnancy reactions broken in dorm sex
+				[x] 'sexy' armpit triggering too much
+		[] Writing
+			[x] dobermann references need replacing
+			[x] Test new non-bad-end promotion
+				[x] flag set incorrectly
+				[x] tooltip responses
+				[x] centauress sex needs manager
+				[x] Add sex manager for bad end mounted scene as well
+				[x] 'Sign' should have sex colouration
+				[x] post sex needs strip content
+			[x] Dale Evelyx mentions he only meets her one or twice???
+			[] Add placeholder warning
+	
+	[x] Donkey confident and damage vs doggos
+	[x] Leotie artwork
+	[x] zebra taur gets detected as centaur???
+	[x] add an option to request a facial when someone you're blowing is about to cum
+	[x] request facial is limiting player?
+	[x] improve Lilith's statue description
+	[x] Messages
+	[x] donkey damage vs canines
+	[x] clothing tongue length increase needs value shown
+	[x] centaur carriage depot should have green background
+	[x] bat cavern slimes consume mushrooms even after becoming friends
+	[x] Candi needs lewd personality
+	
+	[] Wall's End
+		[x] The Fashionable Moo
+				Monica
+				She's really bubbly and friendly and has big breasts (she still has a considerable amount of milk production from her time working on a farm, but kind of likes the feeling of being milked so hasn't used TF potions to change it)
+				Clothing & wholesale fabric
+			[x] Monica
+				[x] Partial cow-girl with similar shortstack proportions to Claire.
+				[x] Milk capacity 4 litres, refills in 12 hours
+			[x] Trade
+				[x] tradingvariables response needs to execute effects
+					[#monica.dailyUpdate()]
+					[#monica.switchToFemaleClothing()]
+				[x] save/load testing
+			[x] Talk
+				[x] Affection increases
+				[x] 1: Smalltalk
+				[x] 2: Business - going well, although there are clothing stalls in the daily market, they don't have the same selection she does
+				[x] 3: Elis - she says she's lived either here or in the nearby fields for her entire life. It used to be more friendly, but since the troubles out in the fields, the town has had to accommodate a lot of refugees and tensions flare up now and again
+				[x] 4: History
+					She used to work on a dairy farm, but management changed and she left
+					Says that she likes the feeling of being milked so hasn't used TF potions to reduce her huge milk production
+					Finishes by hinting at milking not being like it used to
+				[x] 5: Unlocks Milking talk
+					She says that she's gone through hundreds of Moo Milker breast pumps, but none are as comfortable as the one she had back on her farm
+					She's heard bad things about the new management, who took over when she left about five years ago (they've somehow managed to not be destroyed by Lunette's centaurs), and so doesn't want to go back and ask for it
+				[x] 6: Silly mode: an option to ask about her breasts and it opens like a 5 paragraph long "Oh these? My massive boobies? My massive fucking titties?" equivalent
+			[x] Side Quest - Monica's Moo Milker
+				- Suggest to her that you could find her 'Moo Milker'
+				- She marks the dairy farm on your map, says to be careful
+				- At farm, meet manager
+					[x] They say that Monica's milker is company property. They replaced manual pumps long ago, tells receptionist to search for pump with Monica's name on it and bring it in
+						She laughs about how it's worthless, but as you want it (or are her employee), she'll:
+						[x] Sell it (50,000 flames)
+						[x] Give it (she says that she has a contract she'd like you to sign)
+							Sign to be her pussy-licking pet for as long as you wear her special ring - there's no catch, you can take the ring off at any time if you don't want to continue
+							[x] Have to wear ring, which turns out to be sealed (evelyx laughs at this and says there was nothing in the contract to prevent this)
+								[x] Create ring
+									Seal/subservient
+									Oral performer
+									Submissive
+									Vaginal loving
+								[x] Make ring common, with Evelyx's ring as a special
+							[x] She says that she'll remove your ring if you eat her out
+							[x] After sex she unseals your ring
+						[x] Seduce her (requires ladykiller perk)
+							[x] Perform oral
+							[x] Fuck pussy (over desk on back) (requires irresistible appeals or dominant fetish)
+					[x] Repeat meeting after refused
+					[x] After resolved, if had sex, Evelyx says you can come back and worship her cunt tomorrow
+						[x] Perform oral
+						[x] Fuck pussy (over desk on back) (requires irresistible appeals or dominant fetish)
+						[x] Conflicts with no-bad-end ending sex...
+							[x] Change no-bad-end:
+								[x] Can see Evelyx once per day for a special milking session
+								[x] Auctioned off to demonic centaurs
+								[x] Fucked, and then returned to barn
+								[x] Need to lock behind taur body
+					[x] Pregnancy reactions
+				- Return with milker, she is really happy and kisses you
+				- She blushes and says that if you were interested, she could show you how she uses it...
+				- Quest complete, can now milk Monica once per day
+			[x] 5: Milking (her apartment above the shop)
+				[x] Milking
+					[x] Use pump
+					[x] Massage
+					[x] Mouth
+				[x] Sex
+			[x] mouth availability lock
+			[x] lactation quest lock
+			[x] Pregnancy reactions
+			[x] Full quest test
+				[x] test action colouration when lactation content disabled
+				[x] need history talk repeat detection
+				[x] dairy reveal says player has been there before
+				[x] dairy
+					[x] meeting needs to reveal map
+					[x] Make leave action 4
+					[x] ring equip parsing error
+					[x] FLAG_innoxia_FLAG_innoxia_evelyx_monica_meeting
+					[x] Need <p> wrap for equip text
+					[x] "You feel the ring's power giving you submissive..." is repeated
+					[x] 'Submit' should lead directly into the sex scene
+					[x] Check mouth access for ring
+					[x] Dale does not move back to reception with player after sex (and in other scenes?)
+					[x] "...little else for you to do except command_unknown back into the waiting area.​"
+					[x] ring equip should be omitted
+					[x] check all routes
+						[x] pay
+						[x] ring
+						[x] seduce
+					[x] Test repeat sex
+				[x] Dialogue for 'CLOTHING_MILKING_FINISHED' not found
+				[x] Dialogue for 'CLOTHING_MILKING_FINISHED_SEX_START' not found
+				[x] Add sex manager to fix:
+					[x] Monica needs to start sex with dress and bra unequipped
+					[x] sex is counted as public
+					
+		[] Woolly Heaven
+				Border-collie-girl (described as being extremely attractive) gave up modelling in Dominion to open this shop.
+					Pix's sister(?)
+				Employees are twin greater sheep-girls
+					They have an annoying habit of starting and finishing one another's sentences
+			[] Sheep-girl twins
+			[] Covering change (kate services)
+			[] Talk
+			[] Spa day
+		[] The Ninth Strike
+				2 greater furry male baphomets who hold a serious grudge against Lunette. (Not related to one another)
+					They were competing blacksmiths in two villages, who were extremely well-renowned and always in high demand
+					Their villages were the first to be destroyed by Lunette, and they lost everything
+					Managed to escape and forged a pact to get their revenge on Lunette
+				They are trying to discover the technique which the Youko are said to possess, whereby working an enchantment into a weapon in nine strikes (hence the name) can make a weapon powerful enough to defeat Lunette
+			[] Imsu & Hale
+			[] Trade
+			[] Talk
+			[] Side Quest - The Youko's Secret
+				- Find Youko smith
+				- Convince to teach ninth strike technique to Hale & Imsu
+				- Youko moves to Elis shop
+				- Can get baphomets TF'd to female
+			[] Armpit worship (they lick player's armpits before fucking them)
+		[] The Barn
+				Staffed by generic mouse-boys in day, and a greater female owl-harpy at night (who acts a bit creepy like silently approaching you and asking if you've found what you're after, and turning her head to follow you around the store)
+			[] Owl-girl
+			[] Trade
+			[] Talk
+			[] Work
+	
+	[] Bug reports
+		[x] Despite already being a full demon, the main character (and Lilaya herself) refers to Lilaya as a half-demon.
+		[x] randomly generated slaves for sale only have the desires dictated by the store. 
+			For example, all slaves in Viva Voce only have a fetish for giving and receiving oral sex, and no other likes or dislikes. Previously, they would have normally generated desires, then have the store's required desires added to those.
+		[x] Can enter Rat Warrens after completing the quest
+			[-] Can not leave Rat Warrens after completing the quest about Vengar and coming back 
+				Take the Rat Warrens sidequest, enter rat warrens and fight Vengar's bodyguards to complete the sidequest.
+				Now the intended progression is (I think?) to return to the Gambling Den and hand in the completed sidequest. However you can return to the Rat Warrens.
+				Not only does this respawn every combat encounter (which I dont think is intended as I chose to scare them off) but also entering Vengar's room the only option is to have sex with him.
+				This, however doesnt count as dealing with him and you are unable to leave the Rat Warrens. Obviously teleporting or any other way of quick-travel doesnt work.
+			[-]  If you get yourself enslaved in the rat warrens, then escape, you can get yourself reslaved over and over despite the hideout being raided
+		[-] It would appear that the bad end route in Rat Warrens got bricked at some point.
+			In the "Training" scene (it's on 3rd day give or take) one of the milker slaves is referred to, but the reference is wrong and instead shows a bunch of "Error: parserTarget.getCharacter() not found! (npc4)" errors and buttons are unresponsive.
+			Edit: Actually just the whole Training scene, regardless of the "Bad End" setting.
+		
+		[] NPCs get their age advanced by the time jump... (Ziva goes to 51/52)
+		[] fix that issue and make sure breast feeding is available in the lap sitting position
+			[] i can kiss her lips when we're both standing up but i cant kiss her breasts
+		[] Once you reach level 12, you encounter the "Mysterious Enforcer" at a very high encounter rate making travel almost impossible except during nighttime in-game. Please fix this!
+		[]  It seems every time you "Look for Trouble" in the Harpy Nests after you complete the side quest, you never encounter a dual-sexed harpy.
+			I had the dual-sexed for all masculinity/femininity settings to "Abundant". I tried about 10 times and not one of them was dual-sexed.
+		[] Meraxis's handjob 'Push her' sex action has "No suitable description found for this action!" error
+		[] Arcane firebombs are not consumed after use in the 2nd and 3rd weapon slots(sorry to anyone who might have abused this
+		[] Normal encounters on the World Map do not respect Gender(all encounters have been strictly female), Orientation(we have chosen "Off" for Androphilic orientation, but Androphilic people spawn) and Furry preferences, probably Age too(but we didn't check that).
+		[] I found way to lock yourself in stocks. You need to:
+			1. Approach any slave locked in stocks.
+			2. Move into position "all fours" from stocks position menu.
+			3. By some magic, now you have option to swap your position with slave in stocks.
+			4. You pressing the button and now you the one being locked.
+		[] Pegasus-morph description talks about avoiding incoming damage, but all of their bonuses are offensive
+		[] Clothing on the calves slot cannot be unequipped during sex scenes - it says they're blocked by themselves
+		[] When in combat and you tail constrict an opponent for the 3rd time, the text says YOU will be defeated if they are constricted one more time.
+			"... constricted again, you will be instantly..."
+		
+	[] hand holding sex action
+	
+	[] after being used by someone (as sub), add another option to continue sex, but this time you take the dom role
+	[] or add another option to beg for more as sub
+	
+	[] Elizabeth artwork
+	
+	[] dye earth skill to take 1 essence
+	
+	[] Test fetish preferences in watering hole
+	
+	[] Need a place to deliver pregnancy in Elis
+		[] Medical centre
+			[] Incubus & succubus doctors
+	
+	[] Sex additions:
+		[] Finger urethra insertion
+		[] Lick fluids off partner actions
+		[] Fisting
+	
+	[] PR Maxis list
+	
+	[] Kay female TF
+	
+	[] If you have custom pictures for characters and then a random NPC spawns with the same name, (even if you technically don't know the name) the custom picture shows up, despite it being for another character. 
+			Maybe add a flag to the characters to determine whether it has custom pictures or not, or have their unique ID for them be part of what they look for before they show a picture
+	
+	[] add some modding parameters for self-TF races to support definition of races that can be transformed into (or unlimited race self-TF)
+	
+	Felicia content expansion:
+		- Ask out on date (affection requirement first I guess)
+		- Repeat date until 3 dates completed
+		- Give her gift after 3rd date and she reveals how she transformed into a 'doll' to stop having lewd thoughts all the time
+		- Says she feels lewd towards player, can sex
+		- Option to give her TF potion to give her vagina (although she prefers giving oral)
+		- Repeat dates & sex is end content
+	
+	Ashley
+	
+	[] 4 person guest rooms
+	
+	[] Investigate possibility of adding support for slave/guest functions to map modding, so that player homes could be added
+	
+	[] Centaur encounter spell effect expansion:
+		[] Spawn & start 2 slavers
+			[] Hide
+			[] Ambush
+		[] Add different sub-groups
+			[] Repeated losses (5?) results in a bad end trigger for each group (encounter their leader and losing to them is a bad end)
+			[] East of Elis (majority of the fields): Lunette's marauders -> Huge, muscular demonic centaurs who charge with lances
+				[] Loss results in being (roughly) fucked (futa centaurs), not interested in anything else
+				[] BE: 'Marauder's Cocksleeve' Taken by the leader for her personal harem
+			[] Southern banks: Hundred paces -> Spry, very fast centaurs who use archery and hit and run tactics
+				[] Loss results in being taken back to their camp and passed around for hours, before being dumped as they then move on
+				[] BE: 'Communal plaything' Kept by the group as their favourite toy
+			--- Just do the ones above
+			[] Northern strip: Sons of the forest -> Strike from out of the forests and raid merchant caravans
+				[] Loss results in heavy money loss and being fucked
+				[] BE: 'Wild camping' Kept in the forest camp as a slave, being regularly fucked by the constantly-changing leadership heirarchy
+			[] East of Dominion: The heart-breakers -> Use seduction and spells
+				[] Loss results in being transformed, they play up to your fetishes and after sex they leave
+				[] BE: 'One of Us' Kept for days having your fantasies indulged, while being fed fetish TF potions so that you end up as one of them
+	
+	"from the tap" demon stone from Lyssieth
+		Ask her about demon stones
+		She tells you that the rumours may be true, asks if you'd like to find out
+		Sex, and at orgasm she casts a spell and creates a unique demon stone (better than legendary ones)
+		
+	[] World map
+		[] Forest bandits
+		[] Fields bandits
+		[] River mermaids
+		[] Fields ruined village
+		
+	[] AoE for special attacks
+	
+	HLF Quest
+		[x] Go over Elle dialogue
+		[] Add Roxy recognition of firebombs if you sold at least one to her
+		[] Weapon special attacks to be unlocked should be shown in tooltip description
+		[] Throwable weapon framework
+			[] Test multiple arm rows detection
+	
+	Make the rough/resist pace different from rape so the slime queen isn't such a turn off.
+	
+	Helena sex without her becoming a total slut
+	Make a non-sloot Helena ending
+	
+	Why is there no dialogue variation for Arthur/Lyssieth scenes when you already know teleport?
+	Why can't we pick/plant roses in Lilaya's garden?
+	Why we don't have a gardener job for slaves?
+	Why do we have a kitchen but no dining hall?
+	Why can't I give guest jobs so they don't have to go out and find one?
+	Why isn't there an alternative to the foot scenes for Amber or Ms Cunningham if you have feet disabled?
+	Why isn't there an alternative to the Vicky scene if you have anal disabled?
+	Why do some scenes still sometimes refer to crotch boobs even though I have them disabled?
+	Being able to put dildos in penetrable nipples when?
+	
+	Finger urethra insertion
+	
+	[] Lilaya snug
+	
+	[] pspsps Nyanmum
+	
+	[] Change prostitution license
+		[] Angel pays for your license, but your first 5000 earnings go to her
+		[] Can't sell self while dirty
+			[x] Add showers (added from PR1528)
+			[] Add room description of showers
+		
+	[] Add way to earn money by (very simply) working for
+		Ralph (behind counter)
+			Can only start in morning (after work can get fucked by him to double earnings)
+				[] Stockroom 
+				[] Counter
+		Antique shop
+	
+	[] Add bondage fetish and use as check for tail/tentacle/webbing actions
+	
+	[] deer
+		glade springs - sparkling mineral water
+		tree shoots salad
+	
+	[] mouse
+	
+	[] Elis
+		[] Describe northern part as being home to a lot of refugees from Fields
+		[] Allow quick sex in masturbation
+		[] Add 'All masculine clothing is unisex' option
+		[] Weather based on season
+			[] Add rain status effect
+				[] Add immunity from clothing (and umbrella)
+	[] Bug: "when losing a fight and given a tf potion, if the tf effects transforming your legs from bipedal to taur, or now into a naga n such, the effect is negated,
+		 says the tf was intented for your attacker and not you, and since it already is taur/naga nothing happens."
+	[] Extra encounters
+		[] Grassland
+			[] Snakes
+		[] Woodland - can choose to avoid all encounters with forester perk (encountered all encounters at least once)
+			Day:
+				[] Deer (residents of deer village - one in each woodland block)
+				[] Boar (truffle-hunting)
+			Night:
+				[] Wolf-morphs (pack)
+					[] Generate 9x9 map, player in middle
+					[] Wolves are 3 movements away
+					[] Bramble tiles -2
+					[] Fallen trees -1
+					[] If at 0, have to fight
+				[] Owl harpy (attack)
+					[] Standard attack encounter
+	[] Unique encounters
+		[] Abandoned house in forest
+			Explore and get confronted by a pack of (all sapient) wolves, with a female wolf as their alpha
+			The 'pack' feel like this form is the best for connecting with nature, and have no interest in ever returning to an anthro form
+				- History: Feral TFs aren't a new concept, and a decade or so ago they were a trendy (although still niche) fad, but as tastes changed it fell heavily out of favour, and she says that she bets you haven't even seen ferals like her pack
+			THe TF items are all gone now, but (as she used to be an arcane researcher) she was able to create an unlimited TF-to-feral stone (runestone thing)
+			She willingly allows the player to use the item
+			Can only be used on people who are completely willing to undergo the transformation
+				Can convince centaur transport to TF into feral horses
+	[] Set locations
+		[] Farm
+			Goat-boy as overseer
+				[] Can have sex after building up trust
+			Work (all day):
+				[] Milk
+					[] Impregnate cow-morphs
+				[] Shear
+					[] Sheep group sex - they gossip and chat while taking turns with player
+				[] Plough help
+					[] Horse-boy sex
+					[] Size-queen horse-girl (androphilic)
+						[] If cock not big enough, fingers you or jerks you off
+						[] If big enough, lets you fuck her
+				[] Truffle-hunting (pigs are hired help)
+					[] Pig-morph sex
+				[] Admin (with baphomet daughter of goat-boy)
+					[] Likes pregnant sex
+					[] Sassy
+			Paid for providing:
+				[] Milked
+				[] Sheared
+		[] Otter family ferry
+			Otter dad and son
+				[] Dad is
+			[] Quick travel Elis to Dominion
+			[] Fishing services for discount on fee
 	
 	
+	Combat:
+		If an NPC has a kink which exploits the PC's weakness they should have a higher priority to use that over damage
+		Add a perk or something to add critical damage bonus affecting lust
 	
+		
+	----- Nyan marriage expansion -----
+	
+		Visit:
+			[] Nyan bakes (naked apron)
+			[] Nyanmum flashes you (fuck on sofa)
+			
+		[] Slutty actions to make Nyan horny?
+			[] Dirty date actions become positive
+			[] Unlock sex in toilets during walk?
+			[] Wear toys?
+		
+		[] Special romantic date
+			[] MARRIAGE_DOUBLE: Choose to take both on romantic date
+			[] MARRIAGE_NYAN: Choose to take just Nyan
+			[] Locations:
+				[] Monthly full-moon arcane fireworks festival at Demon Home park
+				[] Helena's hotel restaurant (can't risk it if Helena dating)
+				[] Fields picnic (special centaur service, go out of city in cart and spend the afternoon in arboretum)
+				[] Manor house hotel (special centaur service, go out of city in cart and spend the night at a huge manor house hotel)
+		[] Once completed romantic date at least once, can choose to start special proposal date
+			[] Ring (from Ashley, types include wedding preparations. They disapprove of a double-marriage, and charge even more)
+				[] Wedding style (obliged by the state to offer lewd options, which they have written on a napkin)
+					[] Building/location
+						[] City Hall (bureaucrat)
+						[] Glade (Ashley says they can arrange a suitable person)
+						[] Demon Chapel (succubus)
+					[] Ceremony
+						[] Peaceful (walk to aisle, words exchanged, kiss, off to honeymoon)
+						[] Exuberant (walk to aisle, words exchanged, kiss, party, off to honeymoon)
+						[] Lewd (walk to aisle, words exchanged, fuck on altar, off to honeymoon)
+					[] Aesthetic
+						[] Colour1/Colour2
+						[] Flowers
+							[] Lilies
+							[] Roses
+							[] Dripping-Liliths
+						[] Banners
+							[] Plain
+							[] Jazzy
+							[] Lewd
+				[] Wedding dress(es)
+					[] Traditional
+					[] Modern
+					[] Kinky
+				[] Honeymoon location
+					[] Manor house hotel
+			[] Propose at:
+				[] Restaurant reservations
+					[] Store (where first met)
+					[] Bedroom
+				[] Romantic date locations
+	
+	Marriage:
+		[] Lore about forbidden lilin marriage, she was swept away one day and married that afternoon, so the ceremony is the same (having to surprise the bride)
+		[] Chapel location, choose when to marry
+		[] Marry, then to honeymoon location
+	
+	Repeat encounters/dates:
+		[] Sex, talk
+	
+	--- END NYAN MARRIAGE ---
+	
+	add a randomisation to NPCs' virility stat when spawning them, with a small chance (perhaps able to be disabled via a toggle) for them to have 0 virility.
+	
+	[] Fix slime queen quest not being triggered by bat caverns slimes
+	
+	[] enchantment cap reduction upgrades for clothing and weapons (extremely expensive, via Arthur)
+	
+	[] Suggestion: Combine the +10% race damage perks into one perk that you recieve when you read all the books instead of one perk per book
+	
+	Jaguar subspecies
+		Black big cats should be panthers
+	
+	[] Make karada have stomach/hips/torso/over-torso/groin slots
+	[] Make wrist restraints 'leather restraints' and allow ankle equip
+	[] Add blindfold for locked in bondage set
+		[] Add blinded status effect (Doubles all travel times, -50 critical, -50 melee/ranged/unarmed)
+		
+	[] Add ability to lay unfertilised eggs (fertilise during sex, if not, then laid some time afterwards)
+	
+	Frustrated when chastity orgasm?
+	Also, cumming without producing any cum leaves someone frustrated, but the frustrated condition is removed at the end of sex because the code checks for the number of orgasms and removes the frustrated effect if it's >1
+	
+	Add 1 random sex action addition to actions (italics, centred)
+		Taste when performing oral
+		Feel of penetration, based on modifiers
+	
+	[] tfw still no double paizuri
+		[] Add to Nyan
+		
+	Add charm to find race in alleyways?
+	
+	1) Moving the ALLOWS_FLIGHT tag to the subspecies file either as a tag or as a distinct element to better support Lessers/Minimals
+	2) Allowing body parts to be associated with subspecies instead of only the parent race
+	Probably some other stuff I've forgotten
+	
+	Add three(+?) tone covering colours
+	
+	Might consider for the fish leg TF having it autoequip what you had before it went fish mode. Might get annoying to have to constantly open inventory and re-equip sets etc every time you cross water
+		 have a '[ ] Don't show this again' checkbox for that message?
+		 
+	add options upon giving birth to select which offspring you'd like to potentially see again
+	
+	Bug reports needs checking
+		From: "minor error with how the description for a spider lower..."
+	
+	Add race fetish preferences
+	
+	Autofellatio or even Auto-insertion with penis types like prehensile
+	
+	[] Sex availability
+		[x] Check for actions blocked
+			[x] Nipples/breasts actions still available when have no breasts
+			[x] Choke/slap face
+		[] Handle legs or not
+			[] Search for all .isTaur() and check for other leg configurations
+			[] need: isAbleToAccessGenitaliaFromBehind(), isAbleToAccessGenitaliaFromFront()
+				[] Use this for sex position (slot) checks
+		[] Check all leg actions (Spread legs), and search for leg parsing to make sure actions are accounting for tail lower bodies
+		[] Glory hole positioning for cloaca behind
+	[] Sex positioning
+		[] LegConfigurations/Feral allowances
+			[x] Ferals all fours
+			
+	[] References
+		[] Arms in combat when receiving an attack
+	[] TF Breast/crotch-boob count should be limited
+	
+	--- Zaranix future expansion ---
+	
+		Zaranix
+			(limit to once per day)
+				- Giving blowjob +20 affection
+					[x] Should start with giving it
+					[x] Succubus form
+				- Talk +5 affection
+					[x] Improve incubus form dialogue
+				- Help with experiments +10
+					- Oral potion +15
+					- Lipples +25
+					
+		Kelly/Katherine
+			- Talk (increase affection)
+				- Say about how they used to be slaves but after their enslavement expired they decided to continue working as maids
+			- Flirt (increase affection)
+			- Threesome
+	---
+	
+	Add crotch-nipple & piercing slots
+	
+	we need an option to have Lilaya keep her skin tone when she becomes a full demon
+	
+	a weird milking room bug where auto selling milk doesn't add to the funding you get from the room, and my upkeep is in negative because of it
+		collecting the milk gives you the upkeep value
+	
+	If you are already a slime before you met your first slime in the tunnels then you can't be slimed by that slime and you will never learn about the Slime Queen
+	
+	For these pills, although there is a determiner provided in the XML file, the items in the game have a null value for determiner
+	
+	post-defeat transformation sometimes makes parts too big (breasts, lips, hair), and then in next defeat TF, they shrink them
+	I've had plenty of times where characters say "I'm gonna turn you into a Zebra Girl" or something along those lines only for the forced TF to be stopped at the default Horse features but no Zebra tail or black and white fur colours.
+	
+	Takahashi sex:
+		Needs to start with oral ongoing
+		"A crowd of demons quickly forms around you and Takahashi..."
+	
+	Error: one-piece swimsuit and skater dress are blocking one another's removal!!!
+	
+	tbh i mostly lack the option to have a person underneath you when you are on all fours
+	
+	"Meeting Wes" quest is incompletable if you go through "Side with Wes" branch, there's a last quest where you receive Wes' Contractor Pass and you're moved into requisitions. In there you get a dialogue and a pass, but dialogue itself doesn't end nor you can halt it anyhow. 
+		 If you complete the quest to go see wes just before the office closes, it glitches up because time progresses as you talk and you are trapped in a location that you should not be able to be in at that time.
+		
+	Contractor pass should be neck clothing item
+	
+	Murk's path needs to disenchant tattoos and remove enchanted piercings
+	
+	Add player name triplet choices
+	
+	how about reducing the amount of text lines show for defeated enemies? single line if u can eg The Licentious imp - Defeated.....
+	
+	I suggest adding a selection of fetishes to the section on sexual experiences when creating a character
+	
+	Found a bug where player youkos for some reason have access to the slime transform menu (need to account for self transform ability in transformtion dialogs) Now only demon/slime/debug.
 	
 	Blaze/Crystal post-victory scene should be travel disabled with option to continue (like Max)
 	
@@ -95,10 +897,14 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	
 	Enforcers are always using condoms again (with description in scene of 'dark purple condom')?
 	
+	a new slot in the lying down position, so that you can have 'lying down', 'missionary', and a new 'on top'
+	
 	 So I completed the rat quest and decided to go into the milkers and now I can't get out for some reasons
 		(lots of background errors)
 	
 	Enforcer sex starts in wrong stance if they are taurs
+	
+	[] if you have anal disabled and do the TF stuff for Lilaya and Meraxis one person still performs anal
 	
 	Also, with the new strip before sex rule your opponent's items are sent to the void, making it impossible to steal from some unique characters that are normally possible
 		Add floor items tab
@@ -109,7 +915,6 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	 Like page 1 having 5 of your slaves. Using the tabs at the button for each page since you can use a forward and back button for extra tabs.
 	  For those who have a lot of slaves and having to scroll down each time to alter slave jobs/permissions etc. Also possible sorting them by name, but can skip that if too hard.
 	
-	I need to add an 'isDark()' method to tiles, so that things like night vision (or mastery of fire spells) negates some kind of 'dark area' debuff
 	
 	I want to leave the dirty panties in liliya's room instead of being forced to take them
 	
@@ -135,10 +940,6 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	Would it be possible to change how Angel's Kiss works to be more like the Nightclub?
 	 Right now you can quicky run out of room to send prostitutes her way and have no way to remove them from the building. So I was wondering if it could be changed so going to a room opens a menu to select prostitutes you've sent her way?
 	 That'd also help if you wanted to expand the building or add more to the district in the future. Since she's in charge of the area and could send the prostitutes to other businesses or something
-	
-	Inno still hasn't given me alternate scenes for the foot stuff with Amber or Cunningham, nor the anal with Vicky and Natalya, nor made the rough/resist pace different from rape so the slime queen isn't such a turn off.
-	
-	Lyssieth content that doesn't involve her desk, Helena sex without her becoming a total slut
 	
 	Security slave job
 	
@@ -244,8 +1045,6 @@ Not everything in this file is up-to-date, and everything is subject to change a
 		% chance to recover after thrown
 		% chance to recover after combat
 	
-	Panther
-	
 	add a repeat-descriptor exclusion variable
 	
 	Being fucked while self milking would be great especially if @Innoxia ever makes it an actual scene instead of a "you liked x from yourself," text box
@@ -303,9 +1102,6 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	
 	Add outfit saving/loading (use for setting slave outfits per job)
 	
-	Add demon TF without taking cock.
-		And non-desk positions.
-	
 	when wearing rental mommy/daddy t-shirts, give chance of encounter
 		Randomly spawned NPC approaches and asks to hire you
 	
@@ -330,7 +1126,7 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	set weapon damage as tier constants
 	
 	coloured cum/milk/girlcum/saliva
-	
+
 	Enchanting a Burning opaque demonstone with + Fire damage doesn't affect unarmed fire damage
 		only + unarmed damage is affecting its melee damage. +fire damage isn't applying at all
 	
@@ -372,13 +1168,7 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	equip/use Total time
 	Trigger @specific time
 	
-	
 	Lyssieth TF player speech needs feminine shift
-	
-	Split cat- panther
-	Split cat-morphs into cat-morphs and panther-morphs
-	Has it ever been made aware that cheetahs don't spawn as cheetahs but as leopards instead?
-	Birds: three subtypes, Bird-of-Prey, Corvid, and Passerine?
 	
 	Need arcane web and chameleon spell (demons)
 	
@@ -477,11 +1267,6 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	
 	
 	
-	Add tail length modifier TFs (5 step)
-	
-	Add throat wetness, capacity, elasticity, and plasticity to the self-TF menu
-	
-	males shouldn't displace their t-shirts
 	NPCs should remove tops and bras
 	
 	Changing options mid-sex resets dialogue scroll index?
@@ -582,7 +1367,7 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	Add Arthur quest to acquire potion to set gender identity to: Current gender, Male, Female
 	
 	Add gym map
-		Working out at gym to earn physique-boosting perks
+	Pix armpit licking
 	
 	[] Skull bandana
 	[] vagina ring(s)
@@ -613,9 +1398,6 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	Being able to fly should allow you to escape combat easier
 	
 	Youko scientist: you can talk to her, be TF'd by her, and eat her out but when Meraxis brings her up the player goes "Who?"
-	
-	I have troubles with Zaranix. 
-		When I try to 'thanks' him for handing over Arthur, I can't dislocate any of the items. It says that I am not allowed to do that in this sex scene. Problem is, he wears pants so the option to suck him off is unavailable, and I can't shift aside my clothes to do something while I wait for him to remove his pants. Is this a bug or am I doing something wrong?
 	
 	Investigate maid duty slaves fucking or not
 	
@@ -716,23 +1498,6 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	Make it clearer that Arthur was freed
 	getting Arthur to analyse the globe and make it into a spell
 	
-	Why is there no dialogue variation for Arthur/Lyssieth scenes when you already know teleport?
-	Why can't we pick/plant roses in Lilaya's garden?
-	Why we don't have a gardener job for slaves?
-	Why do we have a kitchen but no dining hall?
-	Does Lilaya even have a bathroom?
-	Why can't I give guest jobs so they don't have to go out and find one?
-	Why isn't there a penalty for decreasing corruption as a demon or a bonus for being more lewd?
-		Corruption affect base lust damage?
-		nerf lust vs low corruption
-	Why isn't there an alternative to the foot scenes for Amber or Ms Cunningham if you have feet disabled?
-	Why isn't there an alternative to the Vicky scene if you have anal disabled?
-	Why doesn't the PC get a thicc demon tail like Lilaya when you're TF'd by Lyssieth or even have a thicc modifier for tails in the first place?
-	Tail thiccness TF when?
-	Why does the artwork for Arthur make him look like he's 70 but the prologue says he's around our age?
-	Why does the game call them cow morphs instead of bovines and males cow boys when they should be bulls?
-	Why do some scenes still sometimes refer to crotch boobs even though I have them disabled?
-
 	Add fetish spawn chance settings
 	
 	A pair of gothic boots, that reach only below the knee, can fully conceal a pair of stockings that reach past mid-thigh.
@@ -786,8 +1551,7 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	
 	the 1/2 reduction in potion making cost seems a bit too powerful for a fetish bonus. Therefore I suggest it be given to a perk
 	
-	cannot make corruption potions?
-		Make ItemType modded
+	cannot make corruption potions
 	
 	Need AI to want to swap to other character hole if already cummed in other one
 		Make them recalculate wants after orgasming
@@ -1620,8 +2384,6 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	
 	If you remove scarlets slave collar when she is in slave room she attacks you and game bugs out
 	
-	Add set bonus for gothic - add set modding support
-	
 	Render map icons offset based on number
 	
 	Improve non-con toggles
@@ -1656,6 +2418,7 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	Add leg-lock and swallow as forced sub orgasms (overrides whatever dom chose)
 	
 	Add slave silence permission dialogue
+		[] slaves with silent permission speak when interacting with you and other npcs totally normally
 	
 	buttslut oral fetishists who are in the dominant position will not let my sub char change the position to dom sittting on subs face
 	
@@ -1702,8 +2465,6 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	Lilaya doesn't seem to want to change out of her Kimono
 	
 	NPC slimes will attempt to turn you into a slime and the game will tell you its working but you remain human
-	
-	Not sure if bug but the game still refers to Zoelix as Zaranix despite me transforming her.
 	
 	When displacing clothing on a resisting opponent, instead of shock or other distress when their genitals are revealed they instead grin etc like they would in consensual encounters.
 	
@@ -1884,16 +2645,12 @@ Not everything in this file is up-to-date, and everything is subject to change a
 	  When I tried removing different pieces of clothing I would click to "unequip" and then it would shift back to the sex dialogue that already happened.
 	   I was able to work around this using the manage slave inventory thing. Also when I exited the game to restart it and try again it caused me to get stuck in the various menus without being able to back out or close inventory
 	
-	If resolve Zaranix quest peacefully, it makes no sense for Amber to be so angry on repeat visit.
-	
 	(Can't reproduce) it seems that modifying vaginal urethra stats applies to the penile urethra
 	
 	if you don't turn off their permission to wash their body, it wipes their pregnancy when they clean their creampie, and it will display in the phone as ready to birth.
 	
 	So I have an imported character and it always gives me the "you should talk to Lily" text after I defeat someone, but I can't actually talk to her about it anymore. I was pretty sure I already talked to her about it one this save
 
-	When I entered Zaranix's house, it was telling me I needed to respond to the maid before going up the stairs... When she wasn't in the same tile as me and hadn't said anything to me.
-	
 	Loading saves also returns the image of an enchanted hypno-watch to the regular one
 	
 	brittney/lexi/diana will take anything?
@@ -2579,12 +3336,6 @@ Enchantment Suggestion: Emotion Mask - Enchanted clothing piece changes the pers
 	
 	I'd love to be able to give a rose to Lilaya for a hug and a sweet little kiss~
 	
-	When I re-visited Zaranix's place, Amber acted as though I broke in, pummeled and raped her and the other maids, and rudely demanded Arthur from Zaranix... even though I knocked on the door and begged her to let me in, calmly explained my ordeal with Zaranix, thanked her for letting me see him, got roughly fucked for not thanking HIM, all the while enduring constantly being degraded by her until she finally walked me out. She even gave me an affectionate spank before closing the door!
-	
-	I'd like to have Kelly and Katherine like me more, as well as Zaranix, if he doesn't already. I haven't been able to get him alone to find out...
-	
-	It seems Zaranix is both in his lounge and his lab at the same time. You may want to look into that...
-	
 	We need collars that are studded with spikes. You know, the kinds you'd expect to find on a vicious bull-dog.
 	
 	Sometimes, when giving birth, my character "dreams of" a morph of one gender interacting with her, when she only gave birth to the other gender. For example, she'll imagine seeing a wolf-boy, but she gave birth to a single wolf-girl.
@@ -2660,8 +3411,6 @@ It'd be even better if this could be extended to potions as well, allowing us to
 	
 	If you've read a species book before the recent update you can't get the new boost from said book.
 	
-	Zaranix is a male in the text when you return to his house but the nearby people leaves him in female form
-	
 	Still can´t encounter any harpies in harpies nest whatsoever
 	
 	sort clothing by type first 
@@ -2673,15 +3422,6 @@ It'd be even better if this could be extended to potions as well, allowing us to
 	
 	Duner's stuff
 	
-	
-	Zaranix
-		- Ask about incubus form
-			- if affection > 50, then can convince to stay as futa succubus Zoelix
-			- scene where you show her how good it feels to stay as a female - Zaranix gains pussy slut and self-breast fetishes
-		- Sex
-			- If incubus, he only accepts blowjobs
-			- If succubus, get full sex
-				
 	Preg reactions (including first time seeing them) for:
 		Pix
 		Amber
@@ -4921,8 +5661,6 @@ BlobHyperSweats1
 	
 	Suggestions:
 
-If you force your way into Zaranix's house, Katherine clearly hears you, but when you meet her she reacts the same as she does if you sneak in. Maybe she should say something about how you must have beaten Amber instead?
-
 You could put in interactions between slave's obedience and affection, for example a slave that loves you but is defiant could gain obedience over time. Conversely, a slave that hates you could see their obedience suffer. I'm not sure if affection should track towards obedience, you could probably make a case either way for that.
 
 NPC dirty talk regarding virginity is a little odd. They will mention that they're a virgin every other sentence, even if you don't have a cock and couldn't possibly take it, but they never mention they're an anal or oral virgin even when you put them on their knees or rub your cock on their ass. They just say "That's right, fuck my ass!", same as anyone else. Maybe they should wait until you actually get your cock out (especially if you're feminine), and have some sort of comment if losing one of their other virginities is apparently imminent.
@@ -5187,11 +5925,7 @@ A girl with the virginity fetish probably shouldn't ask you to fuck her, however
 		I just want an NPC to forcefully break-in my character but no one will do it
 	
 	
-	once you get Arthur the first time, going back to Zaranix's lab will cause a screen lock where you need to shut down
-	
 	small issue with slave descriptions in actions like hugging: "Due to the fact that [...] is friendly you, ..."
-	
-	Not sure if it's a bug or not, but after you've infiltrated Zaranix's home and retrieved Arthur (with the 'fly over fence' option), you can't knock anymore, regardless of whether or not you actually fought anyone. Can still fly over the fence, tho.
 	
 	"I seem to keep getting stuck at Ralph's"
 	
@@ -5289,8 +6023,6 @@ I've found that if you strip someone before sex, take all of their stuff, then h
 	
 	
 	
-	
-	Zaranix finishing touches
 	
 	Molest slave action
 	

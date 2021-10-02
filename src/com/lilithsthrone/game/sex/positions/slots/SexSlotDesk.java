@@ -1,6 +1,7 @@
 package com.lilithsthrone.game.sex.positions.slots;
 
 import com.lilithsthrone.game.character.GameCharacter;
+import com.lilithsthrone.game.dialogue.utils.UtilText;
 
 /**
  * All SexSlots that are used in the OVER_DESK position.
@@ -14,7 +15,7 @@ public class SexSlotDesk {
 	public static final SexSlot OVER_DESK_ON_BACK = new SexSlot(
 			"Lying back",
 			"lying back",
-			"[npc.Name] [npc.verb(collapse)] back down onto the desk's surface, before letting out [npc.a_moan+] as [npc.she] [npc.verb(prepare)] to reach [npc.her] climax.",
+			"[npc.Name] [npc.verb(collapse)] back down onto the [pc.desk], before letting out [npc.a_moan+] as [npc.she] [npc.verb(prepare)] to reach [npc.her] climax.",
 			false,
 			SexSlotTag.OVER_DESK_BACK);
 	public static final SexSlot OVER_DESK_ON_BACK_TWO = new SexSlot(OVER_DESK_ON_BACK) {
@@ -40,7 +41,7 @@ public class SexSlotDesk {
 	public static final SexSlot OVER_DESK_ON_FRONT = new SexSlot(
 			"Bent over",
 			"bent over",
-			"[npc.Name] [npc.verb(collapse)] down onto the desk's surface, before letting out [npc.a_moan+] as [npc.she] [npc.verb(prepare)] to reach [npc.her] climax.",
+			"[npc.Name] [npc.verb(collapse)] down onto the [pc.desk], before letting out [npc.a_moan+] as [npc.she] [npc.verb(prepare)] to reach [npc.her] climax.",
 			false,
 			SexSlotTag.OVER_DESK_FRONT);
 	public static final SexSlot OVER_DESK_ON_FRONT_TWO = new SexSlot(OVER_DESK_ON_FRONT) {
@@ -88,6 +89,58 @@ public class SexSlotDesk {
 		}
 	};
 
+	public static final SexSlot HUMPING = new SexSlot(
+			"Humping",
+			"humping",
+			"[npc.Name] wildly [npc.verb(buck)] [npc.her] [npc.hips] against [npc2.name], before letting out [npc.a_moan+] as [npc.she] [npc.verb(prepare)] to reach [npc.her] climax.",
+			false) {
+		@Override
+		public String getName(GameCharacter target) {
+			GameCharacter partner = getCharacterInSlot(OVER_DESK_ON_FRONT);
+			if(partner==null) { partner = getCharacterInSlot(OVER_DESK_ON_BACK); }
+			if(partner!=null) { return "Humping "+UtilText.parse(partner, "[npc.name]"); }
+			return "Humping";
+		}
+	};
+	public static final SexSlot HUMPING_TWO = new SexSlot(
+			"Humping",
+			"humping (2nd)",
+			"[npc.Name] wildly [npc.verb(buck)] [npc.her] [npc.hips] against [npc2.name], before letting out [npc.a_moan+] as [npc.she] [npc.verb(prepare)] to reach [npc.her] climax.",
+			false) {
+		@Override
+		public String getName(GameCharacter target) {
+			GameCharacter partner = getCharacterInSlot(OVER_DESK_ON_FRONT_TWO);
+			if(partner==null) { partner = getCharacterInSlot(OVER_DESK_ON_BACK_TWO); }
+			if(partner!=null) { return "Humping "+UtilText.parse(partner, "[npc.name]"); }
+			return "Humping";
+		}
+	};
+	public static final SexSlot HUMPING_THREE = new SexSlot(
+			"Humping",
+			"humping (3rd)",
+			"[npc.Name] wildly [npc.verb(buck)] [npc.her] [npc.hips] against [npc2.name], before letting out [npc.a_moan+] as [npc.she] [npc.verb(prepare)] to reach [npc.her] climax.",
+			false) {
+		@Override
+		public String getName(GameCharacter target) {
+			GameCharacter partner = getCharacterInSlot(OVER_DESK_ON_FRONT_THREE);
+			if(partner==null) { partner = getCharacterInSlot(OVER_DESK_ON_BACK_THREE); }
+			if(partner!=null) { return "Humping "+UtilText.parse(partner, "[npc.name]"); }
+			return "Humping";
+		}
+	};
+	public static final SexSlot HUMPING_FOUR = new SexSlot(
+			"Humping",
+			"humping (4th)",
+			"[npc.Name] wildly [npc.verb(buck)] [npc.her] [npc.hips] against [npc2.name], before letting out [npc.a_moan+] as [npc.she] [npc.verb(prepare)] to reach [npc.her] climax.",
+			false) {
+		@Override
+		public String getName(GameCharacter target) {
+			GameCharacter partner = getCharacterInSlot(OVER_DESK_ON_FRONT_FOUR);
+			if(partner==null) { partner = getCharacterInSlot(OVER_DESK_ON_BACK_FOUR); }
+			if(partner!=null) { return "Humping "+UtilText.parse(partner, "[npc.name]"); }
+			return "Humping";
+		}
+	};
 	
 	public static final SexSlot PERFORMING_ORAL = new SexSlot(
 			"Performing oral",

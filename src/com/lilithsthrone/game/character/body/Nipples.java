@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.body.abstractTypes.AbstractNippleType;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.AbstractBodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
 import com.lilithsthrone.game.character.body.valueEnums.AreolaeShape;
 import com.lilithsthrone.game.character.body.valueEnums.AreolaeSize;
 import com.lilithsthrone.game.character.body.valueEnums.Capacity;
@@ -21,7 +22,7 @@ import com.lilithsthrone.utils.Util;
 
 /**
  * @since 0.1.83
- * @version 0.3.8.2
+ * @version 0.4
  * @author Innoxia
  */
 public class Nipples implements BodyPartInterface {
@@ -35,11 +36,11 @@ public class Nipples implements BodyPartInterface {
 	protected boolean pierced;
 	protected boolean crotchNipples;
 
-	public Nipples(AbstractNippleType type, int nippleSize, NippleShape nippleShape, int areolaeSize, int wetness, float capacity, int depth, int elasticity, int plasticity, boolean virgin, boolean crotchNipples) {
+	public Nipples(AbstractNippleType type, int nippleSize, NippleShape nippleShape, int areolaeSize, AreolaeShape areolaeShape, int wetness, float capacity, int depth, int elasticity, int plasticity, boolean virgin, boolean crotchNipples) {
 		this.type = type;
 		this.nippleSize = nippleSize;
 		this.nippleShape = nippleShape;
-		areolaeShape = AreolaeShape.NORMAL;
+		this.areolaeShape = areolaeShape;
 		this.areolaeSize = areolaeSize;
 		orificeNipples = new OrificeNipples(wetness, capacity, depth, elasticity, plasticity, virgin, crotchNipples, type.getDefaultRacialOrificeModifiers());
 		this.crotchNipples = crotchNipples;
@@ -57,22 +58,20 @@ public class Nipples implements BodyPartInterface {
 
 	@Override
 	public String getNameSingular(GameCharacter owner) {
-		// I commented this out as I felt that the crotch names (defined in type) were a little unwieldy
-//		if(crotchNipples) {
-//			return type.getNameCrotchSingular(owner);
-//		} else {
+		if(crotchNipples) {
+			return type.getNameCrotchSingular(owner);
+		} else {
 			return type.getNameSingular(owner);
-//		}
+		}
 	}
 
 	@Override
 	public String getNamePlural(GameCharacter owner) {
-		// I commented this out as I felt that the crotch names (defined in type) were a little unwieldy
-//		if(crotchNipples) {
-//			return type.getNameCrotchPlural(owner);
-//		} else {
+		if(crotchNipples) {
+			return type.getNameCrotchPlural(owner);
+		} else {
 			return type.getNamePlural(owner);
-//		}
+		}
 	}
 
 	@Override
@@ -82,7 +81,6 @@ public class Nipples implements BodyPartInterface {
 		for(OrificeModifier om : orificeNipples.getOrificeModifiers()) {
 			descriptorList.add(om.getName());
 		}
-
 		
 		if(isCrotchNipples()) {
 			if(owner.getNippleCrotchCovering()!=null) {
@@ -134,12 +132,27 @@ public class Nipples implements BodyPartInterface {
 				descriptorList.add("wet");
 			}
 		}
+
+		switch(this.getNippleShape()) {
+			case INVERTED:
+				descriptorList.add("inverted");
+				break;
+			case LIPS:
+			case NORMAL:
+			case VAGINA:
+				break;
+		}
+		
+		descriptorList.add(this.getNippleSize().getName());
 		
 		descriptorList.add(type.getDescriptor(owner));
+		
 		if(orificeNipples.getCapacity()!= Capacity.ZERO_IMPENETRABLE) {
 			descriptorList.add(Capacity.getCapacityFromValue(orificeNipples.getStretchedCapacity()).getDescriptor().replaceAll(" ", "-"));
 		}
-
+		
+		descriptorList.removeIf(d->d==null || d.isEmpty());
+		
 		return Util.randomItemFrom(descriptorList);
 	}
 
@@ -330,7 +343,7 @@ public class Nipples implements BodyPartInterface {
 	}
 
 	@Override
-	public BodyCoveringType getBodyCoveringType(GameCharacter gc) {
+	public AbstractBodyCoveringType getBodyCoveringType(GameCharacter gc) {
 		if(this.isCrotchNipples()) {
 			return BodyCoveringType.NIPPLES_CROTCH;
 		}
@@ -338,7 +351,7 @@ public class Nipples implements BodyPartInterface {
 	}
 
 	@Override
-	public BodyCoveringType getBodyCoveringType(Body body) {
+	public AbstractBodyCoveringType getBodyCoveringType(Body body) {
 		if(this.isCrotchNipples()) {
 			return BodyCoveringType.NIPPLES_CROTCH;
 		}
@@ -346,13 +359,13 @@ public class Nipples implements BodyPartInterface {
 	}
 	
 	@Override
-	public boolean isBestial(GameCharacter owner) {
+	public boolean isFeral(GameCharacter owner) {
 		if(owner==null) {
 			return false;
 		}
 		if(this.isCrotchNipples()) {
-			return owner.getLegConfiguration().getBestialParts().contains(BreastCrotch.class) && getType().getRace().isBestialPartsAvailable();
+			return owner.isFeral() || (owner.getLegConfiguration().getFeralParts().contains(BreastCrotch.class) && getType().getRace().isFeralPartsAvailable());
 		}
-		return owner.getLegConfiguration().getBestialParts().contains(Breast.class) && getType().getRace().isBestialPartsAvailable();
+		return owner.isFeral() || (owner.getLegConfiguration().getFeralParts().contains(Breast.class) && getType().getRace().isFeralPartsAvailable());
 	}
 }

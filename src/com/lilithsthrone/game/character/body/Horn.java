@@ -15,7 +15,6 @@ import com.lilithsthrone.utils.Util;
  */
 public class Horn implements BodyPartInterface {
 
-	
 	public static final int MAXIMUM_ROWS = 3;
 	public static final int MAXIMUM_HORNS_PER_ROW = 4;
 	
@@ -25,8 +24,15 @@ public class Horn implements BodyPartInterface {
 	protected int length;
 	
 	public Horn(AbstractHornType type, int length) {
-		this.type = type;
-		this.length = length;
+		if(length<=0) {
+			this.length = 0;
+			this.type = HornType.NONE;
+			
+		} else {
+			this.type = type;
+			this.length = length;
+		}
+		
 		rows = 1;
 		hornsPerRow = type.getDefaultHornsPerRow();
 	}
@@ -59,6 +65,10 @@ public class Horn implements BodyPartInterface {
 	@Override
 	public String getDescriptor(GameCharacter gc) {
 		return type.getDescriptor(gc);
+	}
+
+	public void setType(AbstractHornType type) {
+		this.type = type;
 	}
 
 	public String setType(GameCharacter owner, AbstractHornType type) {
@@ -202,11 +212,20 @@ public class Horn implements BodyPartInterface {
 	}
 	
 	public HornLength getHornLength() {
-		return HornLength.getHornLengthFromInt(length);
+		return HornLength.getLengthFromInt(length);
 	}
 	
 	public int getHornLengthValue() {
 		return length;
+	}
+
+	public void setHornLength(int length) {
+		this.length = Math.max(0, Math.min(length, HornLength.FOUR_MASSIVE.getMaximumValue()));
+	}
+
+	public void setTypeAndLength(AbstractHornType type, int length) {
+		setType(type);
+		setHornLength(length);
 	}
 
 	public String setHornLength(GameCharacter owner, int length) {
@@ -245,11 +264,11 @@ public class Horn implements BodyPartInterface {
 	}
 
 	@Override
-	public boolean isBestial(GameCharacter owner) {
+	public boolean isFeral(GameCharacter owner) {
 		if(owner==null) {
 			return false;
 		}
-		return owner.getLegConfiguration().getBestialParts().contains(Horn.class) && getType().getRace().isBestialPartsAvailable();
+		return owner.isFeral() || (owner.getLegConfiguration().getFeralParts().contains(Horn.class) && getType().getRace().isFeralPartsAvailable());
 	}
 
 }

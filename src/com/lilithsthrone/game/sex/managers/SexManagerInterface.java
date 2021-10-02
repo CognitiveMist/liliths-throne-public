@@ -15,10 +15,11 @@ import com.lilithsthrone.game.character.body.CoverableArea;
 import com.lilithsthrone.game.character.fetishes.Fetish;
 import com.lilithsthrone.game.character.npc.NPC;
 import com.lilithsthrone.game.character.race.AbstractRace;
-import com.lilithsthrone.game.character.race.Subspecies;
+import com.lilithsthrone.game.character.race.AbstractSubspecies;
 import com.lilithsthrone.game.dialogue.utils.UtilText;
 import com.lilithsthrone.game.inventory.InventorySlot;
 import com.lilithsthrone.game.inventory.clothing.AbstractClothing;
+import com.lilithsthrone.game.sex.ImmobilisationType;
 import com.lilithsthrone.game.sex.LubricationType;
 import com.lilithsthrone.game.sex.OrgasmCumTarget;
 import com.lilithsthrone.game.sex.SexAreaInterface;
@@ -62,7 +63,8 @@ public interface SexManagerInterface {
 	public boolean isAbleToSkipSexScene();
 
 	/**
-	 * @return The SexPace that this character should have at the start of this sex scene. Unlike the <i>getForcedSexPace(character)</i> method, this method does <b>not</b> lock the character into the specified sex pace for the duration of this sex scene.
+	 * @return The SexPace that this character should have at the start of this sex scene.
+	 *  Unlike the <i>getForcedSexPace(character)</i> method, this method does <b>not</b> lock the character into the specified sex pace for the duration of this sex scene.
 	 */
 	public default SexPace getStartingSexPaceModifier(GameCharacter character) {
 		return null;
@@ -75,8 +77,8 @@ public interface SexManagerInterface {
 		return null;
 	}
 	
-	public default Set<GameCharacter> getCharactersSealed() {
-		return new HashSet<>();
+	public default Map<ImmobilisationType, Map<GameCharacter, Set<GameCharacter>>> getStartingCharactersImmobilised() {
+		return new HashMap<>();
 	}
 	
 	public default boolean isPlayerDom() {
@@ -90,6 +92,9 @@ public interface SexManagerInterface {
 	 */
 	public SexActionInterface getPartnerSexAction(NPC partner, SexActionInterface sexActionPlayer);
 	
+	public default boolean isSadisticActionsAllowed() {
+		return true;
+	}
 	
 	public default String getStartSexDescription() {
 		return "";
@@ -115,6 +120,20 @@ public interface SexManagerInterface {
 	public default boolean isHidden(GameCharacter character) {
 		return false;
 	}
+
+	/**
+	 * @return The name of the desk over which sex will be taking place during this manager's sex scene. Leave as null or an empty String if not used.
+	 */
+	public default String getDeskName() {
+		return null;
+	}
+	
+	/**
+	 * @return The name of the wall against which sex will be taking place during this manager's sex scene. Leave as null or an empty String if not used.
+	 */
+	public default String getWallName() {
+		return null;
+	}
 	
 	public default SexType getForeplayPreference(GameCharacter character, GameCharacter targetedCharacter) {
 		return character.getForeplayPreference(targetedCharacter);
@@ -127,6 +146,9 @@ public interface SexManagerInterface {
 	public default SexControl getSexControl(GameCharacter character) {
 		if(isHidden(character)) {
 			return SexControl.SELF;
+		}
+		if(Main.sex.isCharacterImmobilised(character)) {
+			return SexControl.NONE;
 		}
 		if(Main.sex.isDom(character)) {
 			return SexControl.FULL;
@@ -161,12 +183,15 @@ public interface SexManagerInterface {
 	
 	public default List<AbstractSexPosition> getAllowedSexPositions() {
 		List<AbstractSexPosition> positions = Util.newArrayListOfValues(
-				SexPosition.AGAINST_WALL,
 				SexPosition.ALL_FOURS,
 				SexPosition.LYING_DOWN,
 				SexPosition.STANDING);
+
+		if(Main.game.getPlayerCell().isWallsPresent()) {
+			positions.add(SexPosition.AGAINST_WALL);
+		}
 		
-		if(Main.game.getPlayerCell().getType().isFurniturePresent()) {
+		if(Main.game.getPlayerCell().isFurniturePresent()) {
 			positions.add(SexPosition.OVER_DESK);
 			positions.add(SexPosition.SITTING);
 		}
@@ -175,7 +200,9 @@ public interface SexManagerInterface {
 	}
 	
 	public default boolean isSwapPositionAllowed(GameCharacter character, GameCharacter target) {
-		return character.isPlayer() && isPositionChangingAllowed(character);
+		return character.isPlayer()
+				&& isPositionChangingAllowed(character)
+				&& Main.sex.getInitialSexManager().isSlotAvailable(target, Main.sex.getSexPositionSlot(character));
 	}
 	
 	/**
@@ -184,9 +211,15 @@ public interface SexManagerInterface {
 	public default boolean isPositionChangingAllowed(GameCharacter character) {
 		return character.isPlayer() || (Main.sex.getTotalParticipantCount(false)==2); // Only player is allowed to switch in multi-sex scenes
 	}
-	
+
 	public default boolean isPlayerAbleToStopSex() {
-		return Main.sex.isDom(Main.game.getPlayer()) || (Main.sex.getSexControl(Main.game.getPlayer())==SexControl.FULL && Main.sex.isConsensual());
+		return isCharacterAbleToStopSex(Main.game.getPlayer());
+	}
+	
+	public default boolean isCharacterAbleToStopSex(GameCharacter character) {
+		return Main.sex.isDom(character)
+				|| (Main.sex.getSexControl(character)==SexControl.FULL && Main.sex.isConsensual())
+				|| (Main.sex.isSpectator(character) && character.isPlayer() && Main.sex.getInitialSexManager().isHidden(character)); // If player is a hidden spectator they can 'stop' sex, which applies quick sex effects
 	}
 	
 	public default boolean isEndSexAffectionChangeEnabled(GameCharacter character) {
@@ -199,6 +232,10 @@ public interface SexManagerInterface {
 		boolean subsResisting = true;
 		boolean subsDenied = true;
 		
+		if(!isCharacterAbleToStopSex(partner)) {
+			return false;
+		}
+		
 		// Do not skip orgasms at end of sex:
 		if(Main.sex.getLastUsedPlayerAction().getActionType().isOrgasmOption()
 				|| Main.sex.getLastUsedPlayerAction().getActionType()==SexActionType.PREPARE_FOR_PARTNER_ORGASM) {
@@ -206,12 +243,16 @@ public interface SexManagerInterface {
 		}
 		
 		// Do not allow player-owned slaves to end sex if the player is also a dom and is not a spectator:
-		if(Main.sex.isDom(Main.game.getPlayer()) && !Main.sex.isSpectator(Main.game.getPlayer()) && Main.sex.getInitialSexManager().isPlayerAbleToStopSex() && partner.isSlave() && partner.getOwner().isPlayer()) {
+		if(Main.sex.isDom(Main.game.getPlayer())
+				&& !Main.sex.isSpectator(Main.game.getPlayer())
+				&& Main.sex.getInitialSexManager().isCharacterAbleToStopSex(Main.game.getPlayer())
+				&& partner.isSlave()
+				&& partner.getOwner().isPlayer()) {
 			return false;
 		}
 		
 		for(GameCharacter character : Main.sex.getDominantParticipants(false).keySet()) {
-			if(Main.sex.getNumberOfOrgasms(character)<character.getOrgasmsBeforeSatisfied() && Main.sex.getSexPositionSlot(character)!=SexSlotGeneric.MISC_WATCHING) {
+			if(!Main.sex.isSatisfiedFromOrgasms(character, true) && Main.sex.getSexPositionSlot(character)!=SexSlotGeneric.MISC_WATCHING) {
 				domsSatisfied = false;
 			}
 		}
@@ -220,7 +261,7 @@ public interface SexManagerInterface {
 			if(Main.sex.getSexPace(character)!=SexPace.SUB_RESISTING && Main.sex.getSexPositionSlot(character)!=SexSlotGeneric.MISC_WATCHING) {
 				subsResisting = false;
 			}
-			if(Main.sex.getNumberOfOrgasms(character)<character.getOrgasmsBeforeSatisfied() && Main.sex.getSexPositionSlot(character)!=SexSlotGeneric.MISC_WATCHING) {
+			if(!Main.sex.isSatisfiedFromOrgasms(character, true) && Main.sex.getSexPositionSlot(character)!=SexSlotGeneric.MISC_WATCHING) {
 				subsSatisfied = false;
 			}
 			if(Main.sex.getNumberOfDeniedOrgasms(character)==0) {
@@ -228,7 +269,11 @@ public interface SexManagerInterface {
 			}
 		}
 		
-		if(Main.sex.isDom(partner) && (!Main.sex.isConsensual() || subsResisting || !Main.sex.isSubHasEqualControl() || (partner.getFetishDesire(Fetish.FETISH_DENIAL).isPositive() && subsDenied))) {
+		if(Main.sex.isDom(partner)
+				&& (!Main.sex.isConsensual()
+						|| subsResisting
+//						|| !Main.sex.isSubHasEqualControl() // 0.4.1.1 change
+						|| (partner.getFetishDesire(Fetish.FETISH_DENIAL).isPositive() && subsDenied))) {
 			if(Main.sex.getNumberOfOrgasms(partner)>partner.getOrgasmsBeforeSatisfied()*2) {
 				return true;
 			}
@@ -285,6 +330,10 @@ public interface SexManagerInterface {
 		}
 	}
 	
+	public default boolean isItemUseAvailable() {
+		return true;
+	}
+	
 	public default boolean isAbleToEquipSexClothing(GameCharacter character){
 		return true;
 	}
@@ -302,8 +351,8 @@ public interface SexManagerInterface {
 		// The only thing that should limit this is overridden special conditions:
 		return true;
 	}
-	
-	public default boolean isItemUseAvailable() {
+
+	public default boolean isAbleToRemoveClothingSeals(GameCharacter character){
 		return true;
 	}
 	
@@ -346,7 +395,9 @@ public interface SexManagerInterface {
 	}
 	
 	public default List<CoverableArea> getAdditionalAreasToExposeDuringSex(GameCharacter performer, GameCharacter target) {
-		if((performer.equals(target) || Main.sex.isConsensual()) && (target.hasBreasts() || target.isFeminine())) {
+		if((performer.equals(target) || Main.sex.isConsensual())
+				&& (target.hasBreasts() || target.isFeminine())
+				&& (!target.isFeral() || target.getFeralAttributes().isBreastsPresent())) {
 			return Util.newArrayListOfValues(CoverableArea.NIPPLES);
 		}
 		
@@ -360,18 +411,45 @@ public interface SexManagerInterface {
 	public default boolean isPartnerUsingForeplayActions() {
 		return true;
 	}
+
+	public default boolean isForceCreampieAllowed(GameCharacter characterOrgasming, GameCharacter characterRecevingCreampie) {
+		return true;
+	}
 	
 	/**
-	 * @return The OrgasmBehaviour for this character. Normally returns DEFAULT, but can also return CREAMPIE or PULL_OUT, in which case the character will ignore requests and treat associated orgasm actions as having a SexActionPriority of UNIQUE_MAX.
+	 * @return The OrgasmBehaviour for this character.
+	 *  Normally returns DEFAULT, but can also return CREAMPIE or PULL_OUT, in which case the character will ignore requests and treat associated orgasm actions as having a SexActionPriority of UNIQUE_MAX.
 	 */
 	public default OrgasmBehaviour getCharacterOrgasmBehaviour(GameCharacter character) {
 		return OrgasmBehaviour.DEFAULT;
 	}
 
 	/**
-	 * @return The OrgasmCumTarget for when this character is orgasming in an interaction with the target. Determines where they want to cum <b>only if they choose to pull out</b>, with a return of null signifying that there are no special targeting priorities.
+	 * @return The OrgasmBehaviour for this character when reacting to the characterOrgasming orgasming in the characterPenetrated.
+	 *  Normally returns DEFAULT, but can also return NO_ENCOURAGE, CREAMPIE, or PULL_OUT, in which case the character will use GENERIC_PREPARATION_PREPARE, GENERIC_PREPARATION_ENCOURAGE_CREAMPIE, or GENERIC_PREPARATION_ENCOURAGE_PULL_OUT, respectively.
+	 */
+	public default OrgasmEncourageBehaviour getCharacterOrgasmEncourageBehaviour(GameCharacter character, GameCharacter characterOrgasming, GameCharacter characterPenetrated) {
+		return OrgasmEncourageBehaviour.DEFAULT;
+	}
+	
+	/**
+	 * @return The OrgasmCumTarget for when this character is orgasming in an interaction with the target.
+	 * <br/>Determines where they want to cum <b>only if they choose to pull out</b>, with a return of null signifying that there are no special targeting priorities.
+	 * <br/><b>Note:</b> This also limits the player's orgasm actions.
 	 */
 	public default OrgasmCumTarget getCharacterPullOutOrgasmCumTarget(GameCharacter character, GameCharacter target) {
+		if(character.isPlayer()) {
+			return null;
+		}
+		List<OrgasmCumTarget> orgasmTargets = new ArrayList<>();
+		for(Entry<GameCharacter, OrgasmCumTarget> entry : Main.sex.getCharactersRequestingPullout().entrySet()) {
+			if(entry.getValue()!=null && (character.isPlayer() || !((NPC)character).getSexBehaviourDeniesRequests(entry.getKey()))) {
+				orgasmTargets.add(entry.getValue());
+			}
+		}
+		if(!orgasmTargets.isEmpty()) {
+			return Util.randomItemFrom(orgasmTargets);
+		}
 		return null;
 	}
 	
@@ -388,15 +466,21 @@ public interface SexManagerInterface {
 		}
 		return false;
 	}
-
+	
+	public default String applyPublicSexFormatting(String text) {
+		return "<p style='color:"+PresetColour.BASE_ORANGE.toWebHexString()+"; font-style:italic; text-align:center;'>"
+					+ text
+				+ "</p>";
+	}
+	
 	public default String getPublicSexStartingDescription() {
-		Set<Subspecies> subspeciesSet = new HashSet<>();
+		Set<AbstractSubspecies> subspeciesSet = new HashSet<>();
 		for(Population pop : Main.game.getPlayer().getLocationPlace().getPlaceType().getPopulation()) {
 			subspeciesSet.addAll(pop.getSpecies().keySet());
 		}
 		if(!subspeciesSet.isEmpty()) {
 			List<AbstractRace> racesPresent = new ArrayList<>();
-			for(Subspecies species : subspeciesSet) {
+			for(AbstractSubspecies species : subspeciesSet) {
 				if(!racesPresent.contains(species.getRace())) {
 					racesPresent.add(species.getRace());
 				}
@@ -404,24 +488,22 @@ public interface SexManagerInterface {
 			Collections.shuffle(racesPresent);
 			List<String> raceNames = new ArrayList<>();
 			for(int i=0; i<racesPresent.size() && i<3;i++) {
-				raceNames.add(Subspecies.getMainSubspeciesOfRace(racesPresent.get(i)).getNamePlural(null));
+				raceNames.add(AbstractSubspecies.getMainSubspeciesOfRace(racesPresent.get(i)).getNamePlural(null));
 			}
 			if(raceNames.size() < racesPresent.size()) {
 				raceNames.add("many other races");
 			}
 			
-			return "<p style='color:"+PresetColour.BASE_ORANGE.toWebHexString()+"; font-style:italic; text-align:center;'>"
-					+ (Main.sex.isMasturbation()
+			return applyPublicSexFormatting(
+						Main.sex.isMasturbation()
 							?"A crowd of "+Util.stringsToStringList(raceNames, false)+" quickly forms around you, eager to watch your erotic display..."
-							:"A crowd of "+Util.stringsToStringList(raceNames, false)+" quickly forms around you and [npc.name], eager to watch your erotic display...")
-					+ "</p>";
+							:"A crowd of "+Util.stringsToStringList(raceNames, false)+" quickly forms around you and [npc.name], eager to watch your erotic display...");
 			
 		} else {
-			return "<p style='color:"+PresetColour.BASE_ORANGE.toWebHexString()+"; font-style:italic; text-align:center;'>"
-					+ (Main.sex.isMasturbation()
+			return applyPublicSexFormatting(
+						Main.sex.isMasturbation()
 							?""
-							:"A crowd quickly forms around you and [npc.name], eager to watch your erotic display...")
-					+ "</p>";
+							:"A crowd quickly forms around you and [npc.name], eager to watch your erotic display...");
 		}
 	}
 	
@@ -434,8 +516,8 @@ public interface SexManagerInterface {
 			}
 		}
 		if(Main.sex.isMasturbation()) {
-			return "<p style='color:"+PresetColour.BASE_ORANGE.toWebHexString()+"; font-style:italic; text-align:center;'>"
-						+ UtilText.returnStringAtRandom(
+			return applyPublicSexFormatting(
+						UtilText.returnStringAtRandom(
 							"The crowd of onlookers laugh and cheer as they look on.",
 							"You hear someone in the crowd wolf-whistling as they watch you masturbating.",
 							enforcersPresent
@@ -445,12 +527,11 @@ public interface SexManagerInterface {
 							"Cheering and laughing, the crowd of onlookers watch as you continue masturbating.",
 							"You glance across to see several members of the crowd touching themselves as they watch you go at it.",
 							"The crowd cheers you on as you carry on masturbating in front of them.",
-							"Several members of the crowd shout and cheer as you carry on masturbating in front of them.")
-					+"</p>";
+							"Several members of the crowd shout and cheer as you carry on masturbating in front of them."));
 			
 		} else if(Main.sex.getAllParticipants(false).contains(Main.game.getPlayer())) {
-			return "<p style='color:"+PresetColour.BASE_ORANGE.toWebHexString()+"; font-style:italic; text-align:center;'>"
-						+ UtilText.parse(Main.sex.getTargetedPartner(Main.game.getPlayer()),
+			return applyPublicSexFormatting(
+					UtilText.parse(Main.sex.getTargetedPartner(Main.game.getPlayer()),
 							UtilText.returnStringAtRandom(
 								"The crowd of onlookers laugh and cheer as they look on.",
 								"You hear someone in the crowd wolf-whistling as they watch you having sex.",
@@ -464,13 +545,12 @@ public interface SexManagerInterface {
 								"The crowd cheers you on as you and [npc.name] carry on having sex in front of them.",
 								"The crowd laughs and cheers as you and [npc.name] carry on having sex in front of them.",
 								"Several members of the crowd shout and cheer as you and [npc.name] carry on having sex in front of them.",
-								"Several members of the crowd cheer you on as you and [npc.name] carry on having sex in front of them."))
-					+"</p>";
+								"Several members of the crowd cheer you on as you and [npc.name] carry on having sex in front of them.")));
 			
 		} else {
 			GameCharacter target = Util.randomItemFrom(Main.sex.getDominantParticipants(false).keySet());
-			return "<p style='color:"+PresetColour.BASE_ORANGE.toWebHexString()+"; font-style:italic; text-align:center;'>"
-					+ UtilText.parse(target, Main.sex.getTargetedPartner(target),
+			return applyPublicSexFormatting(
+					UtilText.parse(target, Main.sex.getTargetedPartner(target),
 						UtilText.returnStringAtRandom(
 							"The crowd of onlookers laugh and cheer as they look on.",
 							"You hear someone in the crowd wolf-whistling as they watch [npc.name] fucking [npc2.name].",
@@ -484,8 +564,7 @@ public interface SexManagerInterface {
 							"The crowd cheers [npc.name] on as [npc.she] carries on having sex in front of them.",
 							"The crowd laughs and cheers as [npc.name] and [npc2.name] carry on having sex in front of them.",
 							"Several members of the crowd shout and cheer as [npc.name] and [npc2.name] carry on having sex in front of them.",
-							"Several members of the crowd cheer [npc.name] on as [npc.she] carries on fucking [npc2.name] in front of them."))
-				+"</p>";
+							"Several members of the crowd cheer [npc.name] on as [npc.she] carries on fucking [npc2.name] in front of them.")));
 		}
 	}
 
@@ -666,5 +745,30 @@ public interface SexManagerInterface {
 		}
 		return reaction.toString();
 	}
-
+	
+	// Only used in external managers:
+	
+	public default String getDirtyTalk(GameCharacter character) {
+		return character.getDirtyTalk();
+	}
+	
+	public default String getRoughTalk(GameCharacter character) {
+		return character.getRoughTalk();
+	}
+	
+	public default String getSubmissiveTalk(GameCharacter character) {
+		return character.getSubmissiveTalk();
+	}
+	
+	public default GameCharacter getPreferredSexTarget(NPC character) {
+		return character.getPreferredSexTarget();
+	}
+	
+	public default List<SexActionInterface> getUniqueSexClasses(GameCharacter character) {
+		return new ArrayList<>();
+	}
+	
+	public default List<OrgasmCumTarget> getBannedOrgasmCumTargets(GameCharacter character, GameCharacter target) {
+		return new ArrayList<>();
+	}
 }

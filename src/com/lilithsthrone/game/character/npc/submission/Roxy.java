@@ -11,8 +11,8 @@ import org.w3c.dom.Element;
 import com.lilithsthrone.game.Game;
 import com.lilithsthrone.game.character.CharacterImportSetting;
 import com.lilithsthrone.game.character.EquipClothingSetting;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.valueEnums.AreolaeSize;
 import com.lilithsthrone.game.character.body.valueEnums.AssSize;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
@@ -46,6 +46,7 @@ import com.lilithsthrone.game.character.persona.NameTriplet;
 import com.lilithsthrone.game.character.persona.Occupation;
 import com.lilithsthrone.game.character.persona.PersonalityTrait;
 import com.lilithsthrone.game.character.persona.SexualOrientation;
+import com.lilithsthrone.game.character.quests.QuestLine;
 import com.lilithsthrone.game.character.race.RaceStage;
 import com.lilithsthrone.game.character.race.Subspecies;
 import com.lilithsthrone.game.dialogue.DialogueNode;
@@ -81,6 +82,7 @@ public class Roxy extends NPC {
 			ItemType.FETISH_UNREFINED,
 			ItemType.MOO_MILKER_EMPTY,
 			ItemType.getItemTypeFromId("innoxia_pills_fertility"),
+			ItemType.getItemTypeFromId("innoxia_pills_broodmother"),
 			ItemType.getItemTypeFromId("innoxia_pills_sterility"),
 			ItemType.MOTHERS_MILK,
 			ItemType.PREGNANCY_TEST);
@@ -89,11 +91,10 @@ public class Roxy extends NPC {
 		for(AbstractItemType itemType : ItemType.getAllItems()) {
 			if(!itemType.getItemTags().contains(ItemTag.NOT_FOR_SALE)
 					&& (itemType.getItemTags().contains(ItemTag.ATTRIBUTE_TF_ITEM) || itemType.getItemTags().contains(ItemTag.RACIAL_TF_ITEM))
-					&& (itemType.getItemTags().contains(ItemTag.SUBMISSION_TUNNEL_SPAWN)
-							|| itemType.getItemTags().contains(ItemTag.BAT_CAVERNS_SPAWN))) {
+					&& (itemType.getItemTags().contains(ItemTag.SUBMISSION_TUNNEL_SPAWN) || itemType.getItemTags().contains(ItemTag.BAT_CAVERNS_SPAWN))) {
 				itemsForSale.add(itemType);
 			}
-		}
+		}               
 	}
 	
 	public Roxy() {
@@ -250,7 +251,7 @@ public class Roxy extends NPC {
 		this.setVaginaCapacity(Capacity.FOUR_LOOSE, true);
 		this.setVaginaWetness(Wetness.FOUR_SLIMY);
 		this.setVaginaElasticity(OrificeElasticity.THREE_FLEXIBLE.getValue());
-		this.setVaginaPlasticity(OrificePlasticity.THREE_RESILIENT.getValue());
+		this.setVaginaPlasticity(OrificePlasticity.FOUR_ACCOMMODATING.getValue());
 		this.addGirlcumModifier(FluidModifier.ADDICTIVE);
 		
 		// Feet:
@@ -334,10 +335,17 @@ public class Roxy extends NPC {
 		this.addItem(Main.game.getItemGen().generateItem(ItemType.REFORGE_HAMMER), 10, false, false);
 		
 		for (AbstractItemType item : itemsForSale) {
-			for (int i = 0; i < 6 + (Util.random.nextInt(12)); i++) {
-				this.addItem(Main.game.getItemGen().generateItem(item), false);
+			if(Main.game.isSillyMode() || !item.getItemTags().contains(ItemTag.SILLY_MODE)) {
+				for (int i = 0; i < 6 + (Util.random.nextInt(12)); i++) {
+					this.addItem(Main.game.getItemGen().generateItem(item), false);
+				}
 			}
 		}
+                
+	    // Add a special case for firebombs
+        if (Main.game.getPlayer().isQuestCompleted(QuestLine.SIDE_REBEL_BASE_FIREBOMBS)) {
+            this.addWeapon(Main.game.getItemGen().generateWeapon("dsg_hlf_weap_pbomb"), 10, false, false);
+        }
 		
 		List<AbstractClothingType> clothingToAdd = new ArrayList<>();
 		

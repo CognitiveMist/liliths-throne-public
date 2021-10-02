@@ -13,8 +13,8 @@ import com.lilithsthrone.game.character.EquipClothingSetting;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.attributes.CorruptionLevel;
 import com.lilithsthrone.game.character.body.CoverableArea;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.types.HornType;
 import com.lilithsthrone.game.character.body.types.LegType;
 import com.lilithsthrone.game.character.body.types.TailType;
@@ -46,6 +46,7 @@ import com.lilithsthrone.game.character.effects.Perk;
 import com.lilithsthrone.game.character.effects.PerkCategory;
 import com.lilithsthrone.game.character.effects.PerkManager;
 import com.lilithsthrone.game.character.fetishes.Fetish;
+import com.lilithsthrone.game.character.fetishes.FetishDesire;
 import com.lilithsthrone.game.character.gender.Gender;
 import com.lilithsthrone.game.character.npc.NPC;
 import com.lilithsthrone.game.character.persona.NameTriplet;
@@ -146,6 +147,9 @@ public class Amber extends NPC {
 		if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.8.5")) {
 			this.setTesticleCount(2);
 		}
+		if(Main.isVersionOlderThan(Game.loadingVersion, "0.4.1")) {
+			this.setFetishDesire(Fetish.FETISH_BONDAGE_APPLIER, FetishDesire.THREE_LIKE);
+		}
 	}
 
 	@Override
@@ -179,6 +183,8 @@ public class Amber extends NPC {
 			this.addFetish(Fetish.FETISH_SADIST);
 			this.addFetish(Fetish.FETISH_DEFLOWERING);
 			this.addFetish(Fetish.FETISH_FOOT_GIVING);
+			
+			this.setFetishDesire(Fetish.FETISH_BONDAGE_APPLIER, FetishDesire.THREE_LIKE);
 		}
 		
 		// Body:
@@ -247,7 +253,7 @@ public class Amber extends NPC {
 		
 		// Penis:
 		this.setPenisVirgin(false);
-		this.setPenisGirth(PenetrationGirth.FIVE_FAT);
+		this.setPenisGirth(PenetrationGirth.FIVE_THICK);
 		this.setPenisSize(25);
 		this.setTesticleSize(TesticleSize.FOUR_HUGE);
 		this.setPenisCumStorage(550);

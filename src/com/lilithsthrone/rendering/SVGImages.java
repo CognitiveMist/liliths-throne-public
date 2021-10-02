@@ -3,9 +3,11 @@ package com.lilithsthrone.rendering;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import com.lilithsthrone.game.character.body.Covering;
+import com.lilithsthrone.game.character.body.coverings.Covering;
+import com.lilithsthrone.game.inventory.ColourReplacement;
 import com.lilithsthrone.game.inventory.enchanting.AbstractItemEffectType;
 import com.lilithsthrone.game.inventory.enchanting.ItemEffectType;
 import com.lilithsthrone.game.inventory.enchanting.TFModifier;
@@ -42,7 +44,7 @@ public enum SVGImages {
 			essence, essenceUncoloured,
 			itemsOnFloorIcon,
 			
-			cornerGlowNight, cornerGlowTwilight,
+			cornerGlowNight, cornerGlowTwilight, cornerGlowAlwaysLight,
 			
 			drinkSmall, drink,
 			
@@ -105,11 +107,15 @@ public enum SVGImages {
 			coverableAreaBreasts, coverableAreaBreastsFlat, coverableAreaNipple,
 			coverableAreaBreastsCrotch, coverableAreaUdders, coverableAreaNippleCrotch,
 			coverableAreaVagina, coverableAreaUrethraVagina,
+			coverableAreaSpinneret,
 			coverableAreaMound,
 			coverableAreaThighs,
+			coverableAreaArmpits,
 			coverableAreaUrethraPenis,
+
+			eggIncubation1, eggIncubation2, eggIncubation3,
 			
-			penetrationTypeFinger, penetrationTypePenis, penetrationTypeTail, penetrationTypeTongue, penetrationTypeFoot, penetrationTypeClit,
+			penetrationTypeFinger, penetrationTypePenis, penetrationTypeTail, penetrationTypeTailSerpent, penetrationTypeTentacle, penetrationTypeTongue, penetrationTypeFoot, penetrationTypeClit,
 			combinationStretching, combinationStretchRecoveryPrevented, combinationTooLoose, combinationWet, combinationDry, combinationDepthMinimum, combinationDepthMaximum,
 			stretching, holeTooBig,
 			activeSexBackground;
@@ -202,7 +208,10 @@ public enum SVGImages {
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/UIElements/cornerGlowLight.svg");
 			cornerGlowTwilight = Util.inputStreamToString(is);
 			cornerGlowTwilight = setColour(cornerGlowTwilight, PresetColour.BASE_PITCH_BLACK);
-			
+
+			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/UIElements/cornerGlowAlwaysLight.svg");
+			cornerGlowAlwaysLight = Util.inputStreamToString(is);
+			cornerGlowAlwaysLight = setColour(cornerGlowAlwaysLight, PresetColour.BASE_PITCH_BLACK);
 			
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/UIElements/drink_small.svg");
 			drinkSmall = Util.inputStreamToString(is);
@@ -713,6 +722,9 @@ public enum SVGImages {
 			coverableAreaVagina = Util.inputStreamToString(is);
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/coverableAreaMound.svg");
 			coverableAreaMound = Util.inputStreamToString(is);
+
+			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/coverableAreaSpinneret.svg");
+			coverableAreaSpinneret = Util.inputStreamToString(is);
 			
 
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/coverableAreaBreastsCrotch.svg");
@@ -730,12 +742,20 @@ public enum SVGImages {
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/coverableAreaThighs.svg");
 			coverableAreaThighs = Util.inputStreamToString(is);
 			
+			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/coverableAreaArmpits.svg");
+			coverableAreaArmpits = Util.inputStreamToString(is);
+			
+			
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/penetrationTypeFinger.svg");
 			penetrationTypeFinger = Util.inputStreamToString(is);
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/penetrationTypePenis.svg");
 			penetrationTypePenis = Util.inputStreamToString(is);
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/penetrationTypeTail.svg");
 			penetrationTypeTail = Util.inputStreamToString(is);
+			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/penetrationTypeTailSerpent.svg");
+			penetrationTypeTailSerpent = Util.inputStreamToString(is);
+			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/penetrationTypeTentacle.svg");
+			penetrationTypeTentacle = Util.inputStreamToString(is);
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/penetrationTypeTongue.svg");
 			penetrationTypeTongue = Util.inputStreamToString(is);
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/penetrationTypeFoot.svg");
@@ -743,6 +763,14 @@ public enum SVGImages {
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/penetrationTypeClit.svg");
 			penetrationTypeClit = Util.inputStreamToString(is);
 			
+			
+			
+			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/incubation1.svg");
+			eggIncubation1 = Util.inputStreamToString(is);
+			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/incubation2.svg");
+			eggIncubation2 = Util.inputStreamToString(is);
+			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/incubation3.svg");
+			eggIncubation3 = Util.inputStreamToString(is);
 			
 			is = this.getClass().getResourceAsStream("/com/lilithsthrone/res/statusEffects/sexEffects/combinationStretching.svg");
 			combinationStretching = Util.inputStreamToString(is);
@@ -983,6 +1011,10 @@ public enum SVGImages {
 		return cornerGlowTwilight;
 	}
 	
+	public String getCornerGlowAlwaysLight() {
+		return cornerGlowAlwaysLight;
+	}
+	
 	public String getPlayerMapIconMasculine() {
 		return playerMapIconMasculine;
 	}
@@ -1007,20 +1039,20 @@ public enum SVGImages {
 		return spellOverlay;
 	}
 
-	public String getWomensWatchHourHand() {
-		return womensWatchHourHand;
+	public String getWomensWatchHourHand(List<Colour> colours, List<ColourReplacement> replacements) {
+		return SvgUtil.colourReplacement("womanWatchHour", colours, replacements, womensWatchHourHand);
 	}
 
-	public String getWomensWatchMinuteHand() {
-		return womensWatchMinuteHand;
+	public String getWomensWatchMinuteHand(List<Colour> colours, List<ColourReplacement> replacements) {
+		return SvgUtil.colourReplacement("womanWatchMinute", colours, replacements, womensWatchMinuteHand);
 	}
 
-	public String getMensWatchHourHand() {
-		return mensWatchHourHand;
+	public String getMensWatchHourHand(List<Colour> colours, List<ColourReplacement> replacements) {
+		return SvgUtil.colourReplacement("manWatchHour", colours, replacements, mensWatchHourHand);
 	}
 
-	public String getMensWatchMinuteHand() {
-		return mensWatchMinuteHand;
+	public String getMensWatchMinuteHand(List<Colour> colours, List<ColourReplacement> replacements) {
+		return SvgUtil.colourReplacement("manWatchMinute", colours, replacements, mensWatchMinuteHand);
 	}
 
 	public String getWeatherDayClear() {
@@ -1198,6 +1230,10 @@ public enum SVGImages {
 	public String getCoverableAreaVagina() {
 		return coverableAreaVagina;
 	}
+	
+	public String getCoverableAreaSpinneret() {
+		return coverableAreaSpinneret;
+	}
 
 	public String getCoverableAreaMound() {
 		return coverableAreaMound;
@@ -1214,13 +1250,24 @@ public enum SVGImages {
 	public String getCoverableAreaThighs() {
 		return coverableAreaThighs;
 	}
-
+	
+	public String getCoverableAreaArmpits() {
+		return coverableAreaArmpits;
+	}
+	
 	public String getPenetrationTypeFinger() {
 		return penetrationTypeFinger;
 	}
 	
-	public String getPenetrationTypeTail() {
+	public String getPenetrationTypeTail(boolean serpentTail) {
+		if(serpentTail) {
+			return penetrationTypeTailSerpent;
+		}
 		return penetrationTypeTail;
+	}
+	
+	public String getPenetrationTypeTentacle() {
+		return penetrationTypeTentacle;
 	}
 	
 	public String getPenetrationTypeTongue() {
@@ -1266,7 +1313,17 @@ public enum SVGImages {
 	public String getCombinationDepthMaximum() {
 		return combinationDepthMaximum;
 	}
-
+	
+	public String getEggIncubation(int stage) {
+		if(stage<=1) {
+			return eggIncubation1;
+		} else if(stage==2) {
+			return eggIncubation2;
+		} else {
+			return eggIncubation3;
+		}
+	}
+	
 	public String getStretching() {
 		return stretching;
 	}

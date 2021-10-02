@@ -6,8 +6,8 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.lilithsthrone.controller.xmlParsing.XMLUtil;
 import com.lilithsthrone.game.Game;
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.fetishes.Fetish;
 import com.lilithsthrone.game.dialogue.utils.UtilText;
@@ -61,9 +61,9 @@ public class SexType implements XMLSaving {
 		Element sexTypeElement = doc.createElement("sexType");
 		parentElement.appendChild(sexTypeElement);
 		
-		CharacterUtils.addAttribute(doc, sexTypeElement, "participant", asParticipant.toString());
-		CharacterUtils.addAttribute(doc, sexTypeElement, "self", performingSexArea.toString());
-		CharacterUtils.addAttribute(doc, sexTypeElement, "other", targetedSexArea.toString());
+		XMLUtil.addAttribute(doc, sexTypeElement, "participant", asParticipant.toString());
+		XMLUtil.addAttribute(doc, sexTypeElement, "self", performingSexArea.toString());
+		XMLUtil.addAttribute(doc, sexTypeElement, "other", targetedSexArea.toString());
 		
 		return sexTypeElement;
 	}
@@ -252,6 +252,11 @@ public class SexType implements XMLSaving {
 					}
 					fetishes.add(Fetish.FETISH_VAGINAL_RECEIVING);
 					break;
+				case SPINNERET:
+					break;
+				case ARMPITS:
+					fetishes.add(Fetish.FETISH_ARMPIT_RECEIVING);
+					break;
 			}
 		}
 		
@@ -283,6 +288,9 @@ public class SexType implements XMLSaving {
 		}
 		if(getTargetedSexArea()!=null && getTargetedSexArea().isOrifice()) {
 			switch((SexAreaOrifice)getTargetedSexArea()) {
+				case ARMPITS:
+					fetishes.add(Fetish.FETISH_ARMPIT_GIVING);
+					break;
 				case ANUS:
 					fetishes.add(Fetish.FETISH_ANAL_GIVING);
 					if(getPerformingSexArea()!=null && isPenetration && getPerformingSexArea().isPenetration() && ((SexAreaPenetration)getPerformingSexArea()).isTakesVirginity() &&  characterTargeted.isAssVirgin()) {
@@ -352,6 +360,11 @@ public class SexType implements XMLSaving {
 						fetishes.add(Fetish.FETISH_DEFLOWERING);
 					}
 					break;
+				case SPINNERET:
+					if(getPerformingSexArea()!=null && isPenetration && getPerformingSexArea().isPenetration() && ((SexAreaPenetration)getPerformingSexArea()).isTakesVirginity() &&  characterTargeted.isSpinneretVirgin()) {
+						fetishes.add(Fetish.FETISH_DEFLOWERING);
+					}
+					break;
 			}
 		}
 		
@@ -374,6 +387,8 @@ public class SexType implements XMLSaving {
 					oppositeFetishes.add(Fetish.FETISH_ANAL_GIVING);
 					break;
 				case FETISH_BIMBO:
+				case FETISH_BONDAGE_APPLIER:
+				case FETISH_BONDAGE_VICTIM:
 					break;
 				case FETISH_BREASTS_OTHERS:
 					oppositeFetishes.add(Fetish.FETISH_BREASTS_SELF);
@@ -486,6 +501,12 @@ public class SexType implements XMLSaving {
 					break;
 				case FETISH_FOOT_RECEIVING:
 					oppositeFetishes.add(Fetish.FETISH_FOOT_GIVING);
+					break;
+				case FETISH_ARMPIT_GIVING:
+					oppositeFetishes.add(Fetish.FETISH_ARMPIT_RECEIVING);
+					break;
+				case FETISH_ARMPIT_RECEIVING:
+					oppositeFetishes.add(Fetish.FETISH_ARMPIT_GIVING);
 					break;
 				case FETISH_SIZE_QUEEN:
 					break;

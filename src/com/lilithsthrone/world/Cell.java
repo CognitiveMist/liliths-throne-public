@@ -10,8 +10,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.lilithsthrone.controller.xmlParsing.XMLUtil;
 import com.lilithsthrone.game.Game;
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.dialogue.DialogueNode;
 import com.lilithsthrone.game.inventory.CharacterInventory;
 import com.lilithsthrone.game.inventory.Rarity;
@@ -22,6 +22,8 @@ import com.lilithsthrone.main.Main;
 import com.lilithsthrone.utils.Vector2i;
 import com.lilithsthrone.utils.XMLSaving;
 import com.lilithsthrone.world.places.AbstractPlaceUpgrade;
+import com.lilithsthrone.world.places.Aquatic;
+import com.lilithsthrone.world.places.Darkness;
 import com.lilithsthrone.world.places.GenericPlace;
 
 /**
@@ -65,11 +67,11 @@ public class Cell implements XMLSaving {
 		
 		Element location = doc.createElement("location");
 		element.appendChild(location);
-		CharacterUtils.addAttribute(doc, location, "x", String.valueOf(this.getLocation().getX()));
-		CharacterUtils.addAttribute(doc, location, "y", String.valueOf(this.getLocation().getY()));
+		XMLUtil.addAttribute(doc, location, "x", String.valueOf(this.getLocation().getX()));
+		XMLUtil.addAttribute(doc, location, "y", String.valueOf(this.getLocation().getY()));
 		
-		CharacterUtils.addAttribute(doc, element, "discovered", String.valueOf(this.discovered));
-		CharacterUtils.addAttribute(doc, element, "travelledTo", String.valueOf(this.travelledTo));
+		XMLUtil.addAttribute(doc, element, "discovered", String.valueOf(this.discovered));
+		XMLUtil.addAttribute(doc, element, "travelledTo", String.valueOf(this.travelledTo));
 		
 		place.saveAsXML(element, doc);
 		
@@ -119,7 +121,7 @@ public class Cell implements XMLSaving {
 			System.err.println("Cell import error 1");
 		}
 		
-		cell.getInventory().setMaximumInventorySpace(CELL_MAXIMUM_INVENTORY_SPACE);
+//		cell.getInventory().setMaximumInventorySpace(CELL_MAXIMUM_INVENTORY_SPACE);
 
 		return cell;
 	}
@@ -160,7 +162,7 @@ public class Cell implements XMLSaving {
 	public void setTravelledTo(boolean travelledTo) {
 		this.travelledTo = travelledTo;
 	}
-
+	
 	public GenericPlace getPlace() {
 		return place;
 	}
@@ -170,6 +172,49 @@ public class Cell implements XMLSaving {
 		if(applyInventoryInit) {
 			place.getPlaceType().applyInventoryInit(this.getInventory());
 		}
+	}
+
+	public boolean isLight() {
+		return !isDark();
+	}
+	
+	public boolean isDark() {
+		return getPlace().getPlaceType().getDarkness()==Darkness.ALWAYS_DARK
+				|| (getPlace().getPlaceType().getDarkness()==Darkness.DAYLIGHT && !Main.game.isDayTime());
+	}
+
+	public Aquatic getAquatic() {
+		return getPlace().getPlaceType().getAquatic();
+	}
+
+	public boolean isFurniturePresent() {
+		return getPlace().getPlaceType().isFurniturePresentOverride()
+				?getPlace().getPlaceType().isFurniturePresent()
+				:getType().isFurniturePresent();
+	}
+	
+	public String getDeskName() {
+		if(Main.game.isInSex() && Main.sex.getInitialSexManager().getDeskName()!=null && !Main.sex.getInitialSexManager().getDeskName().isEmpty()) {
+			return Main.sex.getInitialSexManager().getDeskName();
+		}
+		return getPlace().getPlaceType().isDeskNameOverride()
+				?getPlace().getPlaceType().getDeskName()
+				:getType().getDeskName();
+	}
+	
+	public boolean isWallsPresent() {
+		return getPlace().getPlaceType().isWallsPresentOverride()
+				?getPlace().getPlaceType().isWallsPresent()
+				:getType().isWallsPresent();
+	}
+	
+	public String getWallName() {
+		if(Main.game.isInSex() && Main.sex.getInitialSexManager().getWallName()!=null && !Main.sex.getInitialSexManager().getWallName().isEmpty()) {
+			return Main.sex.getInitialSexManager().getWallName();
+		}
+		return getPlace().getPlaceType().isWallNameOverride()
+				?getPlace().getPlaceType().getWallName()
+				:getType().getWallName();
 	}
 	
 	public DialogueNode getDialogue(boolean withRandomEncounter) {

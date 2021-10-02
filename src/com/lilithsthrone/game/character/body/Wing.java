@@ -55,9 +55,14 @@ public class Wing implements BodyPartInterface {
 		return type.getDescriptor(gc);
 	}
 
+	public void setType(AbstractWingType type) {
+		this.type = type;
+	}
+
 	public String setType(GameCharacter owner, AbstractWingType type) {
 		if(!Main.game.isStarted() || owner==null) {
 			this.type = type;
+			this.setSize(owner, this.getSizeValue());
 			if(owner!=null) {
 				owner.postTransformationCalculation();
 			}
@@ -92,21 +97,22 @@ public class Wing implements BodyPartInterface {
 		sb.append(" "+type.getTransformationDescription(owner));
 		
 		if(type!=WingType.NONE) {
-			if(this.getSize().getValue() >= owner.getLegConfiguration().getMinimumWingSizeForFlight().getValue()) {
+			if(this.getSize().getValue() >= owner.getLegConfiguration().getMinimumWingSizeForFlight(owner.getBody()).getValue()) {
 				sb.append("</br>"
 						+ "Giving them an experimental flap, [npc.sheIs] delighted to discover that they're [style.colourGood(powerful enough to enable [npc.herHim] to fly)]!"
 						+ "<br/>"
-						+ "[style.italics("+Util.capitaliseSentence(owner.getLegConfiguration().getName())+" bodies require wings to be at least '"+owner.getLegConfiguration().getMinimumWingSizeForFlight().getName()+"' to enable flight.)]");
+						+ "[style.italics("+Util.capitaliseSentence(owner.getLegConfiguration().getName())+" bodies require wings to be at least '"+owner.getLegConfiguration().getMinimumWingSizeForFlight(owner.getBody()).getName()+"' to enable flight.)]");
 			} else {
 				sb.append("</br>"
 						+ "Giving them an experimental flap, [npc.sheIs] disappointed to discover that they're [style.colourBad(not powerful enough to enable [npc.herHim] to fly)]..."
 						+ "<br/>"
-						+ "[style.italics("+Util.capitaliseSentence(owner.getLegConfiguration().getName())+" bodies require wings to be at least '"+owner.getLegConfiguration().getMinimumWingSizeForFlight().getName()+"' to enable flight.)]");
+						+ "[style.italics("+Util.capitaliseSentence(owner.getLegConfiguration().getName())+" bodies require wings to be at least '"+owner.getLegConfiguration().getMinimumWingSizeForFlight(owner.getBody()).getName()+"' to enable flight.)]");
 			}
 		}
 		sb.append("</p>");
 
 		this.type = type;
+		this.setSize(owner, this.getSizeValue());
 		
 		return UtilText.parse(owner, sb.toString())
 				+ "<p>"
@@ -121,10 +127,19 @@ public class Wing implements BodyPartInterface {
 	public int getSizeValue() {
 		return size;
 	}
+
+	public void setSize(int wingSize) {
+		this.size = Math.max(0, Math.min(wingSize, WingSize.getLargest()));
+	}
+
+	public void setTypeAndSize(AbstractWingType type, int wingSize) {
+		setType(type);
+		setSize(wingSize);
+	}
 	
 	public String setSize(GameCharacter owner, int wingSize) {
 		if(owner==null) {
-			int effectiveSize = Math.max(0, Math.min(wingSize, WingSize.getLargest()));
+			int effectiveSize = Math.max(this.getType().getMinimumSize().getValue(), Math.min(wingSize, this.getType().getMaximumSize().getValue()));
 			this.size = effectiveSize;
 			return "";
 		}
@@ -133,7 +148,7 @@ public class Wing implements BodyPartInterface {
 			return UtilText.parse(owner, "<p style='text-align:center;'>[style.colourDisabled([npc.NamePos] [npc.do]n't have any wings, so nothing happens...)]</p>");
 		}
 		
-		int effectiveSize = Math.max(0, Math.min(wingSize, WingSize.getLargest()));
+		int effectiveSize = Math.max(this.getType().getMinimumSize().getValue(), Math.min(wingSize, this.getType().getMaximumSize().getValue()));
 		if(owner.getWingSizeValue() == effectiveSize) {
 			return UtilText.parse(owner, "<p style='text-align:center;'>[style.colourDisabled(The size of [npc.namePos] [npc.wings] doesn't change...)]</p>");
 		}
@@ -154,16 +169,16 @@ public class Wing implements BodyPartInterface {
 		sb.append(UtilText.parse(owner, "[npc.Name] now [npc.has] [style.boldSex([npc.wingSize] [npc.wings])]!"));
 
 		if(type!=WingType.NONE) {
-			if(this.getSize().getValue() >= owner.getLegConfiguration().getMinimumWingSizeForFlight().getValue()) {
+			if(this.getSize().getValue() >= owner.getLegConfiguration().getMinimumWingSizeForFlight(owner.getBody()).getValue()) {
 				sb.append("</br>"
 						+ "Giving them an experimental flap, [npc.sheIs] delighted to discover that they're [style.colourGood(powerful enough to enable [npc.herHim] to fly)]!"
 						+ "<br/>"
-						+ "[style.italics("+Util.capitaliseSentence(owner.getLegConfiguration().getName())+" bodies require wings to be at least '"+owner.getLegConfiguration().getMinimumWingSizeForFlight().getName()+"' to enable flight.)]");
+						+ "[style.italics("+Util.capitaliseSentence(owner.getLegConfiguration().getName())+" bodies require wings to be at least '"+owner.getLegConfiguration().getMinimumWingSizeForFlight(owner.getBody()).getName()+"' to enable flight.)]");
 			} else {
 				sb.append("</br>"
 						+ "Giving them an experimental flap, [npc.sheIs] disappointed to discover that they're [style.colourBad(not powerful enough to enable [npc.herHim] to fly)]..."
 						+ "<br/>"
-						+ "[style.italics("+Util.capitaliseSentence(owner.getLegConfiguration().getName())+" bodies require wings to be at least '"+owner.getLegConfiguration().getMinimumWingSizeForFlight().getName()+"' to enable flight.)]");
+						+ "[style.italics("+Util.capitaliseSentence(owner.getLegConfiguration().getName())+" bodies require wings to be at least '"+owner.getLegConfiguration().getMinimumWingSizeForFlight(owner.getBody()).getName()+"' to enable flight.)]");
 			}
 		}
 		sb.append("</p>");
@@ -172,10 +187,10 @@ public class Wing implements BodyPartInterface {
 	}
 
 	@Override
-	public boolean isBestial(GameCharacter owner) {
+	public boolean isFeral(GameCharacter owner) {
 		if(owner==null) {
 			return false;
 		}
-		return owner.getLegConfiguration().getBestialParts().contains(Wing.class) && getType().getRace().isBestialPartsAvailable();
+		return owner.isFeral() || (owner.getLegConfiguration().getFeralParts().contains(Wing.class) && getType().getRace().isFeralPartsAvailable());
 	}
 }

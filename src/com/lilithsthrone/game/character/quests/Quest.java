@@ -65,7 +65,7 @@ public enum Quest {
 		public String getDescription() {
 			return "Lilaya has informed you that her old colleague, Arthur, would know more about the type of magic used in the portal."
 					+ " However, she seems to have an intense dislike of him, and you've ended up being tasked to go and get him to apologise to Lilaya before she'll allow him to" + " come and work with her."
-					+ " Arthur lives in a district of the city called 'Demon Home', so you can find him there.";
+					+ " Arthur lives in an apartment building called 'Sawlty Towers', in the district of the city known as 'Demon Home', so you can find him there.";
 		}
 
 		@Override
@@ -296,41 +296,93 @@ public enum Quest {
 		}
 	},
 	
-	MAIN_3_A_FINDING_THE_YOUKO(QuestType.MAIN, 20, 250) {
+	MAIN_3_ELIS(QuestType.MAIN, 1, 25) {
 		@Override
 		public String getName() {
-			return "Finding the youko";
+			return "Destination Elis";
 		}
 
 		@Override
 		public String getDescription() {
-			return "[style.italicsMinorBad(This is where the main quest currently ends, but more main quest content will be coming in v0.4!)]<br/>"
-					+ "[siren.Name] told you that you're going to need the help of the youko if you're to defeat the elder lilin pegataur, Lunette."
-					+ " She said that you should find and enlist the help of her old friend, [youkoGuide.name], who worked in her lab back when she was living in her citadel."
-					+ " [youkoGuide.Name] will have returned to the town of Elis, which is the settlement nearest to the Shinrin Forest, the youko's homeland.";
+			return "Lyssieth told you that in order to defeat the elder lilin pegataur, Lunette, you'll need to obtain the help of Minotallys; the lilin who rules the town of Elis."
+					+ " Meraxis additionally mentioned enlisting the aid of the youko, but that can wait until after you've arrived in Elis itself.";
 		}
-
 		@Override
 		public String getCompletedDescription() {
-			return "You travelled to Elis, where you found the youko, [youkoGuide.name], in an inn called 'The Ninth Tail'."
-					+ " It turned out that she was having to work off a significant debt, and wouldn't be able to help you until it's paid off in full.";
+			return "Lyssieth told you that in order to defeat the elder lilin pegataur, Lunette, you'll need to obtain the help of Minotallys; the lilin who rules the town of Elis."
+					+ " To this end, you left Dominion for the first time...";
 		}
 	},
 	
-	MAIN_3_B_DEBTS_PAID(QuestType.MAIN, 1, 100) {
+	MAIN_3_B_MEETING_MERAXIS(QuestType.MAIN, 1, 25) {
 		@Override
 		public String getName() {
-			return "Debts paid";
+			return "To The Red Dragon";
 		}
 
 		@Override
 		public String getDescription() {
-			return "You need to help [youkoGuide.name] clear her debt, and in exchange she's promised to show you where the leader of all the youko lives.";
+			return "As you left Elis, you were approached by Meraxis, who told you to meet her in the tavern 'The Red Dragon' at Elis, which is apparently near to the town's eastern gate."
+					+ " Meraxis also said that she'll set up a meeting with Minotallys when you arrive, and that she'll have secured accommodation for you.";
 		}
 
 		@Override
 		public String getCompletedDescription() {
-			return "You helped [youkoGuide.name] clear her debt, and, as agreed, she is ready and willing to take you to the youko leader's hideout.";
+			return "You met Meraxis in 'The Red Dragon' tavern, where she's managed to secure accommodation for you in the form of a rented room on the tavern's first floor.";
+		}
+	},
+	
+	MAIN_3_C_MEETING_MINOTALLYS(QuestType.MAIN, 1, 25) {
+		@Override
+		public String getName() {
+			return "Meeting Minotallys";
+		}
+
+		@Override
+		public String getDescription() {
+			return "Meraxis has arranged for you to meet with Minotallys concerning the threat of Lunette to the town of Elis."
+					+ " Tell Meraxis that you're ready for the meeting at any time between [units.time(9)]-[units.time(18)].";
+		}
+
+		@Override
+		public String getCompletedDescription() {
+			return "You and Meraxis travelled to Elis's town hall to meet Minotallys, where you also met with her personal assistant, Arion."
+					+ " Minotallys is in a state of denial about the current state of affairs in the Foloi Fields, and stated that she would only consider taking action if the town of Themiscyra was somehow being threatened.";
+		}
+	},
+	
+	MAIN_3_D_TO_THEMISCRYA(QuestType.MAIN, 1, 25) {
+		@Override
+		public String getName() {
+			return "To Themiscyra";
+		}
+
+		@Override
+		public String getDescription() {
+			return "[style.italicsMinorBad(This is where the main quest currently ends, but more main quest content will be coming in v0.4.1!)]<br/>"
+					+ "You agreed to travel to Themiscyra with Meraxis and find out whether or not the town is being threatened by Lunette's army of demonic centaurs.";
+		}
+
+		@Override
+		public String getCompletedDescription() {
+			return "-";//TODO
+		}
+	},
+	
+	MAIN_3_E_TODO(QuestType.MAIN, 1, 25) {//TODO
+		@Override
+		public String getName() {
+			return "TODO";
+		}
+
+		@Override
+		public String getDescription() {
+			return "";
+		}
+
+		@Override
+		public String getCompletedDescription() {
+			return "-";
 		}
 	},
 
@@ -445,6 +497,38 @@ public enum Quest {
 		}
 	},
 	
+	// When getting eggs implanted in you for the first time:
+	
+	SIDE_INCUBATION_WAITING(QuestType.SIDE, 1, 10) {
+		@Override
+		public String getName() {
+			return "Living Incubator";
+		}
+		@Override
+		public String getDescription() {
+			return "There's no doubt about it; you've had a clutch of eggs implanted inside of your body! There's nothing else for you to do except wait for them to mature and then lay them...";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You waited for the eggs implanted inside of your body to mature, and then successfully laid and hatched them!";
+		}
+	},
+	
+//	SIDE_INCUBATION_LILAYA_HELP(QuestType.SIDE, 1, 20) {
+//		@Override
+//		public String getName() {
+//			return "Egg-laying assistance";
+//		}
+//		@Override
+//		public String getDescription() {
+//			return "Lilaya said that she'd be able to help you lay your eggs whenever you're ready. You're going to need to wait until they're ready to be hatched, then you can go and see Lilaya to lay them.";
+//		}
+//		@Override
+//		public String getCompletedDescription() {
+//			return "Lilaya helped you to lay your eggs. She said that if ever you get implanted with eggs again, she can always help out.";
+//		}
+//	},
+	
 	// Getting a slaver license:
 	
 	SIDE_SLAVER_NEED_RECOMMENDATION(QuestType.SIDE, 1, 10) {
@@ -490,7 +574,7 @@ public enum Quest {
 
 		@Override
 		public String getDescription() {
-			return "After getting to know one of the residents of Dominion's alleyways, you'd like to offer them a real home. Lilaya's mansion is full of empty rooms, so you should ask her if you could use one to house your new friend.";
+			return "Lilaya's mansion is full of empty rooms which could be put to use as guest accommodation. You should ask her if you could use them to house your friends and family.";
 		}
 
 		@Override
@@ -536,6 +620,43 @@ public enum Quest {
 		public String getCompletedDescription() {
 			return "The Hypno-Watch appeared to work, although Lilaya stopped the test before it had a permanent effect."
 					+ " She warned that it will have a strong corruptive effect upon the mind of the whoever is targeted, and disenchanted it for good measure, before handing it over to you.";
+		}
+	},
+	
+	
+	LIGHTNING_SPELL_1_PAYMENT(QuestType.SIDE, 1, 10) {
+		@Override
+		public String getName() {
+			return "The Price Of Power";
+		}
+		@Override
+		public String getDescription() {
+			return "After showing Arthur the arcane lightning globe which you found in the Enforcer warehouse, you were told that it would be possible to learn the secrets of the lightning spells within it."
+					+ " Although the resulting spells will be more powerful than what the globe is capable of,"
+						+ " Arthur has explained to you that such an extraction will not only require an immense amount of arcane essences, but will also permanently remove the globe's innate spells."
+					+ "<br/>When you're willing and able to do so, give Arthur the arcane lightning globe and let him extract 500 arcane essences from your aura.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You gave Arthur the arcane lightning globe which you found in the Enforcer warehouse, and also let him extract 500 arcane essences from your aura."
+					+ " In exchange, you've been promised that a powerful arcane lightning spell shall soon be yours.";
+		}
+	},
+	
+	LIGHTNING_SPELL_2_WAITING(QuestType.SIDE, 1, 10) {
+		@Override
+		public String getName() {
+			return "Lightning Extraction";
+		}
+		@Override
+		public String getDescription() {
+			return "Arthur informed you that it will take some time to extract the secrets of the arcane lightning from within the globe."
+					+ " You'll have to return to him after two weeks to find out what the results of his research are...";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "Arthur excitedly informed you that he'd not only been able to extract the secrets of two arcane lightning spells from the globe,"
+					+ " but that he'd also been able to transfer its remaining power into a smaller crystal, which he's had fitted onto a ring for you.";
 		}
 	},
 	
@@ -1280,62 +1401,245 @@ public enum Quest {
 					+ " You can also now freely visit Elle (and Wes) in the Enforcer HQ between the hours of [units.time(9)]-[units.time(17)].";
 		}
 	},
+
 	
+	// Rebel Base for HLF Quest
 	
-	
+	REBEL_BASE_HANDLE_REFUSED(QuestType.SIDE,
+			15,
+			5) {
+		@Override
+		public String getName() {
+			return "Hit The Lever!";
+		}
+		@Override
+		public String getDescription() {
+			return "You found a strange handle in the Bat Caverns. Who knows what it's for or what it does.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You pulled the handle against your better judement.";
+		}
+	},
+
+	REBEL_BASE_PASSWORD_PART_ONE(QuestType.SIDE,
+			15,
+			5) {
+		@Override
+		public String getName() {
+			return "Pull Handle, Receive Mystery";
+		}
+		@Override
+		public String getDescription() {
+			return "The strange handle asked for some kind of password that you don't have. Perhaps a bit of searching in the vicinity will reveal some clues.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You found half of a journal page that mentioned that the password is two words. You could only decipher one word, the other got torn away.";
+		}
+	},
+
+	REBEL_BASE_PASSWORD_PART_TWO(QuestType.SIDE,
+			15,
+			5) {
+		@Override
+		public String getName() {
+			return "Fill In The Blank";
+		}
+		@Override
+		public String getDescription() {
+			return "The other half of the password must be on the other half of the journal page. Perhaps it can still be found nearby.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You found both halves of the password, together they make the phrase 'RUAT CAELUM'";
+		}
+	},
+
+	REBEL_BASE_PASSWORD_COMPLETE(QuestType.SIDE,
+			15,
+			5) {
+		@Override
+		public String getName() {
+			return "Open Says Me";
+		}
+		@Override
+		public String getDescription() {
+			return "With the completed password, you can now give the handle's challenge another try.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You discovered that the handle was actually attached to a door that led to a hidden cave splitting off from the Bat Caverns.";
+		}
+	},
+
+	REBEL_BASE_EXPLORATION(QuestType.SIDE,
+			15,
+			5) {
+		@Override
+		public String getName() {
+			return "Going Spelunking";
+		}
+		@Override
+		public String getDescription() {
+			return "No telling what the hidden cave is for or where it goes. Perhaps you can find some answers inside.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You found out that the hidden cave was a hideout for a long gone rebel group. From the looks of things, they didn't win.";
+		}
+	},
+
+	REBEL_BASE_ESCAPE(QuestType.SIDE,
+			15,
+			100) {
+		@Override
+		public String getName() {
+			return "Getting Away With It";
+		}
+		@Override
+		public String getDescription() {
+			return "Time to make your escape, preferably before this cave collapses in on itself.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You managed to get out in one piece. Whatever else that cave held is now buried forever.";
+		}
+	},
+
+	REBEL_BASE_FAILED(QuestType.SIDE,
+			15,
+			0) {
+		@Override
+		public String getName() {
+			return "Cold Feet";
+		}
+		@Override
+		public String getDescription() {
+			return "You managed to get out in one piece, but whatever secrets that cave held are now buried forever.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return getDescription();
+		}
+	},
+
+	REBEL_BASE_FIREBOMBS_START(QuestType.SIDE,
+			1,
+			5) {
+		@Override
+		public String getName() {
+			return "Breaking Bombs";
+		}
+		@Override
+		public String getDescription() {
+			return "The firebombs you got from the mysterious cave could come in handy in a fight. You'll need to find someone who can either make or acquire more.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "Roxy has agreed to look into getting more firebombs for you.";
+		}
+	},
+
+	REBEL_BASE_FIREBOMBS_FINISH(QuestType.SIDE,
+			1,
+			5) {
+		@Override
+		public String getName() {
+			return "Fire From The Rats";
+		}
+		@Override
+		public String getDescription() {
+			return "It will take Roxy two days to get a new supply of firebombs going. You should return to her then.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "Somehow, Roxy didn't swindle you and you've gotten yourself a supply of firebombs.";
+		}
+	},
+
+	REBEL_BASE_FIREBOMBS_FAILED(QuestType.SIDE,
+			1,
+			0) {
+		@Override
+		public String getName() {
+			return "Roxy's Reluctance";
+		}
+		@Override
+		public String getDescription() {
+			return "Without an example to give to Roxy, she either couldn't understand or didn't want to be bothered with trying to replicate the firebombs you found...";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return getDescription();
+		}
+	},
+        
 	// Romance quests:
 
-	RELATIONSHIP_NYAN_STOCK_ISSUES(QuestType.RELATIONSHIP, 1, 0) {
+	RELATIONSHIP_NYAN_1_STOCK_ISSUES(QuestType.RELATIONSHIP, 1, 0) {
 		@Override
 		public String getName() {
-			return "Offer Nyan your help";
+			return "Helping Nyan";
 		}
-
 		@Override
 		public String getDescription() {
-			return "Nyan explained that she's unable to sell any enchanted clothing due to the fact that her suppliers don't offer any."
-					+ " Apparently, these suppliers have used force to drive all of their rivals out of the area, so she has no alternative but to use them...<br/>"
-					+ "Perhaps you could offer to convince these new suppliers to let the old ones back?";
+			return "Nyan explained that she's unable to sell any enchanted clothing due to the fact that her wholesale supplier has suddenly stopped communicating with her."
+					+ " Apparently, this supplier used to be on good terms with Nyan, and his uncharacteristic behaviour has caused the nervous cat-girl to suspect something terrible has happened to him.<br/>"
+					+ "Perhaps you could offer Nyan your help by finding out what's happened to this supplier?";
 		}
-
 		@Override
 		public String getCompletedDescription() {
-			return "You offered Nyan your help in convincing the new suppliers to let the old ones back.";
+			return "You offered Nyan your help in finding out what's happened to her wholesale enchanted clothing supplier.";
 		}
 	},
 	
-	RELATIONSHIP_NYAN_STOCK_ISSUES_AGREED_TO_HELP(QuestType.RELATIONSHIP, 10, 50) {
+	RELATIONSHIP_NYAN_2_STOCK_ISSUES_AGREED_TO_HELP(QuestType.RELATIONSHIP, 1, 25) {
 		@Override
 		public String getName() {
-			return "Confront the suppliers";
+			return "Saving Kay";
 		}
-
 		@Override
 		public String getDescription() {
-			return "Nyan explained that the suppliers still work out of the supply depot here in the Shopping Arcane."
-					+ " From all that Nyan's told you about these new suppliers, you should be prepared for a tough fight if you decide to go and talk to them...";
+			return "Nyan told you that her supplier, [kay.nameFull], has his business set up in Dominion's warehouse district."
+					+ " You'll need to travel to the north-west of the city, find Kay's warehouse, and discover why he's suddenly cut off all communication with Nyan.";
 		}
-
 		@Override
 		public String getCompletedDescription() {
-			return "You put an end to the dobermanns' monopoly, and although they'll continue to work as clothing suppliers, they'll stop intimidating the others.";
+			return "You not only found Kay's warehouse, but were also able to discover that his business has been effectively seized by a pair of bullying bounty hunters.";
 		}
 	},
 	
-	RELATIONSHIP_NYAN_STOCK_ISSUES_SUPPLIERS_BEATEN(QuestType.RELATIONSHIP, 10, 100) {
+	RELATIONSHIP_NYAN_3_STOCK_ISSUES_DOBERMANNS(QuestType.RELATIONSHIP, 10, 100) {
 		@Override
 		public String getName() {
-			return "Reward";
+			return "Bounty Hunter Bullies";
 		}
-
 		@Override
 		public String getDescription() {
-			return "You should return to Nyan and get the reward she promised you.";
+			return "Wolfgang and Karl, a pair of bounty hunters hired by Kay to protect his warehouse, have turned on their employer and effectively seized full control of his business."
+					+ " One way or another, you're going to have to convince these dobermann bullies to leave Kay alone...";
 		}
-
 		@Override
 		public String getCompletedDescription() {
-			return "Nyan paid you the reward she promised, and also offered to give you a 25% discount in her store. She also let slip that she's single, in a clumsy attempt to hit on you...";
+			return "By dealing with Wolfgang and Karl and sending them skulking off back to Slaver Alley's 'Bounty Hunter Lodge', you've both saved Kay's business and ensured that Nyan once again has access to a stock of enchanted clothing."
+					+ " Offering you his eternal thanks, Kay said that you're welcome to pay him a visit whenever you like.";
+		}
+	},
+	
+	RELATIONSHIP_NYAN_4_STOCK_ISSUES_SUPPLIERS_BEATEN(QuestType.RELATIONSHIP, 1, 25) {
+		@Override
+		public String getName() {
+			return "Nyan's Reward";
+		}
+		@Override
+		public String getDescription() {
+			return "Now that you've saved Kay's business, you should return to Nyan and inform her of what's happened.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "A very happy Nyan paid you your promised reward, and also offered to give you a lifetime 25% discount in her store."
+					+ " She also let slip that she's single, in a clumsy attempt to try and hit on you...";
 		}
 	},
 	
@@ -1654,6 +1958,53 @@ public enum Quest {
 			return "After performing anilingus on a centaur slave and then being mounted and anally fucked by them, Natalya declared that your filly training is complete.";
 		}
 	},
+
+	ROMANCE_MONICA_1_TO_THE_FARM(QuestType.RELATIONSHIP, 1, 10) {
+		@Override
+		public String getName() {
+			return "To The Farm";
+		}
+		@Override
+		public String getDescription() {
+			return "After you'd offered to help recover her personalised breast pump, Monica told you that it could be found at her old workplace; a farm located an hour's travel to the North-East of Elis named 'Evelyx's Dairy'."
+					+ " You'll have to go to this farm and ask for Monica's breast pump...";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "Having found the farm which is Monica's old workplace, you asked for the cow-girl's personalised breast pump, and were granted a meeting with the farm's owner...";
+		}
+	},
+
+	ROMANCE_MONICA_2_UNREASONABLE_DEMAND(QuestType.RELATIONSHIP, 1, 10) {
+		@Override
+		public String getName() {
+			return "An Unreasonable Demand";
+		}
+		@Override
+		public String getDescription() {
+			return "You managed to get a meeting with the farm's owner, Evelyx, who takes the form of an arrogant, greedy succubus."
+					+ " Although admitting that the breast pump was worthless, she's demanding that you either give her a huge sum of flames, or sign a suspicious contract, in exchange for it...";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You managed to obtain Monica's personalised breast pump from Evelyx.";
+		}
+	},
+
+	ROMANCE_MONICA_3_THE_JOURNEY_HOME(QuestType.RELATIONSHIP, 1, 10) {
+		@Override
+		public String getName() {
+			return "The Journey Home";
+		}
+		@Override
+		public String getDescription() {
+			return "Now that Monica's personalised breast pump is in your possession, all that's left to do is to return it to its rightful owner.";
+		}
+		@Override
+		public String getCompletedDescription() {
+			return "You returned Monica's personalised breast pump to her, much to her surprise and delight.";
+		}
+	},
 	;
 
 	private int level, experienceReward;
@@ -1682,6 +2033,14 @@ public enum Quest {
 
 	public int getExperienceReward() {
 		return experienceReward;
+	}
+	
+	public static Quest getQuestFromId(String quest) {
+		if(quest.equalsIgnoreCase("MAIN_3_A_FINDING_THE_YOUKO")) {
+			return Quest.MAIN_3_ELIS;
+		}
+		
+		return Quest.valueOf(quest);
 	}
 
 }

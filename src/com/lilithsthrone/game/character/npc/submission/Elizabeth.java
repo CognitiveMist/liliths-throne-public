@@ -9,8 +9,8 @@ import org.w3c.dom.Element;
 import com.lilithsthrone.game.Game;
 import com.lilithsthrone.game.character.CharacterImportSetting;
 import com.lilithsthrone.game.character.EquipClothingSetting;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.types.HornType;
 import com.lilithsthrone.game.character.body.types.TailType;
 import com.lilithsthrone.game.character.body.types.WingType;
@@ -88,23 +88,18 @@ public class Elizabeth extends NPC {
 	@Override
 	public void loadFromXML(Element parentElement, Document doc, CharacterImportSetting... settings) {
 		loadNPCVariablesFromXML(this, null, parentElement, doc, settings);
-		if(Main.isVersionOlderThan(Game.loadingVersion, "0.3")) {
-			this.equipClothing(EquipClothingSetting.getAllClothingSettings());
-		}
 		this.setDescription("An unrecognised daughter of Lyssieth, Elizabeth is captain of her mother's royal guard. She is tasked with protecting the entrance to Lyssieth's palace.");
 		if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.3.6")) {
 			this.resetPerksMap(true);
-		}
-		if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.3.9")) {
-			this.equipClothing(Util.newArrayListOfValues(EquipClothingSetting.ADD_WEAPONS));
 		}
 		if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.5.1")) {
 			this.setHistory(Occupation.NPC_LYSSIETH_GUARD);
 			this.setPersonalityTraits(
 					PersonalityTrait.BRAVE);
 		}
-		if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.6")) {
-			this.setTailGirth(PenetrationGirth.FOUR_THICK);
+		if(Main.isVersionOlderThan(Game.loadingVersion, "0.4.1.5")) {
+			this.equipClothing(EquipClothingSetting.getAllClothingSettings());
+			this.setStartingBody(false);
 		}
 	}
 
@@ -146,7 +141,7 @@ public class Elizabeth extends NPC {
 		// Body:
 		this.setSubspeciesOverride(Subspecies.HALF_DEMON);
 		this.setTailType(TailType.DEMON_COMMON);
-		this.setTailGirth(PenetrationGirth.FOUR_THICK);
+		this.setTailGirth(PenetrationGirth.FOUR_GIRTHY);
 		this.setWingType(WingType.DEMON_COMMON);
 		this.setHornType(HornType.STRAIGHT);
 		this.setHornLength(HornLength.ZERO_TINY.getMedianValue());
@@ -166,7 +161,7 @@ public class Elizabeth extends NPC {
 
 		this.setHairCovering(new Covering(BodyCoveringType.HAIR_DEMON, PresetColour.COVERING_DIRTY_BLONDE), true);
 		this.setHairLength(HairLength.THREE_SHOULDER_LENGTH.getMedianValue());
-		this.setHairStyle(HairStyle.LOOSE);
+		this.setHairStyle(HairStyle.BUN);
 		
 		this.setHairCovering(new Covering(BodyCoveringType.BODY_HAIR_DEMON, PresetColour.COVERING_DIRTY_BLONDE), false);
 		this.setUnderarmHair(BodyHair.ZERO_NONE);
@@ -229,8 +224,8 @@ public class Elizabeth extends NPC {
 		this.equipClothingFromNowhere(Main.game.getItemGen().generateClothing(ClothingType.CHEST_FULLCUP_BRA, PresetColour.CLOTHING_WHITE, false), true, this);
 		this.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_sock_pantyhose", PresetColour.CLOTHING_BLACK, false), true, this);
 
-		this.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_torso_feminine_short_sleeve_shirt", PresetColour.CLOTHING_GREEN_DRAB, false), true, this);
-		this.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_neck_tie", PresetColour.CLOTHING_GREEN_DRAB, false), true, this);
+		this.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_torso_feminine_short_sleeve_shirt", PresetColour.CLOTHING_DESATURATED_BROWN, false), true, this);
+		this.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_neck_tie", PresetColour.CLOTHING_OLIVE, false), true, this);
 		
 		this.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_lyssiethUniform_hat", false), true, this);
 		this.equipClothingFromNowhere(Main.game.getItemGen().generateClothing("innoxia_lyssiethUniform_shoes", false), true, this);

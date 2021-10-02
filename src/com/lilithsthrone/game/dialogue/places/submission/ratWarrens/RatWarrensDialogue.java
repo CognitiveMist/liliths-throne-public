@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.attributes.Attribute;
 import com.lilithsthrone.game.character.attributes.CorruptionLevel;
@@ -109,7 +108,7 @@ public class RatWarrensDialogue {
 				Main.game.addNPC(rat, false);
 				rat.setLevel(10);
 				rat.setLocation(WorldType.RAT_WARRENS, PlaceType.RAT_WARRENS_ENTRANCE, true);
-				CharacterUtils.setGenericName(rat, "lieutenant", null);
+				Main.game.getCharacterUtils().setGenericName(rat, "lieutenant", null);
 				rat.unequipOffhandWeaponIntoVoid(0, false);
 				rat.equipOffhandWeaponFromNowhere(Main.game.getItemGen().generateWeapon("innoxia_bow_pistol_crossbow", DamageType.POISON, Util.newArrayListOfValues(PresetColour.CLOTHING_BLACK_STEEL, PresetColour.CLOTHING_GREEN_DRAB, PresetColour.CLOTHING_GUNMETAL)));
 				rat.incrementEssenceCount(8, false);
@@ -118,7 +117,7 @@ public class RatWarrensDialogue {
 				Main.game.addNPC(rat, false);
 				rat.setLevel(9);
 				rat.setLocation(WorldType.RAT_WARRENS, PlaceType.RAT_WARRENS_ENTRANCE, true);
-				CharacterUtils.setGenericName(rat, "sidekick", null);
+				Main.game.getCharacterUtils().setGenericName(rat, "sidekick", null);
 				rat.unequipOffhandWeaponIntoVoid(0, false);
 				rat.equipOffhandWeaponFromNowhere(Main.game.getItemGen().generateWeapon("innoxia_bow_pistol_crossbow", DamageType.PHYSICAL, Util.newArrayListOfValues(PresetColour.CLOTHING_BLACK_STEEL, PresetColour.CLOTHING_KHAKI, PresetColour.CLOTHING_STEEL)));
 				rat.incrementEssenceCount(3, false);
@@ -181,7 +180,7 @@ public class RatWarrensDialogue {
 					rat.addFetish(Fetish.FETISH_VAGINAL_RECEIVING);
 				}
 				rat.setLocation(WorldType.RAT_WARRENS, PlaceType.RAT_WARRENS_DICE_DEN, true);
-				CharacterUtils.setGenericName(rat, rat.isFeminine()?"barwoman":"barman", null);
+				Main.game.getCharacterUtils().setGenericName(rat, rat.isFeminine()?"barwoman":"barman", null);
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -247,9 +246,10 @@ public class RatWarrensDialogue {
 	public static void applyRatWarrensRaid() {
 		Main.game.getPlayer().setLocation(WorldType.SUBMISSION, PlaceType.SUBMISSION_RAT_WARREN);
 		Main.game.getPlayer().setNearestLocation(WorldType.SUBMISSION, PlaceType.SUBMISSION_ENTRANCE, false);
+
+		((Shadow)Main.game.getNpc(Shadow.class)).moveToBountyHunterLodge();
+		((Silence)Main.game.getNpc(Silence.class)).moveToBountyHunterLodge();
 		
-		Main.game.getNpc(Silence.class).setLocation(WorldType.SLAVER_ALLEY, PlaceType.SLAVER_ALLEY_BOUNTY_HUNTERS, true);
-		Main.game.getNpc(Shadow.class).setLocation(WorldType.SLAVER_ALLEY, PlaceType.SLAVER_ALLEY_BOUNTY_HUNTERS, true);
 		Main.game.getNpc(Shadow.class).removeItemByType(ItemType.RESONANCE_STONE);
 		
 		Main.game.getNpc(Axel.class).addSlave(Main.game.getNpc(Vengar.class));
@@ -289,7 +289,7 @@ public class RatWarrensDialogue {
 				Main.game.addNPC(rat, false);
 				rat.setLevel(9);
 				rat.setLocation(Main.game.getPlayer(), true);
-				adjectives.add(CharacterUtils.setGenericName(rat, "sidekick", adjectives));
+				adjectives.add(Main.game.getCharacterUtils().setGenericName(rat, "sidekick", adjectives));
 				
 				Main.game.getDialogueFlags().setFlag(DialogueFlagValue.ratWarrensEntranceGuardsFight, false);
 				
@@ -308,7 +308,7 @@ public class RatWarrensDialogue {
 				Main.game.addNPC(rat, false);
 				rat.setLevel(8-i);
 				rat.setLocation(Main.game.getPlayer(), true);
-				adjectives.add(CharacterUtils.setGenericName(rat, Util.randomItemFrom(names), adjectives));
+				adjectives.add(Main.game.getCharacterUtils().setGenericName(rat, Util.randomItemFrom(names), adjectives));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -327,7 +327,7 @@ public class RatWarrensDialogue {
 		}
 		try {
 			Main.game.addNPC(gambler, false);
-			CharacterUtils.setGenericName(gambler, "gambler", null);
+			Main.game.getCharacterUtils().setGenericName(gambler, "gambler", null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -367,7 +367,7 @@ public class RatWarrensDialogue {
 	}
 	
 	private static int getRumPrice() {
-		return ItemType.STR_INGREDIENT_BLACK_RATS_RUM.getValue(null)/2;
+		return ItemType.getItemTypeFromId("innoxia_race_rat_black_rats_rum").getValue(null)/2;
 	}
 
 	private static boolean isMouthAccess(GameCharacter target) {
@@ -1523,9 +1523,9 @@ public class RatWarrensDialogue {
 							public void effects() {
 								Main.game.getDialogueFlags().setFlag(DialogueFlagValue.ratWarrensLootedDiceDen, true);
 								Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().incrementMoney(1500));
-								Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().addItem(Main.game.getItemGen().generateItem(ItemType.STR_INGREDIENT_BLACK_RATS_RUM), 5, false, true));
-								Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().addItem(Main.game.getItemGen().generateItem(ItemType.STR_INGREDIENT_WOLF_WHISKEY), 2, false, true));
-								Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().addItem(Main.game.getItemGen().generateItem(ItemType.INT_INGREDIENT_FELINE_FANCY), 1, false, true));
+								Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().addItem(Main.game.getItemGen().generateItem("innoxia_race_rat_black_rats_rum"), 5, false, true));
+								Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().addItem(Main.game.getItemGen().generateItem("innoxia_race_wolf_wolf_whiskey"), 2, false, true));
+								Main.game.getTextEndStringBuilder().append(Main.game.getPlayer().addItem(Main.game.getItemGen().generateItem("innoxia_race_cat_felines_fancy"), 1, false, true));
 							}
 						};
 					}
@@ -1549,7 +1549,7 @@ public class RatWarrensDialogue {
 						};
 						
 					} else {
-						return new Response("[style.colourMasculine(Rat-boy)] ("+UtilText.formatAsMoney(buyIn, "span")+")",
+						return new Response("Rat-boy ("+UtilText.formatAsMoneyUncoloured(buyIn, "span")+")",
 								"The buy-in amount is "+UtilText.formatAsMoney(table.getInitialBet(), "span")
 								+", but you'll also need "+UtilText.formatAsMoney(table.getRaiseAmount(), "span")+" for any raises. As a result, you don't have enough money to play with the rat-boy!",
 								null);
@@ -1568,9 +1568,9 @@ public class RatWarrensDialogue {
 						};
 						
 					} else {
-						return new Response("[style.colourMasculine(Rat-boy)] ("+UtilText.formatAsMoney(buyIn, "span")+")",
+						return new Response("Rat-girl ("+UtilText.formatAsMoneyUncoloured(buyIn, "span")+")",
 								"The buy-in amount is "+UtilText.formatAsMoney(table.getInitialBet(), "span")
-								+", but you'll also need "+UtilText.formatAsMoney(table.getRaiseAmount(), "span")+" for any raises. As a result, you don't have enough money to play with the rat-boy!",
+								+", but you'll also need "+UtilText.formatAsMoney(table.getRaiseAmount(), "span")+" for any raises. As a result, you don't have enough money to play with the rat-girl!",
 								null);
 					}
 					
@@ -1580,10 +1580,10 @@ public class RatWarrensDialogue {
 				} else if(index==4) {
 					int price = getRumPrice();
 					if(!Main.game.getPlayer().isCoverableAreaExposed(CoverableArea.MOUTH)) {
-						return new Response("Rum ("+UtilText.formatAsMoney(price, "span")+")", "You can't drink a glass of rum, as your mouth is blocked...", null);
+						return new Response("Rum ("+UtilText.formatAsMoneyUncoloured(price, "span")+")", "You can't drink a glass of rum, as your mouth is blocked...", null);
 					}
 					if(Main.game.getPlayer().getMoney()<price) {
-						return new Response("Rum ("+UtilText.formatAsMoney(price, "span")+")", "You can't afford to buy a glass of rum from the rat behind the bar...", null);
+						return new Response("Rum ("+UtilText.formatAsMoneyUncoloured(price, "span")+")", "You can't afford to buy a glass of rum from the rat behind the bar...", null);
 					}
 					return new Response("Rum ("+UtilText.formatAsMoney(price, "span")+")", "Buy a glass of rum from the rat behind the bar.", DICE_DEN_RUM) {
 						@Override
@@ -1591,7 +1591,7 @@ public class RatWarrensDialogue {
 							Main.game.getTextEndStringBuilder().append(UtilText.parseFromXMLFile("places/submission/ratWarrens/core", "DICE_DEN_RUM_DRINK", getGuards(true)));
 							Main.game.getTextEndStringBuilder().append(UtilText.parseFromXMLFile("places/submission/ratWarrens/core", "DICE_DEN_RUM_OFFER", getGuards(true)));
 							Main.game.getTextEndStringBuilder().append(
-									ItemType.STR_INGREDIENT_BLACK_RATS_RUM.getEffects().get(0).applyEffect(Main.game.getPlayer(), Main.game.getPlayer(), 1)
+									Main.game.getItemGen().generateItem("innoxia_race_rat_black_rats_rum").applyEffect(Main.game.getPlayer(), Main.game.getPlayer())
 									+ Main.game.getPlayer().incrementMoney(-price));
 						}
 					};
@@ -1599,12 +1599,12 @@ public class RatWarrensDialogue {
 				} else if(index==5 && isCompanionDialogue()) {
 					int price = getRumPrice();
 					if(!getMainCompanion().isCoverableAreaExposed(CoverableArea.MOUTH)) {
-						return new Response("Rum ("+UtilText.parse(getMainCompanion(), "[npc.name]")+") ("+UtilText.formatAsMoney(price, "span")+")",
+						return new Response("Rum ("+UtilText.parse(getMainCompanion(), "[npc.name]")+") ("+UtilText.formatAsMoneyUncoloured(price, "span")+")",
 								UtilText.parse(getMainCompanion(), "[npc.Name] can't drink a glass of rum, as [npc.her] mouth is blocked..."),
 								null);
 					}
 					if(Main.game.getPlayer().getMoney()<price) {
-						return new Response("Rum ("+UtilText.parse(getMainCompanion(), "[npc.name]")+") ("+UtilText.formatAsMoney(price, "span")+")",
+						return new Response("Rum ("+UtilText.parse(getMainCompanion(), "[npc.name]")+") ("+UtilText.formatAsMoneyUncoloured(price, "span")+")",
 								UtilText.parse(getMainCompanion(), "You can't afford to buy a glass of rum for [npc.name] from the rat behind the bar..."),
 								null);
 					}
@@ -1616,7 +1616,7 @@ public class RatWarrensDialogue {
 							Main.game.getTextEndStringBuilder().append(UtilText.parseFromXMLFile("places/submission/ratWarrens/core", "DICE_DEN_RUM_DRINK_COMPANION", getGuards(true)));
 							Main.game.getTextEndStringBuilder().append(UtilText.parseFromXMLFile("places/submission/ratWarrens/core", "DICE_DEN_RUM_OFFER", getGuards(true)));
 							Main.game.getTextEndStringBuilder().append(
-									ItemType.STR_INGREDIENT_BLACK_RATS_RUM.getEffects().get(0).applyEffect(getMainCompanion(), getMainCompanion(), 1)
+									Main.game.getItemGen().generateItem("innoxia_race_rat_black_rats_rum").applyEffect(getMainCompanion(), getMainCompanion())
 									+ Main.game.getPlayer().incrementMoney(-price));
 						}
 					};
@@ -2622,7 +2622,7 @@ public class RatWarrensDialogue {
 					}
 					if(Main.game.getPlayer().hasTraitActivated(Perk.CHUUNI)
 							|| Main.game.getPlayer().getRace()==Race.DEMON
-							|| Main.game.getPlayer().getLevel()>=Main.game.getNpc(Vengar.class).getLevel()*2) {
+							|| Main.game.getPlayer().getLevel()>=35) {
 						return new Response("Threaten",
 								"Threaten Vengar, which will cause him to directly fight you without relying on his bodyguards."
 										+ "<br/>[style.italicsMinorGood(Unlocked "
@@ -2630,7 +2630,7 @@ public class RatWarrensDialogue {
 													?"due to acting like chuuni"
 													:(Main.game.getPlayer().getRace()==Race.DEMON
 														?"due to being a demon"
-														:"due to being at least twice Vengar's level"))
+														:"due to being at least level 35"))
 											+".)]",
 								VENGARS_HALL_APPROACH_THREATEN) {
 							@Override
@@ -2724,7 +2724,7 @@ public class RatWarrensDialogue {
 		public Response getResponse(int responseTab, int index) {
 			if(index==1) {
 				if(Main.game.getPlayer().getMoney()<PERSUASION_PAYMENT) {
-					return new Response("Pay ("+UtilText.formatAsMoney(PERSUASION_PAYMENT, "span")+")", "You do not have "+UtilText.formatAsMoney(PERSUASION_PAYMENT, "span")+", so cannot do as Vengar asks...", null);
+					return new Response("Pay ("+UtilText.formatAsMoneyUncoloured(PERSUASION_PAYMENT, "span")+")", "You do not have "+UtilText.formatAsMoney(PERSUASION_PAYMENT, "span")+", so cannot do as Vengar asks...", null);
 				}
 				return new Response("Pay ("+UtilText.formatAsMoney(PERSUASION_PAYMENT, "span")+")",
 						"Agree to pay Vengar "+UtilText.formatAsMoney(PERSUASION_PAYMENT, "span")+" to show your submission to him..."
@@ -4061,6 +4061,7 @@ public class RatWarrensDialogue {
 					public void effects() {
 						Main.game.getTextStartStringBuilder().append(UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "CAPTIVE_DAY_0"));
 						banishGuards(!Main.game.getDialogueFlags().hasFlag(DialogueFlagValue.ratWarrensEntranceGuardsFight));
+						Main.game.getNpc(Vengar.class).returnToHome();
 					}
 				};
 				

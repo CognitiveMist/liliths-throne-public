@@ -9,8 +9,8 @@ import org.w3c.dom.Element;
 import com.lilithsthrone.game.Game;
 import com.lilithsthrone.game.character.CharacterImportSetting;
 import com.lilithsthrone.game.character.EquipClothingSetting;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.valueEnums.AreolaeSize;
 import com.lilithsthrone.game.character.body.valueEnums.AssSize;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
@@ -99,6 +99,9 @@ public class CandiReceptionist extends NPC {
 		if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.9.7")) {
 			equipClothing(EquipClothingSetting.getAllClothingSettings());
 		}
+		if(Main.isVersionOlderThan(Game.loadingVersion, "0.4.1.9")) {
+			this.addPersonalityTrait(PersonalityTrait.LEWD);
+		}
 	}
 
 	@Override
@@ -121,7 +124,8 @@ public class CandiReceptionist extends NPC {
 
 		if(setPersona) {
 			this.setPersonalityTraits(
-					PersonalityTrait.SELFISH);
+					PersonalityTrait.SELFISH,
+					PersonalityTrait.LEWD);
 			
 			this.setSexualOrientation(SexualOrientation.AMBIPHILIC);
 			

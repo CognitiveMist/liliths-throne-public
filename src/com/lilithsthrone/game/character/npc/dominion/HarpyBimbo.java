@@ -12,8 +12,8 @@ import com.lilithsthrone.game.character.CharacterImportSetting;
 import com.lilithsthrone.game.character.EquipClothingSetting;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.attributes.Attribute;
-import com.lilithsthrone.game.character.body.Covering;
-import com.lilithsthrone.game.character.body.types.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.BodyCoveringType;
+import com.lilithsthrone.game.character.body.coverings.Covering;
 import com.lilithsthrone.game.character.body.valueEnums.AreolaeSize;
 import com.lilithsthrone.game.character.body.valueEnums.AssSize;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
@@ -106,6 +106,9 @@ public class HarpyBimbo extends NPC {
 		if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.6")) {
 			this.resetPerksMap(true);
 		}
+		if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.20")) {
+			this.setSkinCovering(new Covering(BodyCoveringType.HARPY_SKIN, PresetColour.SKIN_YELLOW), false);
+		}
 	}
 
 	@Override
@@ -150,6 +153,7 @@ public class HarpyBimbo extends NPC {
 		this.setEyeCovering(new Covering(BodyCoveringType.EYE_HARPY, PresetColour.EYE_AQUA));
 		this.setSkinCovering(new Covering(BodyCoveringType.FEATHERS, PresetColour.COVERING_BLEACH_BLONDE), true);
 		this.setSkinCovering(new Covering(BodyCoveringType.HUMAN, PresetColour.SKIN_LIGHT), true);
+		this.setSkinCovering(new Covering(BodyCoveringType.HARPY_SKIN, PresetColour.SKIN_YELLOW), false);
 
 		this.setHairCovering(new Covering(BodyCoveringType.HAIR_HARPY, PresetColour.COVERING_BLEACH_BLONDE), true);
 		this.setHairLength(HairLength.THREE_SHOULDER_LENGTH);

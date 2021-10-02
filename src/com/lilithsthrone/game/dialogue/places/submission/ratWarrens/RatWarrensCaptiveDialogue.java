@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.attributes.Attribute;
 import com.lilithsthrone.game.character.attributes.ObedienceLevel;
@@ -112,7 +111,7 @@ public class RatWarrensCaptiveDialogue {
 			Main.game.addNPC(rat, false);
 			rat.setLevel(4+Util.random.nextInt(5));
 			rat.setLocation(Main.game.getPlayer(), true);
-			adjectives.add(CharacterUtils.setGenericName(rat, Util.randomItemFrom(names), adjectives));
+			adjectives.add(Main.game.getCharacterUtils().setGenericName(rat, Util.randomItemFrom(names), adjectives));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -158,7 +157,7 @@ public class RatWarrensCaptiveDialogue {
 				sexIntroTextPath = nodePathSex;
 				responseTitle = "Ride cock";
 				responseDescription = "Do as your Master says and ride his cock...";
-				if(Main.game.getPlayer().isTaur()) {
+				if(Main.game.getPlayer().isTaur() || !Main.game.getPlayer().hasLegs()) {
 					position = SexPosition.LYING_DOWN;
 					if(Main.game.getPlayer().hasVagina()) {
 						murkSexInfo = new Value<>(SexSlotLyingDown.LYING_DOWN, new SexType(SexParticipantType.NORMAL, SexAreaPenetration.PENIS, SexAreaOrifice.VAGINA));
@@ -201,7 +200,7 @@ public class RatWarrensCaptiveDialogue {
 				
 			} else if(stage>=4) {
 				sexIntroTextPath = nodePathSex;
-				if(Main.game.getPlayer().isTaur()) {
+				if(Main.game.getPlayer().isTaur() || !Main.game.getPlayer().hasLegs()) {
 					responseTitle = "Humped";
 					responseDescription = "Do as your Master says and present yourself to him so that he can give you a good humping...";
 					position = SexPosition.ALL_FOURS;
@@ -237,8 +236,6 @@ public class RatWarrensCaptiveDialogue {
 				playerSlot = SexSlotAllFours.ALL_FOURS;
 			}
 		}
-		
-		
 		
 		return new ResponseSex(
 				responseTitle,
@@ -655,13 +652,19 @@ public class RatWarrensCaptiveDialogue {
 		public Response getResponse(int responseTab, int index) {
 			if(Main.game.getPlayer().isPregnant()) {
 				if(index==1) {
-					return new Response("Birthing", "Murk notices that you're ready to give birth...", CAPTIVE_GIVE_BIRTH) {
+					return new Response("Wait", "Wait for Murk to return...", CAPTIVE_GIVE_BIRTH) {
 						@Override
 						public void effects() {
 							Main.game.getNpc(Silence.class).setLocation(Main.game.getPlayer(), false);
 							Main.game.getNpc(Shadow.class).setLocation(Main.game.getPlayer(), false);
 							
 							Main.game.getPlayer().endPregnancy(true);
+							boolean eggs = !Main.game.getPlayer().getIncubatingLitters().isEmpty();
+							if(eggs) {
+								for(SexAreaOrifice orifice : new ArrayList<>(Main.game.getPlayer().getIncubatingLitters().keySet())) {
+									Main.game.getPlayer().endIncubationPregnancy(orifice, true);
+								}
+							}
 							Main.game.getPlayer().setMana(0);
 							
 							if(Main.game.getPlayer().getBodyMaterial()!=BodyMaterial.SLIME) {
@@ -673,6 +676,30 @@ public class RatWarrensCaptiveDialogue {
 							
 							if(!Main.game.getPlayer().isQuestCompleted(QuestLine.SIDE_FIRST_TIME_PREGNANCY)) { // If birthing side quest is not complete, remove it, as otherwise completion (referencing Lily) doesn't make any sense.
 								Main.game.getPlayer().removeQuest(QuestLine.SIDE_FIRST_TIME_PREGNANCY);
+							}
+							if(eggs && !Main.game.getPlayer().isQuestCompleted(QuestLine.SIDE_FIRST_TIME_INCUBATION)) {
+								Main.game.getPlayer().removeQuest(QuestLine.SIDE_FIRST_TIME_INCUBATION);
+							}
+						}
+					};
+				}
+				
+			} else if(!Main.game.getPlayer().getIncubatingLitters().isEmpty()) {
+				if(index==1) {
+					return new Response("Wait", "Wait for Murk to return...", CAPTIVE_LAY_EGGS) {
+						@Override
+						public void effects() {
+							Main.game.getNpc(Silence.class).setLocation(Main.game.getPlayer(), false);
+							Main.game.getNpc(Shadow.class).setLocation(Main.game.getPlayer(), false);
+							
+							Main.game.getPlayer().endPregnancy(true);
+							for(SexAreaOrifice orifice : new ArrayList<>(Main.game.getPlayer().getIncubatingLitters().keySet())) {
+								Main.game.getPlayer().endIncubationPregnancy(orifice, true);
+							}
+							Main.game.getPlayer().setMana(0);
+							
+							if(!Main.game.getPlayer().isQuestCompleted(QuestLine.SIDE_FIRST_TIME_INCUBATION)) { // If birthing side quest is not complete, remove it, as otherwise completion (referencing Lily) doesn't make any sense.
+								Main.game.getPlayer().removeQuest(QuestLine.SIDE_FIRST_TIME_INCUBATION);
 							}
 						}
 					};
@@ -1650,7 +1677,7 @@ public class RatWarrensCaptiveDialogue {
 	public static final DialogueNode CAPTIVE_DAY_2_EVENING_TRAINING = new DialogueNode("", "", true, true) {
 		@Override
 		public void applyPreParsingEffects() {
-			Main.game.getPlayer().setLastTimeOrgasmed(Main.game.getMinutesPassed()+30);
+			Main.game.getPlayer().setLastTimeOrgasmedSeconds(Main.game.getSecondsPassed()+(60*30));
 			GameCharacter milker = getMilkers().get(3);
 			milker.calculateGenericSexEffects(false, true, getMurk(), new SexType(SexParticipantType.NORMAL, SexAreaOrifice.VAGINA, SexAreaPenetration.PENIS), GenericSexFlag.FORCE_CREAMPIE);
 		}
@@ -2338,33 +2365,34 @@ public class RatWarrensCaptiveDialogue {
 		}
 		@Override
 		public String getContent() {
-			return UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "CAPTIVE_DAY_3_AFTERNOON_END");
+			return UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "CAPTIVE_DAY_3_AFTERNOON_END_SUBMIT");
 		}
 		@Override
 		public Response getResponse(int responseTab, int index) {
 			if(index==1) {
+				boolean allFours = Main.game.getPlayer().isTaur() || !Main.game.getPlayer().hasLegs();
 				return new ResponseSex(
-						Main.game.getPlayer().isTaur()
+						allFours
 							?"Present yourself"
 							:"Spread legs",
-						(Main.game.getPlayer().isTaur()
+						(allFours
 							?"Present your pussy to your Master and tell him that his cock is your one true love!"
 							:"Spread your legs for your Master and tell him that his cock is your one true love!")
 							+ getObedienceResponseDescription(25),
 						true,
 						false,
 						getBasicSexManager(
-								Main.game.getPlayer().isTaur()
+								allFours
 									?SexPosition.ALL_FOURS
 									:SexPosition.LYING_DOWN,
 								Util.newHashMapOfValues(new Value<>(getMurk(),
-										Main.game.getPlayer().isTaur()
+										allFours
 											?SexSlotAllFours.HUMPING
 											:(Main.game.getPlayer().isVisiblyPregnant()
 												?SexSlotLyingDown.MISSIONARY
 												:SexSlotLyingDown.MATING_PRESS))),
 								Util.newHashMapOfValues(new Value<>(Main.game.getPlayer(),
-										Main.game.getPlayer().isTaur()
+										allFours
 											?SexSlotAllFours.ALL_FOURS
 											:SexSlotLyingDown.LYING_DOWN)),
 								new SexType(SexParticipantType.NORMAL, SexAreaPenetration.PENIS, Main.game.getPlayer().hasVagina()?SexAreaOrifice.VAGINA:SexAreaOrifice.ANUS),
@@ -2385,7 +2413,7 @@ public class RatWarrensCaptiveDialogue {
 											:PenisAnus.PENIS_FUCKING_START,
 										false,
 										true),
-								Main.game.getPlayer().isTaur()
+								allFours
 									?null
 									:new InitialSexActionInformation(getMurk(),
 											Main.game.getPlayer(),
@@ -2403,7 +2431,7 @@ public class RatWarrensCaptiveDialogue {
 						Main.sex.incrementNumberOfOrgasms(Main.game.getPlayer(), 1);
 						if(Main.game.getPlayer().hasPenis()) {
 							Main.game.getPlayer().applyOrgasmCumEffect();
-							if(!Main.game.getPlayer().isTaur()) {
+							if(!allFours) {
 								Main.game.getPlayer().addDirtySlot(InventorySlot.CHEST);
 							}
 						}
@@ -2615,6 +2643,9 @@ public class RatWarrensCaptiveDialogue {
 		}
 		@Override
 		public Response getResponse(int responseTab, int index) {
+			if(index==1) {
+				return new Response("The End...", "[style.italicsBadEnd(With this end to your journey, the thread of prophecy is severed. Restore a saved game to restore the weave of fate, or persist in the doomed world you have created.)]", null);
+			}
 			return null;
 		}
 	};
@@ -2635,7 +2666,7 @@ public class RatWarrensCaptiveDialogue {
 
 			sb.append(UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "CAPTIVE_GIVE_BIRTH"));
 			
-			if(Main.game.getPlayer().getVaginaType().isEggLayer()) {
+			if(Main.game.getPlayer().isVaginaEggLayer()) {
 				sb.append(UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "CAPTIVE_GIVE_BIRTH_END_EGGS"));
 			} else {
 				sb.append(UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "CAPTIVE_GIVE_BIRTH_END"));
@@ -2646,7 +2677,7 @@ public class RatWarrensCaptiveDialogue {
 		@Override
 		public Response getResponse(int responseTab, int index) {
 			if(index==1) {
-				if(Main.game.getPlayer().getVaginaType().isEggLayer()) {
+				if(Main.game.getPlayer().isVaginaEggLayer()) {
 					return new Response("Protect the eggs!", "Protect your eggs from these rats!", CAPTIVE_GIVE_BIRTH_PROTECT_THE_EGGS) {
 						@Override
 						public void effects() {
@@ -2685,7 +2716,7 @@ public class RatWarrensCaptiveDialogue {
 			return null;
 		}
 	};
-
+	
 	public static final DialogueNode CAPTIVE_GIVE_BIRTH_FINISHED = new DialogueNode("", "", true) {
 		@Override
 		public void applyPreParsingEffects() {
@@ -2701,6 +2732,63 @@ public class RatWarrensCaptiveDialogue {
 		public String getContent() {
 			StringBuilder sb = new StringBuilder();
 			sb.append(UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "CAPTIVE_GIVE_BIRTH_INITIAL_FINISHED", getCharacters(false)));
+			sb.append(CAPTIVE_NIGHT.getContent());
+			return sb.toString();
+		}
+		@Override
+		public Response getResponse(int responseTab, int index) {
+			return CAPTIVE_NIGHT.getResponse(responseTab, index);
+		}
+	};
+	
+	public static final DialogueNode CAPTIVE_LAY_EGGS = new DialogueNode("", "", true, true) {
+		@Override
+		public void applyPreParsingEffects() {
+			Main.game.getNpc(Silence.class).setLocation(Main.game.getPlayer(), false);
+			Main.game.getNpc(Shadow.class).setLocation(Main.game.getPlayer(), false);
+		}
+		@Override
+		public int getSecondsPassed() {
+			return 1*60*60;
+		}
+		@Override
+		public String getContent() {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "CAPTIVE_LAY_EGGS"));
+			
+			return sb.toString();
+		}
+		@Override
+		public Response getResponse(int responseTab, int index) {
+			if(index==1) {
+				return new Response("Rest", "You spend some time recovering from your ordeal...", CAPTIVE_LAY_EGGS_FINISHED) {
+					@Override
+					public void effects() {
+						Main.game.getNpc(Silence.class).returnToHome();
+						Main.game.getDialogueFlags().setFlag(DialogueFlagValue.ratWarrensSilenceIntroduced, true);
+					}
+				};
+			}
+			return null;
+		}
+	};
+
+	public static final DialogueNode CAPTIVE_LAY_EGGS_FINISHED = new DialogueNode("", "", true) {
+		@Override
+		public void applyPreParsingEffects() {
+			Main.game.getPlayer().setLocation(WorldType.RAT_WARRENS, PlaceType.RAT_WARRENS_MILKING_ROOM);
+			Main.game.getNpc(Silence.class).returnToHome();
+			Main.game.getNpc(Shadow.class).returnToHome();
+		}
+		@Override
+		public int getSecondsPassed() {
+			return Main.game.getMinutesUntilTimeInMinutes(8*60)*60;
+		}
+		@Override
+		public String getContent() {
+			StringBuilder sb = new StringBuilder();
+			sb.append(UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "CAPTIVE_LAY_EGGS_INITIAL_FINISHED", getCharacters(false)));
 			sb.append(CAPTIVE_NIGHT.getContent());
 			return sb.toString();
 		}

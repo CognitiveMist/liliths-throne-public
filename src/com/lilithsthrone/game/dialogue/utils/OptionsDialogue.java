@@ -12,14 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.lilithsthrone.controller.eventListeners.tooltips.TooltipInformationEventListener;
 import com.lilithsthrone.game.Game;
 import com.lilithsthrone.game.PropertyValue;
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.attributes.Attribute;
 import com.lilithsthrone.game.character.body.valueEnums.AgeCategory;
 import com.lilithsthrone.game.character.body.valueEnums.CupSize;
 import com.lilithsthrone.game.character.body.valueEnums.Lactation;
 import com.lilithsthrone.game.character.fetishes.Fetish;
+import com.lilithsthrone.game.character.fetishes.FetishPreference;
 import com.lilithsthrone.game.character.gender.AndrogynousIdentification;
 import com.lilithsthrone.game.character.gender.Gender;
 import com.lilithsthrone.game.character.gender.GenderNames;
@@ -28,6 +29,7 @@ import com.lilithsthrone.game.character.gender.PronounType;
 import com.lilithsthrone.game.character.npc.NPC;
 import com.lilithsthrone.game.character.persona.SexualOrientation;
 import com.lilithsthrone.game.character.persona.SexualOrientationPreference;
+import com.lilithsthrone.game.character.race.AbstractSubspecies;
 import com.lilithsthrone.game.character.race.FurryPreference;
 import com.lilithsthrone.game.character.race.Subspecies;
 import com.lilithsthrone.game.character.race.SubspeciesPreference;
@@ -57,8 +59,8 @@ import com.lilithsthrone.utils.colours.PresetColour;
 
 /**
  * @since 0.1.0
- * @version 0.3.7
- * @author Innoxia
+ * @version 0.4.2
+ * @author Innoxia, Maxis
  */
 public class OptionsDialogue {
 	
@@ -75,6 +77,8 @@ public class OptionsDialogue {
 
 	private static boolean confirmNewGame = false;
 	public static boolean startingNewGame = false;
+	
+	private static boolean alphabeticalFileSort = false;
 	
 	public static final DialogueNode MENU = new DialogueNode("Menu", "Menu", true) {
 		
@@ -195,7 +199,7 @@ public class OptionsDialogue {
 					public void effects() {
 						Main.primaryStage.close();
 						confirmNewGame=false;
-						
+						System.exit(0);
 					}
 				};
 				
@@ -374,9 +378,9 @@ public class OptionsDialogue {
 				i++;
 			}
 			
-			Main.getSavedGames().sort(Comparator.comparingLong(File::lastModified).reversed());
+//			Main.getSavedGames(alphabeticalFileSort).sort(Comparator.comparingLong(File::lastModified).reversed());
 			
-			for(File f : Main.getSavedGames()){
+			for(File f : Main.getSavedGames(alphabeticalFileSort)) {
 				saveLoadSB.append(getSaveLoadRow("<span style='color:"+PresetColour.TEXT_GREY.toWebHexString()+";'>"+Util.getFileTime(f)+"</span>", f.getName(), i%2==0));
 				i++;
 			}
@@ -411,6 +415,22 @@ public class OptionsDialogue {
 					}
 				};
 
+			} else if (index == 2) {
+				return new Response("Sort: Date", "Sort all of your saved games by their date.", SAVE_LOAD) {
+					@Override
+					public void effects() {
+						alphabeticalFileSort = false;
+					}
+				};
+
+			} else if (index == 3) {
+				return new Response("Sort: Name", "Sort all of your saved games by their name.", SAVE_LOAD) {
+					@Override
+					public void effects() {
+						alphabeticalFileSort = true;
+					}
+				};
+
 			} else if (index == 0) {
 				return new Response("Back", "Back to the main menu.", MENU);
 
@@ -438,7 +458,7 @@ public class OptionsDialogue {
 	
 			saveLoadSB.append("<p>"
 						+ "Here you can export your current character, or delete any characters that you've exported in the past."
-						+ " Any NPC can be exported in-game by viewing their information screen (either from the 'characters present' or your phone's 'contacts' screen), and then pressing the small 'export character' button in the top-right."
+						+ " Any NPC can be exported in-game by viewing their information screen (either from the 'characters present' or your phone's 'contacts' screen), and then pressing the 'export character' button (in the bottom-right of the UI)."
 					+ "</p>"
 					+ "<p>"
 						+ "Exported characters can be used as a playable character when starting a new game (choose 'Start (Import)'), or as an importable slave at the Auction Block in Slaver Alley."
@@ -496,7 +516,7 @@ public class OptionsDialogue {
 					return new Response("Export character", "Exports your character file to the 'data/characters/' folder.", IMPORT_EXPORT){
 						@Override
 						public void effects() {
-							CharacterUtils.saveCharacterAsXML(Main.game.getPlayer());
+							Main.game.getCharacterUtils().saveCharacterAsXML(Main.game.getPlayer());
 							Main.game.flashMessage(PresetColour.GENERIC_GOOD, "Character exported!");
 						}
 					};
@@ -523,7 +543,7 @@ public class OptionsDialogue {
 			String baseName = Util.getFileName(name);
 			String identifierName = Util.getFileIdentifier(name);
 			
-			return "<div class='container-full-width' style='padding:0; margin:0 0 4px 0;"+(altColour?"background:#222;":"")+"'>"
+			return "<div class='container-full-width' style='padding:0; margin:0 0 4px 0;"+(altColour?"background:"+PresetColour.BACKGROUND_ALT.toWebHexString()+";":"")+"'>"
 						+ "<div class='container-full-width' style='width:calc(25% - 16px); background:transparent;'>"
 							+ date
 						+ "</div>"
@@ -549,7 +569,7 @@ public class OptionsDialogue {
 					+ "</div>";
 			
 		} else {
-			return "<div class='container-full-width' style='padding:0; margin:0 0 4px 0;"+(altColour?"background:#222;":"")+"'>"
+			return "<div class='container-full-width' style='padding:0; margin:0 0 4px 0;"+(altColour?"background:"+PresetColour.BACKGROUND_ALT.toWebHexString()+";":"")+"'>"
 						+ "<div class='container-full-width' style='width:calc(25% - 16px); background:transparent;'>"
 							+ "-"
 						+ "</div>"
@@ -745,6 +765,8 @@ public class OptionsDialogue {
 						}
 					}
 				};
+			} else if (index == 13) {
+				return new Response("Fetish preferences", "Set your preferred fetish encounter rates.", FETISH_PREFERENCE);
 
 			} else if (index == 0) {
 				return new Response("Back", "Back to the main menu.", MENU);
@@ -1144,7 +1166,7 @@ public class OptionsDialogue {
 		
 		@Override
 		public String getContent(){
-			return Main.patchNotes;
+			return Main.getPatchNotes();
 		}
 		
 		@Override
@@ -1160,6 +1182,11 @@ public class OptionsDialogue {
 		@Override
 		public DialogueNodeType getDialogueNodeType() {
 			return DialogueNodeType.OPTIONS;
+		}
+
+		@Override
+		public boolean isContentParsed() {
+			return false;
 		}
 	};
 	
@@ -1362,6 +1389,63 @@ public class OptionsDialogue {
 			return DialogueNodeType.OPTIONS;
 		}
 	};
+	
+	public static final DialogueNode FETISH_PREFERENCE = new DialogueNode("Fetish preferences", "", true) {
+		
+		@Override
+		public String getHeaderContent(){
+			UtilText.nodeContentSB.setLength(0);
+			
+			UtilText.nodeContentSB.append(
+					"<div class='container-full-width'>"
+							+ "These options will determine the likelihood of random NPCs having these fetishes & preferences."
+							+ " Some races are more likely to get specific fetishes, but your preferences will be taken into account wherever possible.<br/>"
+							+ " Content settings will enable/disable related fetishes."
+							+ "</div>"
+							
+							+ "<div class='container-full-width' style='text-align:center;'>");
+			for(Fetish fetish : Fetish.values()) {
+				if(fetish.getFetishesForAutomaticUnlock().isEmpty()) {
+					UtilText.nodeContentSB.append(getFetishPreferencesPanel(fetish));
+				}
+			}
+			
+			UtilText.nodeContentSB.append("</div>");
+			return UtilText.nodeContentSB.toString();
+		}
+		
+		@Override
+		public String getContent(){
+			return "";
+		}
+		
+		@Override
+		public Response getResponse(int responseTab, int index) {
+			if (index == 0) {
+				return new Response("Back", "Go back to the options menu.", OPTIONS);
+				
+			} else if(index == 1) {
+				return new Response("Defaults", "Reset all fetish preferences to their default settings.", FETISH_PREFERENCE) {
+					@Override
+					public void effects() {
+						for(Fetish fetish : Fetish.values()) {
+							if(fetish.getFetishesForAutomaticUnlock().isEmpty()) {
+								Main.getProperties().fetishPreferencesMap.put(fetish, FetishPreference.THREE_NEUTRAL.getValue());
+							}
+						}
+						Main.saveProperties();
+					}
+				};
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public DialogueNodeType getDialogueNodeType() {
+			return DialogueNodeType.OPTIONS;
+		}
+	};
 
 	private static String getOrientationPreferencesPanel(SexualOrientation orient) {
 		Colour colour = orient.getColour();
@@ -1378,6 +1462,65 @@ public class OptionsDialogue {
 						+"</div>");
 		}
 						
+		sb.append("</div>"
+				+ "</div>"
+				+ "<hr></hr>");
+		
+		return sb.toString();
+	}
+
+	public static String getInformationDiv(String id, TooltipInformationEventListener information) {
+		Game.informationTooltips.put(id, information);
+		return "<div class='title-button no-select' id='"+id+"' style='position:relative; float:left; background:transparent; padding:0; margin:0;'>"
+					+SVGImages.SVG_IMAGE_PROVIDER.getInformationIcon()
+				+"</div>";
+	}
+	
+	private static String getFetishPreferencesPanel(Fetish fetish) {
+		StringBuilder sb = new StringBuilder();
+		
+		Colour highlightColour = FetishPreference.valueOf(Main.getProperties().fetishPreferencesMap.get(fetish)).getColour();
+		
+		sb.append("<div style='display:inline-block; margin:4px auto;width:100%;'>"
+				+ "<div style='display:inline-block; margin:0 auto;'>"
+				+ getInformationDiv(fetish.toString()+"_INFO", new TooltipInformationEventListener().setInformation(Util.capitaliseSentence(fetish.getName(Main.game.getPlayer())), fetish.getDescription(null)))
+				+ "<div style='width:150px; float:left;'><b style='color:"+highlightColour.toWebHexString()+";'>"+Util.capitaliseSentence(fetish.getName(null))+"</b></div>");
+		
+		for(FetishPreference preference : FetishPreference.values()) {
+			String disabledMsg=null;
+			if(!Main.game.isPenetrationLimitationsEnabled() && fetish == Fetish.FETISH_SIZE_QUEEN) {
+				disabledMsg="Penetrative size-difference";
+			}
+			if(!Main.game.isNonConEnabled() && (fetish == Fetish.FETISH_NON_CON_DOM || fetish == Fetish.FETISH_NON_CON_SUB)) {
+				disabledMsg="Non-consent";
+			}
+			if(!Main.game.isIncestEnabled() && fetish == Fetish.FETISH_INCEST) {
+				disabledMsg="Incest";
+			}
+			if(!Main.game.isLactationContentEnabled() && (fetish == Fetish.FETISH_LACTATION_OTHERS || fetish == Fetish.FETISH_LACTATION_SELF)) {
+				disabledMsg="Lactation";
+			}
+			if(!Main.game.isAnalContentEnabled() && (fetish == Fetish.FETISH_ANAL_GIVING || fetish == Fetish.FETISH_ANAL_RECEIVING)) {
+				disabledMsg="Anal Content";
+			}
+			if(!Main.game.isFootContentEnabled() && (fetish == Fetish.FETISH_FOOT_GIVING || fetish == Fetish.FETISH_FOOT_RECEIVING)) {
+				disabledMsg="Foot Content";
+			}
+			if(!Main.game.isArmpitContentEnabled() && (fetish == Fetish.FETISH_ARMPIT_GIVING || fetish == Fetish.FETISH_ARMPIT_RECEIVING)) {
+				disabledMsg="Armpit Content";
+			}
+			if(disabledMsg!=null) {
+				// Disabled fetishes to default, the fetish won't be a valid option for the generator anyway
+				Main.getProperties().fetishPreferencesMap.put(fetish, fetish.getFetishPreferenceDefault().getValue());
+				sb.append("<div style='display:inline-block;'><span class='option-disabled'>Fetish forcibly disabled due to "+disabledMsg+" setting!</span></div>");
+				break;
+			} else {
+				sb.append("<div id='"+preference+"_"+fetish+"' class='preference-button"+(Main.getProperties().fetishPreferencesMap.get(fetish)==preference.getValue()?" selected":"")+"'>"
+							+Util.capitaliseSentence(preference.getName())
+						+"</div>");
+			}
+		}
+		
 		sb.append("</div>"
 				+ "</div>"
 				+ "<hr></hr>");
@@ -1692,7 +1835,7 @@ public class OptionsDialogue {
 											+ "</div>");
 
 			int i=0;
-			for(Subspecies subspecies : Subspecies.values()) {
+			for(AbstractSubspecies subspecies : Subspecies.getAllSubspecies()) {
 				if(subspecies.isDisplayedInFurryPreferences()) {
 					UtilText.nodeContentSB.append(getSubspeciesPreferencesPanel(subspecies, i%2==0));
 					i++;
@@ -1717,7 +1860,7 @@ public class OptionsDialogue {
 				return new Response("Defaults", "Reset all furry and spawn preferences to their default settings.", FURRY_PREFERENCE) {
 					@Override
 					public void effects() {
-						for(Subspecies subspecies : Subspecies.values()) {
+						for(AbstractSubspecies subspecies : Subspecies.getAllSubspecies()) {
 							Main.getProperties().setFeminineFurryPreference(subspecies, subspecies.getDefaultFemininePreference());
 							Main.getProperties().setMasculineFurryPreference(subspecies, subspecies.getDefaultMasculinePreference());
 
@@ -1779,9 +1922,10 @@ public class OptionsDialogue {
 		}
 	}
 	
-	private static String getSubspeciesPreferencesPanel(Subspecies s, boolean altColour) {
+	private static String getSubspeciesPreferencesPanel(AbstractSubspecies s, boolean altColour) {
 		StringBuilder sb = new StringBuilder();
 		String baseStyle = "max-width:30px; width:14%; margin:0 1%; padding:0;";
+		String subspeciesId = Subspecies.getIdFromSubspecies(s);
 		
 		sb.append("<div class='container-full-width' style='text-align:center; background:"+getEntryBackgroundColour(altColour)+"; padding:0; margin:0 0 6px 0; border-left:solid 4px "+s.getColour(null).toWebHexString()+";'>");
 		
@@ -1793,7 +1937,7 @@ public class OptionsDialogue {
 			sb.append("<div class='container-full-width' style='text-align:center; width:30%; background:transparent; margin:2px 0; padding:0;'>");
 
 				for(FurryPreference preference : FurryPreference.values()) {
-					sb.append("<div id='FEMININE_"+preference+"_"+s+"' class='square-button small"+(!s.isFurryPreferencesEnabled()?" disabled":"")
+					sb.append("<div id='FEMININE_"+preference+"_"+subspeciesId+"' class='square-button small"+(!s.isFurryPreferencesEnabled()?" disabled":"")
 								+(Main.getProperties().getSubspeciesFeminineFurryPreferencesMap().get(s)==preference && s.isFurryPreferencesEnabled()
 									?" selected' style='"+baseStyle+" border-color:"+preference.getColour().toWebHexString()+";'><div class='square-button-content'>"+preference.getSVGImage(false)+"</div></div>"
 									:"' style='"+baseStyle+"'><div class='square-button-content'>"+preference.getSVGImage(true)+"</div></div>"));
@@ -1801,7 +1945,7 @@ public class OptionsDialogue {
 				sb.append("</div>");
 				sb.append("<div class='container-full-width' style='text-align:center; width:30%; background:transparent; margin:2px 0; padding:0;'>");
 				for(SubspeciesPreference preference : SubspeciesPreference.values()) {
-					sb.append("<div id='FEMININE_SPAWN_"+preference+"_"+s+"' class='square-button small"+(!s.isSpawnPreferencesEnabled()?" disabled":"")
+					sb.append("<div id='FEMININE_SPAWN_"+preference+"_"+subspeciesId+"' class='square-button small"+(!s.isSpawnPreferencesEnabled()?" disabled":"")
 								+(Main.getProperties().getSubspeciesFemininePreferencesMap().get(s)==preference && s.isSpawnPreferencesEnabled()
 									?" selected' style='"+baseStyle+" border-color:"+PresetColour.FEMININE_PLUS.toWebHexString()+";'><div class='square-button-content'>"+preference.getSVGImage(false)+"</div></div>"
 									:"' style='"+baseStyle+"'><div class='square-button-content'>"+preference.getSVGImage(true)+"</div></div>"));
@@ -1817,7 +1961,7 @@ public class OptionsDialogue {
 			sb.append("<div class='container-full-width' style='text-align:center; width:30%; background:transparent; margin:2px 0; padding:0;'>");
 			
 				for(FurryPreference preference : FurryPreference.values()) {
-					sb.append("<div id='MASCULINE_"+preference+"_"+s+"' class='square-button small"+(!s.isFurryPreferencesEnabled()?" disabled":"")
+					sb.append("<div id='MASCULINE_"+preference+"_"+subspeciesId+"' class='square-button small"+(!s.isFurryPreferencesEnabled()?" disabled":"")
 								+(Main.getProperties().getSubspeciesMasculineFurryPreferencesMap().get(s)==preference && s.isFurryPreferencesEnabled()
 									?" selected' style='"+baseStyle+" border-color:"+preference.getColour().toWebHexString()+";'><div class='square-button-content'>"+preference.getSVGImage(false)+"</div></div>"
 									:"' style='"+baseStyle+"'><div class='square-button-content'>"+preference.getSVGImage(true)+"</div></div>"));
@@ -1825,7 +1969,7 @@ public class OptionsDialogue {
 			sb.append("</div>");
 			sb.append("<div class='container-full-width' style='text-align:center; width:30%; background:transparent; margin:2px 0; padding:0;'>");
 				for(SubspeciesPreference preference : SubspeciesPreference.values()) {
-					sb.append("<div id='MASCULINE_SPAWN_"+preference+"_"+s+"' class='square-button small"+(!s.isSpawnPreferencesEnabled()?" disabled":"")
+					sb.append("<div id='MASCULINE_SPAWN_"+preference+"_"+subspeciesId+"' class='square-button small"+(!s.isSpawnPreferencesEnabled()?" disabled":"")
 								+(Main.getProperties().getSubspeciesMasculinePreferencesMap().get(s)==preference && s.isSpawnPreferencesEnabled()
 									?" selected' style='"+baseStyle+" border-color:"+PresetColour.MASCULINE_PLUS.toWebHexString()+";'><div class='square-button-content'>"+preference.getSVGImage(false)+"</div></div>"
 									:"' style='"+baseStyle+"'><div class='square-button-content'>"+preference.getSVGImage(true)+"</div></div>"));
@@ -1833,7 +1977,9 @@ public class OptionsDialogue {
 				
 			sb.append("</div>");
 
-			sb.append("<div class='title-button no-select' id='SUBSPECIES_PREFERNCE_INFO_"+s+"' style='position:absolute; margin:0; padding:0; left:1%; right:auto; top:auto; bottom:auto;'>"+SVGImages.SVG_IMAGE_PROVIDER.getInformationIcon()+"</div>");
+			sb.append("<div class='title-button no-select' id='SUBSPECIES_PREFERNCE_INFO_"+subspeciesId+"' style='position:absolute; margin:0; padding:0; left:1%; right:auto; top:auto; bottom:auto;'>"
+							+SVGImages.SVG_IMAGE_PROVIDER.getInformationIcon()
+						+"</div>");
 		sb.append("</div>");
 		
 		return sb.toString();
@@ -2025,6 +2171,13 @@ public class OptionsDialogue {
 							"This unlocks 'sadistic' sex actions, such as choking, slapping, and spitting on partners in sex.",
 							Main.getProperties().hasValue(PropertyValue.sadisticSexContent)));
 
+			UtilText.nodeContentSB.append(getContentPreferenceDiv(ContentOptionsPage.BODIES,
+							"FERAL",
+							PresetColour.BASE_TAN,
+							"Feral",
+							"This enables feral content, which contains sexual and non-sexual interactions with sapient characters who have fully-animal bodies.",
+							Main.getProperties().hasValue(PropertyValue.feralContent)));
+			
 			UtilText.nodeContentSB.append(getContentPreferenceDiv(ContentOptionsPage.SEX,
 							"LIPSTICK_MARKING",
 							PresetColour.BASE_RED_DARK,
@@ -2045,6 +2198,14 @@ public class OptionsDialogue {
 							"Storm interruptions",
 							"When enabled, arcane storms will interrupt dialogue to let you know that they've started.",
 							Main.getProperties().hasValue(PropertyValue.weatherInterruptions)));
+
+			UtilText.nodeContentSB.append(getContentPreferenceDiv(ContentOptionsPage.MISC,
+							"DIALOGUE_COPY",
+							PresetColour.BASE_BLUE_STEEL,
+							"Automatic text copying",
+							"When enabled, the current scene's text will automatically be copied to your system's clipboard every time a new scene is loaded."
+								+ " This option is so that you can easily paste the game's text into text readers without needing to select and copy the scene's text every time.",
+							Main.getProperties().hasValue(PropertyValue.automaticDialogueCopy)));
 			
 			UtilText.nodeContentSB.append(getContentPreferenceDiv(ContentOptionsPage.MISC,
 							"SILLY",
@@ -2145,11 +2306,26 @@ public class OptionsDialogue {
 							Main.getProperties().hasValue(PropertyValue.penetrationLimitations)));
 			
 			UtilText.nodeContentSB.append(getContentPreferenceDiv(ContentOptionsPage.SEX,
+							"PENETRATION_LIMITATION_DYNAMIC",
+							PresetColour.BASE_PINK_DEEP,
+							"Elasticity depth effects",
+							"When enabled, if an orifice has an elasticity of at least 'limber', the maximum 'uncomfortable depth' value will be increased, with greater elasticity values increasing it further."
+									+ " (Note: Only applies when 'Penetrative size-difference' is also turned on.)",
+							Main.getProperties().hasValue(PropertyValue.elasticityAffectDepth)));
+			
+			UtilText.nodeContentSB.append(getContentPreferenceDiv(ContentOptionsPage.SEX,
 							"FOOT",
 							PresetColour.BASE_TAN,
 							"Foot Content",
 							"When disabled, removes all foot-related actions from being available during sex.",
 							Main.getProperties().hasValue(PropertyValue.footContent)));
+			
+			UtilText.nodeContentSB.append(getContentPreferenceDiv(ContentOptionsPage.SEX,
+							"ARMPIT",
+							PresetColour.BASE_PINK_LIGHT,
+							"Armpit Content",
+							"When disabled, removes all armpit-related actions from being available during sex.",
+							Main.getProperties().hasValue(PropertyValue.armpitContent)));
 			
 			UtilText.nodeContentSB.append(getContentPreferenceDiv(ContentOptionsPage.SEX,
 							"FURRY_TAIL_PENETRATION",
@@ -2194,6 +2370,15 @@ public class OptionsDialogue {
 									+ " When disabled, all bipeds with cloacas will be treated as having a regular genitalia configuration."
 									+ " Some special races, such as lamia, always have cloacas, and are not affected by this.",
 							Main.getProperties().hasValue(PropertyValue.bipedalCloaca)));
+
+			UtilText.nodeContentSB.append(getContentPreferenceDiv(ContentOptionsPage.BODIES,
+							"VESTIGIAL_MULTI_BREAST",
+							PresetColour.BASE_PURPLE_LIGHT,
+							"Vestigial Multi-breasts",
+							"When enabled, characters who have multiple rows of breasts will have the rows beneath their top one described as being vestigial in size."
+									+ " When disabled, breast rows will be described as being one cup size smaller than the one above them.",
+							Main.getProperties().hasValue(PropertyValue.vestigialMultiBreasts)));
+			
 			
 			if(contentOptionsPage==ContentOptionsPage.BODIES) {
 				UtilText.nodeContentSB.append(getCustomContentPreferenceDivStart(PresetColour.NIPPLES, "Multi-breasts", "Choose how you want the game to display multi-breasts."));
@@ -2208,8 +2393,8 @@ public class OptionsDialogue {
 				
 				UtilText.nodeContentSB.append(getCustomContentPreferenceDivStart(PresetColour.NIPPLES_CROTCH, "Crotch-boobs & Udders", "Choose how you want the game to handle udders and crotch-boobs."));
 				for(int i=2; i>=0; i--) {
-					UtilText.nodeContentSB.append("<div id='UDDER_PREFERENCE_"+i+"' class='normal-button"+(Main.getProperties().udders==i?" selected":"")+"' style='width:calc(33% - 8px); margin-right:8px; text-align:center; float:right;'>"
-							+(Main.getProperties().udders==i
+					UtilText.nodeContentSB.append("<div id='UDDER_PREFERENCE_"+i+"' class='normal-button"+(Main.getProperties().getUddersLevel()==i?" selected":"")+"' style='width:calc(33% - 8px); margin-right:8px; text-align:center; float:right;'>"
+							+(Main.getProperties().getUddersLevel()==i
 								?(i==0?"[style.boldBad(":"[style.boldGood(")
 								:"[style.colourDisabled(")
 							+com.lilithsthrone.game.Properties.uddersLabels[i]+")]</div>");
@@ -2792,8 +2977,10 @@ public class OptionsDialogue {
 					+ "<b style='color:#21bfc5;'>DJ Addi</b></br>"
 					+ "<b style='color:#21bfc5;'>DSG</b></br>"
 					+ "<b style='color:#21bfc5;'>Irbynx</b></br>"
+					+ "<b style='color:#21bfc5;'>Maxis010</b></br>"
 					+ "<b style='color:#21bfc5;'>Nnxx</b></br>"
 					+ "<b style='color:#21bfc5;'>Norin</b></br>"
+					+ "<b style='color:#21bfc5;'>NoStepOnSnek</b></br>"
 					+ "<b style='color:#21bfc5;'>Phlarx</b></br>"
 					+ "<b style='color:#21bfc5;'>Pimgd</b></br>"
 					+ "<b style='color:#21bfc5;'>Rfpnj</b></br>"

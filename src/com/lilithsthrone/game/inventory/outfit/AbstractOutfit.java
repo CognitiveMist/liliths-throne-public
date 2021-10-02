@@ -34,13 +34,14 @@ import com.lilithsthrone.utils.Util;
 import com.lilithsthrone.utils.colours.Colour;
 import com.lilithsthrone.utils.colours.ColourListPresets;
 import com.lilithsthrone.utils.colours.PresetColour;
+import com.lilithsthrone.world.WorldRegion;
 import com.lilithsthrone.world.AbstractWorldType;
 import com.lilithsthrone.world.WorldType;
 
 /**
  * @since 0.3.1
- * @version 0.3.7.4
- * @author Innoxia
+ * @version 0.4.2
+ * @author Innoxia, AceXP
  */
 public abstract class AbstractOutfit {
 
@@ -49,6 +50,7 @@ public abstract class AbstractOutfit {
 	private String filePath;
 	private String name;
 	private String description;
+	private List<WorldRegion> worldRegions;
 	private List<AbstractWorldType> worldTypes;
 	private Femininity femininity;
 	private List<OutfitType> outfitTypes;
@@ -74,7 +76,18 @@ public abstract class AbstractOutfit {
 			this.femininity = 	Femininity.valueOf(coreAttributes.getMandatoryFirstOf("femininity").getTextContent());
 			this.conditional = 	coreAttributes.getMandatoryFirstOf("conditional").getTextContent();
 			this.weight = 		Integer.valueOf(coreAttributes.getMandatoryFirstOf("weight").getTextContent());
-			
+
+			this.worldRegions = new ArrayList<>();
+			if(coreAttributes.getOptionalFirstOf("worldRegions").isPresent()) {
+				this.worldRegions = coreAttributes
+						.getMandatoryFirstOf("worldRegions")
+						.getAllOf("region") // Get all child elements with this tag (checking only contents of parent element) and return them as List<Element>
+						.stream() // Convert this list to Stream<Element>, which lets us do some nifty operations on every element at once
+						.map( e -> WorldRegion.valueOf(e.getTextContent())) // Take every element and do something with them, return a Stream of results after this action. Here we load outfit types and get Stream<OutfitType>
+						.collect(Collectors.toList()); // Collect stream back into a list, but this time we get List<OutfitType> we need!
+			}
+
+			this.worldTypes = new ArrayList<>();
 			if(coreAttributes.getOptionalFirstOf("worldTypes").isPresent()) {
 				this.worldTypes = coreAttributes
 					.getMandatoryFirstOf("worldTypes") 
@@ -91,7 +104,7 @@ public abstract class AbstractOutfit {
 				.stream() // Convert this list to Stream<Element>, which lets us do some nifty operations on every element at once
 				.map( e -> OutfitType.valueOf(e.getTextContent())) // Take every element and do something with them, return a Stream of results after this action. Here we load outfit types and get Stream<OutfitType>
 				.filter(Objects::nonNull) // Ensure that we only add non-null effects
-				.collect(Collectors.toList()); // Collect stream back into a list, but this time we get List<OutfitType> we need! 
+				.collect(Collectors.toList()); // Collect stream back into a list, but this time we get List<OutfitType> we need!
 			
 			// Same as above, but now with leg configurations:
 			try {
@@ -99,7 +112,7 @@ public abstract class AbstractOutfit {
 						.getMandatoryFirstOf("acceptableLegConfigurations") 
 						.getAllOf("legConfiguration")
 						.stream()
-						.map( e -> LegConfiguration.valueOf(e.getTextContent()))
+						.map( e -> LegConfiguration.getValueFromString(e.getTextContent()))
 						.filter(Objects::nonNull)
 						.collect(Collectors.toList());
 			} catch(Exception ex) {
@@ -116,6 +129,11 @@ public abstract class AbstractOutfit {
 	}
 	
 	public boolean isAvailableForCharacter(OutfitType type, GameCharacter character) {
+
+        if(!this.getOutfitTypes().contains(type)) {
+            return false;
+        }
+
 		switch(this.getFemininity()) {
 			case FEMININE:
 			case FEMININE_STRONG:
@@ -132,17 +150,32 @@ public abstract class AbstractOutfit {
 				}
 				break;
 		}
-		
-		if(this.getWorldTypes()!=null
-				&& !this.getWorldTypes().isEmpty()
+
+		boolean hasWorldRegions = this.getWorldRegions()!=null && !this.getWorldRegions().isEmpty();
+		boolean hasWorldTypes = this.getWorldTypes()!=null && !this.getWorldTypes().isEmpty();
+
+		// If world region and world type present, must be in either one
+		if(hasWorldRegions
+				&& hasWorldTypes
+				&& !this.getWorldRegions().contains(character.getWorldLocation().getWorldRegion())
 				&& !this.getWorldTypes().contains(character.getWorldLocation())) {
 			return false;
 		}
-		
-		if(!this.getOutfitTypes().contains(type)) {
+
+		// If only world region present, must be in that world region
+		if(hasWorldRegions
+				&& !hasWorldTypes
+				&& !this.getWorldRegions().contains(character.getWorldLocation().getWorldRegion())) {
 			return false;
 		}
-		
+
+		// If only world type present, must be in that world type
+		if (hasWorldTypes
+				&& !hasWorldRegions
+				&& !this.getWorldTypes().contains(character.getWorldLocation())) {
+			return false;
+		}
+
 		if(this.getAcceptableLegConfigurations()!=null
 				&& !this.getAcceptableLegConfigurations().isEmpty()
 				&& !this.getAcceptableLegConfigurations().contains(character.getLegConfiguration())) {
@@ -358,7 +391,7 @@ public abstract class AbstractOutfit {
 					Collections.shuffle(guaranteedClothingEquips);
 					for(AbstractClothing c : guaranteedClothingEquips) {
 						if(c.getClothingType().getEquipSlots().get(0).isCoreClothing() || settings.contains(EquipClothingSetting.ADD_ACCESSORIES)) {
-							c.setName(UtilText.parse(character, c.getName()));
+							c.setName(UtilText.parse(character, c.getBaseName()));
 							if(!character.isSlotIncompatible(c.getClothingType().getEquipSlots().get(0))) {
 								character.equipClothingOverride(c, c.getClothingType().getEquipSlots().get(0), false, false);
 							}
@@ -377,7 +410,10 @@ public abstract class AbstractOutfit {
 					
 					boolean anyConditionalsFound = false;
 					
-					for(AbstractClothingType ct : ClothingType.getAllClothing()) {
+					List<AbstractClothingType> clothingList = new ArrayList<>(ClothingType.getAllClothing());
+					clothingList.removeIf(c->c.getDefaultItemTags().contains(ItemTag.NO_RANDOM_SPAWN));
+					
+					for(AbstractClothingType ct : clothingList) {
 						AbstractClothing defaultClothingExample = Main.game.getItemGen().generateClothing(ct);
 						// Check for required tags:
 						try {
@@ -493,7 +529,7 @@ public abstract class AbstractOutfit {
 						if(!anyConditionalsFound) {
 							break;
 						}
-						if(defaultClothingExample.isAbleToBeBeEquipped(character, ct.getEquipSlots().get(0)).getKey()) {
+						if(defaultClothingExample.isAbleToBeEquipped(character, ct.getEquipSlots().get(0)).getKey()) {
 							ctList.add(ct);
 						}
 					}
@@ -516,7 +552,7 @@ public abstract class AbstractOutfit {
 							.map( e -> {
 								AbstractClothingType ct = ClothingType.getClothingTypeFromId(e.getTextContent());
 								AbstractClothing defaultClothingExample = Main.game.getItemGen().generateClothing(ct);
-								if(!defaultClothingExample.isAbleToBeBeEquipped(character, ct.getEquipSlots().get(0)).getKey()) {
+								if(!defaultClothingExample.isAbleToBeEquipped(character, ct.getEquipSlots().get(0)).getKey()) {
 									return null;
 								}
 								return ct;
@@ -835,6 +871,10 @@ public abstract class AbstractOutfit {
 
 	public Femininity getFemininity() {
 		return femininity;
+	}
+
+	public List<WorldRegion> getWorldRegions() {
+		return worldRegions;
 	}
 
 	public List<AbstractWorldType> getWorldTypes() {

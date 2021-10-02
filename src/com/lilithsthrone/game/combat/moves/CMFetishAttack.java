@@ -22,7 +22,7 @@ import com.lilithsthrone.utils.colours.PresetColour;
  */
 public class CMFetishAttack {
 	
-	public static CombatMove TEASE_ANAL_RECEIVING = new CombatMove("buttslut-tease",
+	public static AbstractCombatMove TEASE_ANAL_RECEIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "buttslut tease",
             0,
             1,
@@ -49,7 +49,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -130,7 +130,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_ANAL_GIVING = new CombatMove("anal-tease",
+    public static AbstractCombatMove TEASE_ANAL_GIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "anal tease",
             0,
             1,
@@ -157,7 +157,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -228,7 +228,7 @@ public class CMFetishAttack {
         }
     };
 
-    public static CombatMove TEASE_VAGINAL_RECEIVING = new CombatMove("pussy-slut-tease",
+    public static AbstractCombatMove TEASE_VAGINAL_RECEIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "pussy slut tease",
             0,
             1,
@@ -255,7 +255,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -329,7 +329,7 @@ public class CMFetishAttack {
         }
     };
 
-    public static CombatMove TEASE_VAGINAL_GIVING = new CombatMove("vaginal-tease",
+    public static AbstractCombatMove TEASE_VAGINAL_GIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "vaginal tease",
             0,
             1,
@@ -356,7 +356,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(!target.hasVagina() || target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -431,7 +431,7 @@ public class CMFetishAttack {
         }
     };
 
-    public static CombatMove TEASE_INCEST = new CombatMove("incest-tease",
+    public static AbstractCombatMove TEASE_INCEST = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "incest tease",
             0,
             1,
@@ -458,7 +458,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(!target.isRelatedTo(source) || target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -580,7 +580,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_CUM_STUD = new CombatMove("cum-stud-tease",
+    public static AbstractCombatMove TEASE_CUM_STUD = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "cum stud tease",
             0,
             1,
@@ -607,7 +607,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -679,7 +679,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_CUM_ADDICT = new CombatMove("cum-addict-tease",
+    public static AbstractCombatMove TEASE_CUM_ADDICT = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "cum addict tease",
             0,
             1,
@@ -707,7 +707,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(!target.hasPenisIgnoreDildo() || target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -785,7 +785,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_PENIS_RECEIVING = new CombatMove("cock-addict-tease",
+    public static AbstractCombatMove TEASE_PENIS_RECEIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "cock addict tease",
             0,
             1,
@@ -812,7 +812,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(!target.hasPenisIgnoreDildo() || target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -886,7 +886,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_PENIS_GIVING = new CombatMove("cock-stud-tease",
+    public static AbstractCombatMove TEASE_PENIS_GIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "cock stud tease",
             0,
             1,
@@ -913,7 +913,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -982,7 +982,7 @@ public class CMFetishAttack {
         }
     };
     
-	public static CombatMove TEASE_FOOT_RECEIVING = new CombatMove("submissive-foot-tease",
+	public static AbstractCombatMove TEASE_FOOT_RECEIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "submissive foot tease",
             0,
             1,
@@ -1009,7 +1009,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -1079,7 +1079,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_FOOT_GIVING = new CombatMove("dominant-foot-tease",
+    public static AbstractCombatMove TEASE_FOOT_GIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "dominant foot tease",
             0,
             1,
@@ -1106,7 +1106,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -1175,7 +1175,205 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_ORAL_RECEIVING = new CombatMove("oral-tease",
+	public static AbstractCombatMove TEASE_ARMPIT_RECEIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
+            "armpit slut tease",
+            0,
+            1,
+            CombatMoveType.TEASE,
+            DamageType.LUST,
+            "fetishes/fetish_armpit_receiving",
+            false,
+            true,
+            false,
+			null) {
+
+    	private Fetish associatedFetish = Fetish.FETISH_ARMPIT_RECEIVING;
+    	private Fetish oppositeFetish = Fetish.FETISH_ARMPIT_GIVING;
+
+    	@Override
+    	public float getWeight(GameCharacter source, List<GameCharacter> enemies, List<GameCharacter> allies) {
+    		if(this.getPreferredTarget(source, enemies, allies).getFetishDesire(oppositeFetish).isNegative()) {
+    			return 0;
+    		}
+    		return super.getWeight(source, enemies, allies);
+    	}
+
+        private int getBaseDamage(GameCharacter source, boolean isCrit) {
+            return 5 * (isCrit?3:1);
+        }
+
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+            if(target.getFetishDesire(oppositeFetish).isNegative()) {
+            	return 1;
+            }
+            return (int) Attack.calculateSeductionDamage(source, target, getBaseDamage(source, isCrit), false);
+        }
+        
+        @Override
+        public Value<Boolean, String> isAvailableFromSpecialCase(GameCharacter source) {
+            return new Value<>(source.hasFetish(associatedFetish), "Available to characters who have the "+associatedFetish.getName(source)+" fetish.");
+        }
+
+        @Override
+        public String getPrediction(int turnIndex, GameCharacter source, GameCharacter target, List<GameCharacter> enemies, List<GameCharacter> allies) {
+            DamageType damageType = getDamageType(source);
+            boolean isCrit = canCrit(turnIndex, source, target, enemies, allies);
+            
+            return UtilText.parse(source, target,
+            			(isCrit?"[style.colourExcellent(Critical)]: ":"")
+            				+ "[npc.Name] [npc.verb(beg)] for [npc2.name] to use [npc2.her] armpits, dealing "
+            					+ getFormattedDamage(damageType, getDamage(source, target, isCrit), target, false, isTargetAtMaximumLust(target)) + " damage."
+            				+ (target.getFetishDesire(oppositeFetish).isNegative()?" [style.italicsMinorBad(Damage is reduced to 1 as [npc2.name] [npc2.verb(dislike)] the "+oppositeFetish.getName(source)+" fetish!)]":""));
+        }
+
+        @Override
+        public String getDescription(GameCharacter source) {
+            DamageType damageType = getDamageType(source);
+            return UtilText.parse(source, 
+            		"[npc.Name] can use [npc.her] "+associatedFetish.getName(source)+" fetish to tease [npc.her] target, dealing base " + getFormattedDamage(damageType, getBaseDamage(source, false), null, false, false) + " damage."
+            				+ " [style.italicsMinorBad(Damage is reduced to 1 if the target dislikes the "+oppositeFetish.getName(null)+" fetish.)]");
+        }
+
+        @Override
+        public String perform(int turnIndex, GameCharacter source, GameCharacter target, List<GameCharacter> enemies, List<GameCharacter> allies) {
+            DamageType damageType = getDamageType(source);
+            boolean isCrit = canCrit(turnIndex, source, target, enemies, allies);
+            boolean maxLust = isTargetAtMaximumLust(target);
+            Value<String, Integer> dealtDamage = new Value<>("", 0);
+            if(target.getFetishDesire(oppositeFetish).isNegative()) {
+            	dealtDamage = new Value<>("", 1);
+            	isCrit = false;
+            } else {
+            	dealtDamage = damageType.damageTarget(source, target, getDamage(source, target, isCrit));;
+            }
+            
+            return formatAttackOutcome(source, target,
+            		(UtilText.returnStringAtRandom(
+    						"[npc.Name] [npc.verb(lift)] [npc.her] [npc.arms] and [npc.moanVerb], [npc.speech(I can't wait for you to be using my armpits!)]",
+    						"[npc.Name] [npc.verb(bite)] [npc.her] [npc.lip] as [npc.she] [npc.verb(lift)] [npc.her] [npc.arm] and [npc.verb(show)] off [npc.her] [npc.armpits+], [npc.speech(You're going to love my armpits!)]",
+    						"[npc.Name] [npc.verb(grin)] at [npc2.name], licking [npc.her] [npc.lips+] and lifting [npc.her] [npc.arm] to show off [npc.her] [npc.armpit+] as [npc.she] [npc.moanVerb],"
+    								+ " [npc.speech(I just want you to be worshipping my pits!)]")
+            		)+dealtDamage.getKey(),
+            		"[npc2.Name] took " + getFormattedDamage(damageType, dealtDamage.getValue(), target, true, maxLust) + " damage!",
+            		(isCrit
+            			?"[npc2.NameIsFull] incredibly turned on, and [npc2.verb(take)] triple damage!"
+            			:null),
+            		"[npc2.NameIsFull] incredibly turned on, and [npc2.verb(take)] triple damage!");
+        }
+
+        @Override
+        public List<String> getCritRequirements(GameCharacter source, GameCharacter target, List<GameCharacter> enemies, List<GameCharacter> allies) {
+        	return Util.newArrayListOfValues(
+        			 (target!=null?UtilText.parse(target,"[npc.NamehasFull]"):"The target has")+" the "+oppositeFetish.getName(target)+" fetish.");
+        }
+        
+        @Override
+        public boolean canCrit(int turnIndex, GameCharacter source, GameCharacter target, List<GameCharacter> enemies, List<GameCharacter> allies) {
+        	return target.hasFetish(oppositeFetish);
+        }
+    };
+    
+    public static AbstractCombatMove TEASE_ARMPIT_GIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
+            "armpit lover tease",
+            0,
+            1,
+            CombatMoveType.TEASE,
+            DamageType.LUST,
+            "fetishes/fetish_armpit_giving",
+            false,
+            true,
+            false,
+			null) {
+
+    	private Fetish associatedFetish = Fetish.FETISH_ARMPIT_GIVING;
+    	private Fetish oppositeFetish = Fetish.FETISH_ARMPIT_RECEIVING;
+
+    	@Override
+    	public float getWeight(GameCharacter source, List<GameCharacter> enemies, List<GameCharacter> allies) {
+    		if(this.getPreferredTarget(source, enemies, allies).getFetishDesire(oppositeFetish).isNegative()) {
+    			return 0;
+    		}
+    		return super.getWeight(source, enemies, allies);
+    	}
+
+        private int getBaseDamage(GameCharacter source, boolean isCrit) {
+            return 5 * (isCrit?3:1);
+        }
+
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+            if(target.getFetishDesire(oppositeFetish).isNegative()) {
+            	return 1;
+            }
+            return (int) Attack.calculateSeductionDamage(source, target, getBaseDamage(source, isCrit), false);
+        }
+        
+        @Override
+        public Value<Boolean, String> isAvailableFromSpecialCase(GameCharacter source) {
+            return new Value<>(source.hasFetish(associatedFetish), "Available to characters who have the "+associatedFetish.getName(source)+" fetish.");
+        }
+
+        @Override
+        public String getPrediction(int turnIndex, GameCharacter source, GameCharacter target, List<GameCharacter> enemies, List<GameCharacter> allies) {
+            DamageType damageType = getDamageType(source);
+            boolean isCrit = canCrit(turnIndex, source, target, enemies, allies);
+            
+            return UtilText.parse(source, target,
+	            		(isCrit?"[style.colourExcellent(Critical)]: ":"")
+	            			+ "[npc.Name] [npc.verb(tell)] [npc2.name] that [npc.sheIs] going to use [npc.her] [npc.armpits] on [npc2.herHim], dealing "
+            					+ getFormattedDamage(damageType, getDamage(source, target, isCrit), target, false, isTargetAtMaximumLust(target)) + " damage."
+            				+ (target.getFetishDesire(oppositeFetish).isNegative()?" [style.italicsMinorBad(Damage is reduced to 1 as [npc2.name] [npc2.verb(dislike)] the "+oppositeFetish.getName(source)+" fetish!)]":""));
+        }
+
+        @Override
+        public String getDescription(GameCharacter source) {
+            DamageType damageType = getDamageType(source);
+            return UtilText.parse(source, 
+            		"[npc.Name] can use [npc.her] "+associatedFetish.getName(source)+" fetish to tease [npc.her] target, dealing base " + getFormattedDamage(damageType, getBaseDamage(source, false), null, false, false) + " damage."
+            				+ " [style.italicsMinorBad(Damage is reduced to 1 if the target dislikes the "+oppositeFetish.getName(null)+" fetish.)]");
+        }
+
+        @Override
+        public String perform(int turnIndex, GameCharacter source, GameCharacter target, List<GameCharacter> enemies, List<GameCharacter> allies) {
+            DamageType damageType = getDamageType(source);
+            boolean isCrit = canCrit(turnIndex, source, target, enemies, allies);
+            boolean maxLust = isTargetAtMaximumLust(target);
+            Value<String, Integer> dealtDamage = new Value<>("", 0);
+            if(target.getFetishDesire(oppositeFetish).isNegative()) {
+            	dealtDamage = new Value<>("", 1);
+            	isCrit = false;
+            } else {
+            	dealtDamage = damageType.damageTarget(source, target, getDamage(source, target, isCrit));;
+            }
+            
+            return formatAttackOutcome(source, target,
+            		(UtilText.returnStringAtRandom(
+    						"[npc.Name] [npc.verb(grin)] at [npc2.name], before moving [npc.her] gaze down to [npc2.her] [npc2.arms] and [npc.moaning],"
+    								+" [npc.speech(Your armpits look like they need a good fuck!)]",
+							"[npc.Name] hungrily [npc.verb(stare)] at [npc2.namePos] [npc2.armpits], [npc.moaning],"
+								+" [npc.speech(I'm going to use your pits!)]",
+							"Gazing lustfully at [npc2.namePos] [npc2.arms], [npc.name] [npc.verb(let)] out [npc.a_moan+],"
+								+" [npc.speech(I can't wait to be having fun with your sexy pits!)]")
+            		)+dealtDamage.getKey(),
+            		"[npc2.Name] took " + getFormattedDamage(damageType, dealtDamage.getValue(), target, true, maxLust) + " damage!",
+            		(isCrit
+            			?"[npc2.NameIsFull] incredibly turned on, and [npc2.verb(take)] triple damage!"
+            			:null),
+            		"[npc2.NameIsFull] incredibly turned on, and [npc2.verb(take)] triple damage!");
+        }
+
+        @Override
+        public List<String> getCritRequirements(GameCharacter source, GameCharacter target, List<GameCharacter> enemies, List<GameCharacter> allies) {
+        	return Util.newArrayListOfValues(
+        			 (target!=null?UtilText.parse(target,"[npc.NamehasFull]"):"The target has")+" the "+oppositeFetish.getName(target)+" fetish.");
+        }
+        
+        @Override
+        public boolean canCrit(int turnIndex, GameCharacter source, GameCharacter target, List<GameCharacter> enemies, List<GameCharacter> allies) {
+        	return target.hasFetish(oppositeFetish);
+        }
+    };
+    
+    public static AbstractCombatMove TEASE_ORAL_RECEIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "oral tease",
             0,
             1,
@@ -1202,7 +1400,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -1274,7 +1472,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_ORAL_GIVING = new CombatMove("oral-performer-tease",
+    public static AbstractCombatMove TEASE_ORAL_GIVING = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "oral performer tease",
             0,
             1,
@@ -1301,7 +1499,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -1383,7 +1581,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_BREASTS_OTHERS = new CombatMove("breasts-lover-tease",
+    public static AbstractCombatMove TEASE_BREASTS_OTHERS = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "breasts lover tease",
             0,
             1,
@@ -1410,7 +1608,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(!target.hasBreasts() || target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -1500,7 +1698,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_BREASTS = new CombatMove("breasts-tease",
+    public static AbstractCombatMove TEASE_BREASTS = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "breasts tease",
             0,
             1,
@@ -1527,7 +1725,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -1609,7 +1807,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_LACTATION_OTHERS = new CombatMove("milk-lover-tease",
+    public static AbstractCombatMove TEASE_LACTATION_OTHERS = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "milk lover tease",
             0,
             1,
@@ -1636,8 +1834,8 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
-            if((target.getBreastRawMilkStorageValue()==0 && (!target.hasBreastsCrotch() || !Main.game.isCrotchBoobContentEnabled() || target.getBreastCrotchRawMilkStorageValue()==0))
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+            if((target.getBreastRawMilkStorageValue()==0 && (!target.hasBreastsCrotch() || !(Main.game.isCrotchBoobContentEnabled() || target.isFeral()) || target.getBreastCrotchRawMilkStorageValue()==0))
             	|| target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -1658,7 +1856,7 @@ public class CMFetishAttack {
             			(isCrit?"[style.colourExcellent(Critical)]: ":"")
             				+ "[npc.Name] [npc.verb(beg)] to milk [npc2.namePos] [npc2.breasts+], dealing "
             					+ getFormattedDamage(damageType, getDamage(source, target, isCrit), target, false, isTargetAtMaximumLust(target)) + " damage."
-            				+ (target.getBreastRawMilkStorageValue()==0 && (!target.hasBreastsCrotch() || !Main.game.isCrotchBoobContentEnabled() || target.getBreastCrotchRawMilkStorageValue()==0)
+            				+ (target.getBreastRawMilkStorageValue()==0 && (!target.hasBreastsCrotch() || !(Main.game.isCrotchBoobContentEnabled() || target.isFeral()) || target.getBreastCrotchRawMilkStorageValue()==0)
             						?" [style.italicsMinorBad(Damage is reduced to 1 as [npc2.name] is not lactating!)]"
             						:(target.getFetishDesire(oppositeFetish).isNegative()
                     						?" [style.italicsMinorBad(Damage is reduced to 1 as [npc2.name] [npc2.verb(dislike)] the "+oppositeFetish.getName(source)+" fetish!)]"
@@ -1697,7 +1895,7 @@ public class CMFetishAttack {
 							"Gazing lustfully at [npc2.namePos] [npc2.breasts+], [npc.name] [npc.verb(let)] out [npc.a_moan+],"
 									+" [npc.speech(I'm going to have fun milking those [npc2.breasts+] of yours!)]")));
 				
-            } else if(target.hasBreastsCrotch() && Main.game.isCrotchBoobContentEnabled() && target.getBreastCrotchRawMilkStorageValue()>0) {
+            } else if(target.hasBreastsCrotch() && (Main.game.isCrotchBoobContentEnabled() || target.isFeral()) && target.getBreastCrotchRawMilkStorageValue()>0) {
 				attackText = UtilText.parse(source, target,
 						(UtilText.returnStringAtRandom(
 							"[npc.Name] [npc.verb(grin)] at [npc2.name], gazing at [npc2.her] [npc2.crotchBoobs+] as [npc.she] [npc.moansVerb],"
@@ -1737,7 +1935,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_LACTATION = new CombatMove("lactation-tease",
+    public static AbstractCombatMove TEASE_LACTATION = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "lactation tease",
             0,
             1,
@@ -1764,8 +1962,8 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
-            if((source.getBreastRawMilkStorageValue()==0 && (!source.hasBreastsCrotch() || !Main.game.isCrotchBoobContentEnabled() || source.getBreastCrotchRawMilkStorageValue()==0))
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+            if((source.getBreastRawMilkStorageValue()==0 && (!source.hasBreastsCrotch() || !(Main.game.isCrotchBoobContentEnabled() || target.isFeral()) || source.getBreastCrotchRawMilkStorageValue()==0))
             		|| target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -1774,7 +1972,7 @@ public class CMFetishAttack {
         
         @Override
         public Value<Boolean, String> isAvailableFromSpecialCase(GameCharacter source) {
-            return new Value<>(source.hasFetish(associatedFetish) && (source.hasBreasts() || (source.hasBreastsCrotch() && Main.game.isCrotchBoobContentEnabled())),
+            return new Value<>(source.hasFetish(associatedFetish) && (source.hasBreasts() || (source.hasBreastsCrotch() && (Main.game.isCrotchBoobContentEnabled() || source.isFeral()))),
             		"Available to characters who both have breasts and who have the "+associatedFetish.getName(source)+" fetish.");
         }
 
@@ -1789,7 +1987,7 @@ public class CMFetishAttack {
             					+ getFormattedDamage(damageType, getDamage(source, target, isCrit), target, false, isTargetAtMaximumLust(target)) + " damage."
             				+ (target.getFetishDesire(oppositeFetish).isNegative()
             						?" [style.italicsMinorBad(Damage is reduced to 1 as [npc2.name] [npc2.verb(dislike)] the "+oppositeFetish.getName(source)+" fetish!)]"
-            						:(source.getBreastRawMilkStorageValue()==0 && (!source.hasBreastsCrotch() || !Main.game.isCrotchBoobContentEnabled() || source.getBreastCrotchRawMilkStorageValue()==0)
+            						:(source.getBreastRawMilkStorageValue()==0 && (!source.hasBreastsCrotch() || !(Main.game.isCrotchBoobContentEnabled() || target.isFeral()) || source.getBreastCrotchRawMilkStorageValue()==0)
             							?" [style.italicsMinorBad(Damage is reduced to 1 as [npc.nameIsFull] not lactating!)]"
             							:"")));
         }
@@ -1869,7 +2067,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_FERTILITY = new CombatMove("fertility-tease",
+    public static AbstractCombatMove TEASE_FERTILITY = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "fertility tease",
             0,
             1,
@@ -1896,7 +2094,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -2004,7 +2202,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_VIRILITY = new CombatMove("virility-tease",
+    public static AbstractCombatMove TEASE_VIRILITY = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "virility tease",
             0,
             1,
@@ -2031,7 +2229,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -2131,7 +2329,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_DOMINANT = new CombatMove("dominant-tease",
+    public static AbstractCombatMove TEASE_DOMINANT = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "dominant tease",
             0,
             1,
@@ -2158,7 +2356,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }
@@ -2240,7 +2438,7 @@ public class CMFetishAttack {
         }
     };
     
-    public static CombatMove TEASE_SUBMISSIVE = new CombatMove("submissive-tease",
+    public static AbstractCombatMove TEASE_SUBMISSIVE = new AbstractCombatMove(CombatMoveCategory.SPECIAL,
             "submissive tease",
             0,
             1,
@@ -2267,7 +2465,7 @@ public class CMFetishAttack {
             return 5 * (isCrit?3:1);
         }
 
-        private int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
+        protected int getDamage(GameCharacter source, GameCharacter target, boolean isCrit) {
             if(target.getFetishDesire(oppositeFetish).isNegative()) {
             	return 1;
             }

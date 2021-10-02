@@ -4,7 +4,7 @@ import com.lilithsthrone.utils.TreeNode;
 
 /**
  * @since 0.1.99
- * @version 0.3.9.4
+ * @version 0.4.2
  * @author Innoxia
  */
 public class QuestTree {
@@ -13,9 +13,11 @@ public class QuestTree {
 	
 	public static TreeNode<Quest> enchantmentTree = new TreeNode<Quest>(Quest.SIDE_ENCHANTMENTS_LILAYA_HELP);
 	public static TreeNode<Quest> pregnancyTree = new TreeNode<Quest>(Quest.SIDE_PREGNANCY_CONSULT_LILAYA);
+	public static TreeNode<Quest> incubationTree = new TreeNode<Quest>(Quest.SIDE_INCUBATION_WAITING);
 	public static TreeNode<Quest> slaveryTree = new TreeNode<Quest>(Quest.SIDE_SLAVER_NEED_RECOMMENDATION);
 	public static TreeNode<Quest> accommodationTree = new TreeNode<Quest>(Quest.SIDE_ACCOMMODATION_NEED_LILAYAS_PERMISSION);
 	public static TreeNode<Quest> hypnoWatchTree = new TreeNode<Quest>(Quest.SIDE_HYPNO_WATCH_VICKY);
+	public static TreeNode<Quest> arcaneLightningTree = new TreeNode<Quest>(Quest.LIGHTNING_SPELL_1_PAYMENT);
 	public static TreeNode<Quest> angryHarpyTree = new TreeNode<Quest>(Quest.HARPY_PACIFICATION_ONE);
 	public static TreeNode<Quest> slimeQueenTree = new TreeNode<Quest>(Quest.SLIME_QUEEN_ONE);
 	public static TreeNode<Quest> teleportingTree = new TreeNode<Quest>(Quest.TELEPORTING_START);
@@ -24,10 +26,13 @@ public class QuestTree {
 	public static TreeNode<Quest> vengarTree = new TreeNode<Quest>(Quest.VENGAR_START);
 	public static TreeNode<Quest> wesTree = new TreeNode<Quest>(Quest.WES_START);
 	
-	public static TreeNode<Quest> nyanTree = new TreeNode<Quest>(Quest.RELATIONSHIP_NYAN_STOCK_ISSUES);
+	public static TreeNode<Quest> nyanTree = new TreeNode<Quest>(Quest.RELATIONSHIP_NYAN_1_STOCK_ISSUES);
 	public static TreeNode<Quest> helenaTree = new TreeNode<Quest>(Quest.ROMANCE_HELENA_1_OFFER_HELP);
 	public static TreeNode<Quest> natalyaTree = new TreeNode<Quest>(Quest.ROMANCE_NATALYA_1_INTERVIEW_START);
+	public static TreeNode<Quest> monicaTree = new TreeNode<Quest>(Quest.ROMANCE_MONICA_1_TO_THE_FARM);
 	
+	public static TreeNode<Quest> rebelBaseTree = new TreeNode<Quest>(Quest.REBEL_BASE_EXPLORATION);
+	public static TreeNode<Quest> rebelBaseFirebombTree = new TreeNode<Quest>(Quest.REBEL_BASE_FIREBOMBS_START);
 	
 	
 	static {
@@ -59,10 +64,16 @@ public class QuestTree {
 		node2.addChild(node1);
 		node2 = new TreeNode<Quest>(Quest.MAIN_2_D_MEETING_A_LILIN);
 		node1.addChild(node2);
-		node1 = new TreeNode<Quest>(Quest.MAIN_3_A_FINDING_THE_YOUKO);
+		node1 = new TreeNode<Quest>(Quest.MAIN_3_ELIS);
 		node2.addChild(node1);
-		node2 = new TreeNode<Quest>(Quest.MAIN_3_B_DEBTS_PAID);
+		node2 = new TreeNode<Quest>(Quest.MAIN_3_B_MEETING_MERAXIS);
 		node1.addChild(node2);
+		node1 = new TreeNode<Quest>(Quest.MAIN_3_C_MEETING_MINOTALLYS);
+		node2.addChild(node1);
+		node2 = new TreeNode<Quest>(Quest.MAIN_3_D_TO_THEMISCRYA);
+		node1.addChild(node2);
+		node1 = new TreeNode<Quest>(Quest.MAIN_3_E_TODO);
+		node2.addChild(node1);
 
 		enchantmentTree.addChild(new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE));
 
@@ -71,6 +82,9 @@ public class QuestTree {
 		node2 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
 		node1.addChild(node2);
 
+		node1 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
+		incubationTree.addChild(node1);
+		
 		accommodationTree.addChild(new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE));
 		
 		node1 = new TreeNode<Quest>(Quest.SIDE_SLAVER_RECOMMENDATION_OBTAINED);
@@ -80,6 +94,11 @@ public class QuestTree {
 		
 		node1 = new TreeNode<Quest>(Quest.SIDE_HYPNO_WATCH_TEST_SUBJECT);
 		hypnoWatchTree.addChild(node1);
+		node2 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
+		node1.addChild(node2);
+
+		node1 = new TreeNode<Quest>(Quest.LIGHTNING_SPELL_2_WAITING);
+		arcaneLightningTree.addChild(node1);
 		node2 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
 		node1.addChild(node2);
 		
@@ -191,6 +210,39 @@ public class QuestTree {
 		node2.addChild(new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE));
 		
 		
+        //Rebel base:
+		
+        node1 = new TreeNode<Quest>(Quest.REBEL_BASE_HANDLE_REFUSED);
+        rebelBaseTree.addChild(node1);
+        node2 = new TreeNode<Quest>(Quest.REBEL_BASE_PASSWORD_PART_ONE);
+        node1.addChild(node2);
+        node1 = new TreeNode<Quest>(Quest.REBEL_BASE_PASSWORD_PART_TWO);
+        node2.addChild(node1);
+        node2 = new TreeNode<Quest>(Quest.REBEL_BASE_PASSWORD_COMPLETE);
+        node1.addChild(node2);
+        node1 = new TreeNode<Quest>(Quest.REBEL_BASE_EXPLORATION);
+        node2.addChild(node1);
+        
+        nodeBranchA = new TreeNode<Quest>(Quest.REBEL_BASE_ESCAPE);
+        node1.addChild(nodeBranchA);
+        nodeBranchB = new TreeNode<Quest>(Quest.REBEL_BASE_FAILED);
+        node1.addChild(nodeBranchB);
+        node2 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
+        nodeBranchA.addChild(node2);
+        
+        
+        //Firebombs:
+        
+        node1 = new TreeNode<Quest>(Quest.REBEL_BASE_FIREBOMBS_START);
+        rebelBaseFirebombTree.addChild(node1);
+        nodeBranchA = new TreeNode<Quest>(Quest.REBEL_BASE_FIREBOMBS_FINISH);
+        node1.addChild(nodeBranchA);
+        nodeBranchB = new TreeNode<Quest>(Quest.REBEL_BASE_FIREBOMBS_FAILED);
+        node1.addChild(nodeBranchB);
+        node1 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
+        nodeBranchA.addChild(node1);
+		
+        
 		// Wes quest:
 
 		node1 = new TreeNode<Quest>(Quest.WES_1);
@@ -211,12 +263,14 @@ public class QuestTree {
 		// Romance quests:
 
 		
-		node1 = new TreeNode<Quest>(Quest.RELATIONSHIP_NYAN_STOCK_ISSUES_AGREED_TO_HELP);
+		node1 = new TreeNode<Quest>(Quest.RELATIONSHIP_NYAN_2_STOCK_ISSUES_AGREED_TO_HELP);
 		nyanTree.addChild(node1);
-		node2 = new TreeNode<Quest>(Quest.RELATIONSHIP_NYAN_STOCK_ISSUES_SUPPLIERS_BEATEN);
+		node2 = new TreeNode<Quest>(Quest.RELATIONSHIP_NYAN_3_STOCK_ISSUES_DOBERMANNS);
 		node1.addChild(node2);
-		node1 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
+		node1 = new TreeNode<Quest>(Quest.RELATIONSHIP_NYAN_4_STOCK_ISSUES_SUPPLIERS_BEATEN);
 		node2.addChild(node1);
+		node2 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
+		node1.addChild(node2);
 		
 		
 		node1 = new TreeNode<Quest>(Quest.ROMANCE_HELENA_2_PURCHASE_PAINT);
@@ -248,6 +302,14 @@ public class QuestTree {
 		node1 = new TreeNode<Quest>(Quest.ROMANCE_NATALYA_4_TRAINING_2);
 		node2.addChild(node1);
 		node2 = new TreeNode<Quest>(Quest.ROMANCE_NATALYA_5_TRAINING_3);
+		node1.addChild(node2);
+		node1 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
+		node2.addChild(node1);
+
+		
+		node1 = new TreeNode<Quest>(Quest.ROMANCE_MONICA_2_UNREASONABLE_DEMAND);
+		monicaTree.addChild(node1);
+		node2 = new TreeNode<Quest>(Quest.ROMANCE_MONICA_3_THE_JOURNEY_HOME);
 		node1.addChild(node2);
 		node1 = new TreeNode<Quest>(Quest.SIDE_UTIL_COMPLETE);
 		node2.addChild(node1);

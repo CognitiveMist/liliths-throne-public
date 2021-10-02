@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.lilithsthrone.game.character.CharacterUtils;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.attributes.CorruptionLevel;
 import com.lilithsthrone.game.character.body.CoverableArea;
@@ -135,7 +134,7 @@ public class VengarCaptiveDialogue {
 			rat.setLevel(4+Util.random.nextInt(5));
 			rat.setLocation(Main.game.getPlayer(), true);
 			String[] names = new String[] {"thug", "gangster", "gang-member", "mobster"};
-			CharacterUtils.setGenericName(rat, Util.randomItemFrom(names), null);
+			Main.game.getCharacterUtils().setGenericName(rat, Util.randomItemFrom(names), null);
 			return rat;
 
 		} catch (Exception e) {
@@ -2220,7 +2219,7 @@ public class VengarCaptiveDialogue {
 		}
 		@Override
 		public String getContent() {
-			if(Main.game.getPlayer().getVaginaType().isEggLayer()) {
+			if(Main.game.getPlayer().isVaginaEggLayer()) {
 				return UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "VENGARS_HALL_DELIVERY_BIRTHING_EGGS");
 			} else {
 				return UtilText.parseFromXMLFile("places/submission/ratWarrens/captive", "VENGARS_HALL_DELIVERY_BIRTHING");
@@ -2229,7 +2228,7 @@ public class VengarCaptiveDialogue {
 		@Override
 		public Response getResponse(int responseTab, int index) {
 			if(index==1) {
-				if(Main.game.getPlayer().getVaginaType().isEggLayer()) {
+				if(Main.game.getPlayer().isVaginaEggLayer()) {
 					return new Response("Protect the eggs!", "You spend some time recovering from your ordeal...", VENGARS_HALL_DELIVERY_BIRTHING_EGG_PROTECTION) {
 						@Override
 						public void effects() {
