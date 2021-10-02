@@ -118,6 +118,7 @@ import com.lilithsthrone.game.character.body.valueEnums.WingSize;
 import com.lilithsthrone.game.character.effects.AbstractPerk;
 import com.lilithsthrone.game.character.effects.AbstractStatusEffect;
 import com.lilithsthrone.game.character.effects.Perk;
+import com.lilithsthrone.game.character.effects.PerkCategory;
 import com.lilithsthrone.game.character.effects.StatusEffect;
 import com.lilithsthrone.game.character.fetishes.Fetish;
 import com.lilithsthrone.game.character.fetishes.FetishDesire;
@@ -548,6 +549,10 @@ public class UtilText {
 		return "<i>"+parseSpeech(text, target, true, false, false).replaceAll("class='speech'", "class='thoughts'")+"</i>";
 	}
 
+	public static String parseNPCThought(String text, Femininity femininity) {
+		return "<i>"+parseNPCSpeech(text, femininity, false, false).replaceAll("class='speech'", "class='thoughts'")+"</i>";
+	}
+	
 	public static String parseNPCSpeech(String text, Femininity femininity) {
 		return parseNPCSpeech(text, femininity, false, false);
 	}
@@ -560,7 +565,7 @@ public class UtilText {
 		if (stutter) {
 			modifiedSentence = Util.addStutter(modifiedSentence, 4);
 		}
-		return "<span class='speech' style='color:" + femininity.getColour().toWebHexString() + ";'>" + modifiedSentence + "</span>";
+		return "<span class='speech' style='color:" + femininity.getSpeechColour().toWebHexString() + ";'>" + modifiedSentence + "</span>";
 	}
 	
 	public static String getDisabledResponse(String label) {
@@ -1327,11 +1332,24 @@ public class UtilText {
 				true,
 				true,
 				"",
-				"Returns the name of what kind of wall is in the character's area."){
+				"Returns the name of what kind of wall is in the character's area (for having sex against)."){
 			@Override
 			public String parse(List<GameCharacter> specialNPCs, String command, String arguments, String target, GameCharacter character) {
 				Cell cell = character.getCell();
 				return cell.getWallName();
+			}
+		});
+
+		commandsList.add(new ParserCommand(
+				Util.newArrayListOfValues("desk"),
+				true,
+				true,
+				"",
+				"Returns the name of what kind of desk is in the character's area (for having sex over)."){
+			@Override
+			public String parse(List<GameCharacter> specialNPCs, String command, String arguments, String target, GameCharacter character) {
+				Cell cell = character.getCell();
+				return cell.getDeskName();
 			}
 		});
 		
@@ -2253,6 +2271,24 @@ public class UtilText {
 					return "ma'am";
 				} else {
 					return "sir";
+				}
+			}
+		});
+		
+		commandsList.add(new ParserCommand(
+				Util.newArrayListOfValues(
+						"lord",
+						"lady"),
+				true,
+				true,
+				"",
+				"Returns either 'lord' or 'lady' based on the character's femininity."){
+			@Override
+			public String parse(List<GameCharacter> specialNPCs, String command, String arguments, String target, GameCharacter character) {
+				if(character.isFeminine()) {
+					return "lady";
+				} else {
+					return "lord";
 				}
 			}
 		});
@@ -3377,6 +3413,104 @@ public class UtilText {
 					return parseThought(arguments, character);
 				} else {
 					return parseThought("...", character);
+				}
+			}
+		});
+		
+		commandsList.add(new ParserCommand(
+				Util.newArrayListOfValues(
+						"thoughtMasculine",
+						"masculineThought"),
+				false,
+				false,
+				"(thought content)",
+				"Parses the containing dialogue as though a generic, masculine character is saying it."){
+			@Override
+			public String parse(List<GameCharacter> specialNPCs, String command, String arguments, String target, GameCharacter character) {
+				if(arguments!=null) {
+					return parseNPCThought(arguments, Femininity.MASCULINE);
+				} else {
+					return parseNPCThought("...", Femininity.MASCULINE);
+				}
+			}
+		});
+		
+		commandsList.add(new ParserCommand(
+				Util.newArrayListOfValues(
+						"thoughtMasculineStrong",
+						"thoughtMasculineHeavy",
+						"thoughtMasculinePlus",
+						"masculineStrongThought",
+						"masculineHeavyThought",
+						"masculinePlusThought"),
+				false,
+				false,
+				"(thought content)",
+				"Parses the containing dialogue as though a generic, very masculine character is saying it."){
+			@Override
+			public String parse(List<GameCharacter> specialNPCs, String command, String arguments, String target, GameCharacter character) {
+				if(arguments!=null) {
+					return parseNPCThought(arguments, Femininity.MASCULINE_STRONG);
+				} else {
+					return parseNPCThought("...", Femininity.MASCULINE_STRONG);
+				}
+			}
+		});
+		
+		commandsList.add(new ParserCommand(
+				Util.newArrayListOfValues(
+						"thoughtAndrogynous",
+						"androgynousThought"),
+				false,
+				false,
+				"(thought content)",
+				"Parses the containing dialogue as though a generic, androgynous character is saying it."){
+			@Override
+			public String parse(List<GameCharacter> specialNPCs, String command, String arguments, String target, GameCharacter character) {
+				if(arguments!=null) {
+					return parseNPCThought(arguments, Femininity.ANDROGYNOUS);
+				} else {
+					return parseNPCThought("...", Femininity.ANDROGYNOUS);
+				}
+			}
+		});
+		
+		commandsList.add(new ParserCommand(
+				Util.newArrayListOfValues(
+						"thoughtFeminine",
+						"feminineThought"),
+				false,
+				false,
+				"(thought content)",
+				"Parses the containing dialogue as though a generic, feminine character is saying it."){
+			@Override
+			public String parse(List<GameCharacter> specialNPCs, String command, String arguments, String target, GameCharacter character) {
+				if(arguments!=null) {
+					return parseNPCThought(arguments, Femininity.FEMININE);
+				} else {
+					return parseNPCThought("...", Femininity.FEMININE);
+				}
+			}
+		});
+		
+		commandsList.add(new ParserCommand(
+				Util.newArrayListOfValues(
+						"thoughtFeminineStrong",
+						"thoughtFeminineHeavy",
+						"thoughtFemininePlus",
+						"feminineStrongThought",
+						"feminineHeavyThought",
+						"femininePlusThought"),
+				false,
+				false,
+				"(thought content)",
+				"Parses the containing dialogue as though a generic, very feminine character is saying it."){
+			@Override
+			public String parse(List<GameCharacter> specialNPCs, String command, String arguments, String target, GameCharacter character) {
+				if(arguments!=null) {
+					return parseNPCThought(arguments, Femininity.FEMININE_STRONG);
+				} else {
+					return parseNPCThought("...", Femininity.FEMININE_STRONG);
 				}
 			}
 		});
@@ -5381,8 +5515,14 @@ public class UtilText {
 				if(character.isFeminine()) {
 					descriptors.add("feminine");
 					descriptors.add("sexy");
+					descriptors.add("hot");
 				} else {
 					descriptors.add("masculine");
+				}
+				if(character.getMuscleValue()>=Muscle.THREE_MUSCULAR.getMinimumValue()) {
+					descriptors.add("muscular");
+				} else if(character.getMuscleValue()<Muscle.ONE_LIGHTLY_MUSCLED.getMinimumValue() && character.getBodySizeValue()>=BodySize.THREE_LARGE.getMinimumValue()){
+					descriptors.add("chubby");
 				}
 				return applyDescriptor(
 						Util.randomItemFrom(descriptors),
@@ -9574,6 +9714,9 @@ public class UtilText {
 		for(GenitalArrangement genArrangement : GenitalArrangement.values()) {
 			engine.put("GENITALS_"+genArrangement.toString(), genArrangement);
 		}
+		for(PenisLength penisLength : PenisLength.values()) {
+			engine.put("PENIS_LENGTH_"+penisLength.toString(), penisLength);
+		}
 		for(BodyMaterial material : BodyMaterial.values()) {
 			engine.put("BODY_MATERIAL_"+material.toString(), material);
 		}
@@ -9709,6 +9852,9 @@ public class UtilText {
 		}
 		for(AbstractPerk p : Perk.getAllPerks()) {
 			engine.put("PERK_"+Perk.getIdFromPerk(p), p);
+		}
+		for(PerkCategory pk : PerkCategory.values()) {
+			engine.put("PERK_CATEGORY_"+pk.toString(), pk);
 		}
 		for(AbstractStatusEffect sa : StatusEffect.getAllStatusEffects()) {
 			engine.put("SE_"+StatusEffect.getIdFromStatusEffect(sa), sa);

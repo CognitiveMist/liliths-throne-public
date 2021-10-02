@@ -65,6 +65,8 @@ public class AbstractPlaceType {
 	protected boolean itemsDisappear;
 	private boolean furniturePresentOverride;
 	private boolean furniturePresent;
+	private boolean deskNameOverride;
+	private String deskName;
 	private boolean loiteringEnabledOverride;
 	private boolean loiteringEnabled;
 	private boolean wallsPresentOverride;
@@ -321,9 +323,15 @@ public class AbstractPlaceType {
 				if(coreElement.getOptionalFirstOf("furniturePresent").isPresent()) {
 					this.furniturePresentOverride = true;
 					this.furniturePresent = Boolean.valueOf(coreElement.getMandatoryFirstOf("furniturePresent").getTextContent().trim());
+					if(!coreElement.getMandatoryFirstOf("furniturePresent").getAttribute("deskName").isEmpty()) {
+						this.deskNameOverride = true;
+						this.deskName = coreElement.getMandatoryFirstOf("furniturePresent").getAttribute("deskName");
+					}
 				} else {
 					this.furniturePresentOverride = false;
 					this.furniturePresent = false;
+					this.deskNameOverride = false;
+					this.deskName = "desk";
 				}
 				
 				if(coreElement.getOptionalFirstOf("loiteringEnabled").isPresent()) {
@@ -524,6 +532,11 @@ public class AbstractPlaceType {
 		
 		if(possibleEncounters.isEmpty()) {
 			return null;
+		}
+		
+		// If a value of >100 is used for the encounter chance, then all other encounters with chances of <=100 are discarded
+		if(possibleEncounters.stream().anyMatch(en->en.isAnyBaseTriggerChanceOverOneHundred())) {
+			possibleEncounters.removeIf(en->!en.isAnyBaseTriggerChanceOverOneHundred());
 		}
 		
 		// Need to always return the same encounter in case it gets triggered multiple times in logic somewhere
@@ -755,6 +768,20 @@ public class AbstractPlaceType {
 		return furniturePresent;
 	}
 
+	/**
+	 * @return true if this place type's getDeskName() method should be used instead of the parent world type's.
+	 */
+	public boolean isDeskNameOverride() {
+		return deskNameOverride;
+	}
+	
+	/**
+	 * @return The name which should be used in the against desk sex position, in the X place in: 'Against X'. This overrides AbstractWorldType's method of the same name.
+	 */
+	public String getDeskName() {
+		return deskName;
+	}
+	
 	/**
 	 * @return true if this place type's isLoiteringEnabled() method should be used instead of the parent world type's.
 	 */

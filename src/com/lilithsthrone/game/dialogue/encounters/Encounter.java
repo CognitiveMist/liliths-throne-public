@@ -1286,6 +1286,10 @@ public class Encounter {
 	public static String getIdFromEncounter(AbstractEncounter encounter) {
 		return encounterToIdMap.get(encounter);
 	}
+	
+	public static List<AbstractEncounter> getAllEncounters() {
+		return allEncounters;
+	}
 
 	static {
 		allEncounters = new ArrayList<>();
@@ -1376,9 +1380,5 @@ public class Encounter {
 				}
 			}
 		}
-	}
-	
-	public static List<AbstractEncounter> getAllEncounters() {
-		return allEncounters;
 	}
 }
