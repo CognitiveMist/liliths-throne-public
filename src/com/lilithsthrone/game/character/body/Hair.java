@@ -215,7 +215,7 @@ public class Hair implements BodyPartInterface {
 				case CHONMAGE:
 					sb.append("straightened, oiled, and styled into a chonmage.");
 					break;
-				 */
+				*/
 				case DREADLOCKS:
 					sb.append("styled into dreadlocks.");
 					break;
