@@ -3,12 +3,14 @@ package com.lilithsthrone.game.inventory;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.w3c.dom.Document;
@@ -1103,8 +1105,10 @@ public class CharacterInventory implements XMLSaving {
 		
 		return concealedMap;
 	}
-	
 
+	/**
+	 * @return a list of all clothing that is both: covering the given slot, and at least partly visible
+	 */
 	public List<AbstractClothing> getVisibleClothingConcealingSlot(GameCharacter character, InventorySlot slot) {
 		List<AbstractClothing> visibleClothing = new ArrayList<>();
 		
@@ -1118,28 +1122,40 @@ public class CharacterInventory implements XMLSaving {
 		}
 		
 		if(!visibleClothing.isEmpty()) {
-			Set<InventorySlot> slotsToCheck = visibleClothing.stream().map(AbstractClothing::getSlotEquippedTo).collect(Collectors.toSet());
-			Set<InventorySlot> slotsChecked = new HashSet<>();
+			// Remove duplicates, then sort visible clothing by Z layer
+			visibleClothing = new ArrayList<>(new HashSet<>(visibleClothing));
+			visibleClothing.sort(Comparator.<AbstractClothing, Integer>comparing(clothing -> clothing.getSlotEquippedTo().getZLayer()).reversed());
 			
-			while(!slotsToCheck.isEmpty()) {
-				InventorySlot checkSlot = slotsToCheck.iterator().next();
-				slotsToCheck.remove(checkSlot);
-				slotsChecked.add(checkSlot);
-				
-				List<AbstractClothing> checkClothingSlot = slotsConcealed.get(checkSlot);
-				if(checkClothingSlot!=null && !checkClothingSlot.isEmpty()) {
-					visibleClothing = visibleClothing.stream().filter(cl -> cl.getSlotEquippedTo()!=checkSlot).collect(Collectors.toList()); // Remove clothing which is concealed
-					for(AbstractClothing c : checkClothingSlot) {
-						visibleClothing.add(c);
-						if(!slotsChecked.contains(c.getSlotEquippedTo())) {
-							slotsToCheck.add(c.getSlotEquippedTo());
-						}
-					}
+			// Take note, for each item of clothing, the slot it is equipped to as well as the slots it is incompatible with
+			Map<AbstractClothing, List<InventorySlot>> visibleClothingMap = visibleClothing.stream()
+				.collect(Collectors.toMap(Function.identity(), clothing -> {
+					List<InventorySlot> allClothingSlots = new ArrayList<>();
+					allClothingSlots.add(clothing.getSlotEquippedTo());
+					allClothingSlots.addAll(clothing.getIncompatibleSlots(character, clothing.getSlotEquippedTo()));
+					return allClothingSlots;
+				}));
+			
+			for(int i = 0; i < visibleClothing.size(); i++) {
+				AbstractClothing outerClothing = visibleClothing.get(i);
+				for(int j = i+1; j < visibleClothing.size(); j++) {
+					AbstractClothing innerClothing = visibleClothing.get(j);
+					
+					// If a outer layer of clothing covers a slot that an inner layer occupies, remove that note from the inner clothing
+					visibleClothingMap.get(innerClothing).removeIf(innerSlot -> outerClothing.isConcealsSlot(character, outerClothing.getSlotEquippedTo(), innerSlot));
 				}
+				
+				// If a slot is covered by some other clothing not considered here, remove its note as well
+				visibleClothingMap.get(outerClothing).removeIf(outerSlot ->
+						slotsConcealed.getOrDefault(outerSlot, new ArrayList<>())
+										.stream()
+										.anyMatch(clothing -> clothing.getSlotEquippedTo().getZLayer() > outerSlot.getZLayer()));
 			}
+			
+			// If an item has lost all it's noted slots, it is not visible
+			visibleClothing.removeIf(clothing -> visibleClothingMap.get(clothing).isEmpty());
 		}
 		
-		return new ArrayList<>(new HashSet<>(visibleClothing)); // Remove duplicates
+		return visibleClothing;
 	}
 	
 	
